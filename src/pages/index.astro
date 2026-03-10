@@ -1,4 +1,17 @@
 ---
 // Root redirect to default locale
-return Astro.redirect('/es/');
 ---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Josemi</title>
+  <meta name="robots" content="noindex, follow">
+  <meta http-equiv="refresh" content="0;url=/es/">
+  <script>
+    window.location.replace('/es/');
+  </script>
+</head>
+<body>
+</body>
+</html>
