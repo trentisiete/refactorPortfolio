@@ -1,0 +1,88 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import type { Lang } from '../i18n/utils';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: Lang;
+  extraStyles?: string[];
+  wide?: boolean;
+  availableLangs?: Lang[];
+}
+
+const {
+  title,
+  description,
+  lang = 'es',
+  extraStyles = [],
+  wide = false,
+  availableLangs,
+} = Astro.props;
+
+const t = useTranslations(lang);
+const pageTitle = title || t.meta.site_title;
+const pageDescription = description || t.meta.site_description;
+const containerClass = wide ? 'container container--wide' : 'container';
+---
+
+<!DOCTYPE html>
+<html lang={lang}>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={pageDescription} />
+  <meta name="author" content="José Arbelaez" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:type" content="website" />
+
+  <title>{pageTitle}</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/img_astro_web.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/styles/main.css" />
+  <link rel="stylesheet" href="/styles/typography.css" />
+  <link rel="stylesheet" href="/styles/components.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  
+  {extraStyles.map(style => (
+    <link rel="stylesheet" href={style} />
+  ))}
+
+  <!-- Prevent flash of wrong theme -->
+  <script is:inline>
+    (function() {
+      const theme = localStorage.getItem('theme') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    })();
+  </script>
+
+  <slot name="head" />
+</head>
+
+<body>
+  <Header lang={lang} availableLangs={availableLangs} />
+
+  <main class={containerClass}>
+    <slot />
+  </main>
+
+  <Footer lang={lang} />
+
+  <slot name="scripts" />
+</body>
+
+</html>

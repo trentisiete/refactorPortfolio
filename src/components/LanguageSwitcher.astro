@@ -1,0 +1,30 @@
+---
+import type { Lang } from '../i18n/utils';
+import { languages, getLocalizedPath } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  availableLangs?: Lang[];
+}
+
+const { lang, availableLangs } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+// If availableLangs is provided, only show those languages; otherwise show all
+const langsToShow = availableLangs
+  ? Object.entries(languages).filter(([code]) => availableLangs.includes(code as Lang))
+  : Object.entries(languages);
+---
+
+<div class="lang-switcher">
+  {langsToShow.map(([code, label]) => (
+    <a
+      href={getLocalizedPath(currentPath, code as Lang)}
+      class:list={["lang-switcher__link", { "lang-switcher__link--active": code === lang }]}
+      aria-label={label}
+    >
+      {code.toUpperCase()}
+    </a>
+  ))}
+</div>
+

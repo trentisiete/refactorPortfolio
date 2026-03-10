@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { useTranslations } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+import { getCollection } from 'astro:content';
+
+const lang: Lang = 'es';
+const t = useTranslations(lang);
+
+const allArticles = await getCollection('articles');
+const articles = allArticles
+  .filter(a => a.data.lang === lang && !a.data.draft)
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+const latestArticles = articles.slice(0, 3);
+---
+
+<BaseLayout lang={lang}>
+  <section class="section fade-in fade-in-1">
+    <div class="intro">
+      <p class="lead">{t.intro.p1}</p>
+      <p>{t.intro.p2}</p>
+    </div>
+  </section>
+
+  <section class="section fade-in fade-in-2" id="articles">
+    <h2 class="section-title">{t.sections.latest_articles}</h2>
+    <div class="articles-list">
+      {latestArticles.length > 0
+        ? latestArticles.map(article => <ArticleCard article={article} lang={lang} />)
+        : <p class="text-muted">{t.articles_page.no_articles}</p>
+      }
+    </div>
+  </section>
+</BaseLayout>

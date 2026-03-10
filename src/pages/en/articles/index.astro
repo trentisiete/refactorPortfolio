@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import { useTranslations } from '../../../i18n/utils';
+import type { Lang } from '../../../i18n/utils';
+import { getCollection } from 'astro:content';
+
+const lang: Lang = 'en';
+const t = useTranslations(lang);
+
+const allArticles = await getCollection('articles');
+const articles = allArticles
+  .filter(a => a.data.lang === lang && !a.data.draft && !a.data.title.includes('DRAFT') && !a.id.includes('DRAFT'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout lang={lang} title={`${t.articles_page.title} | ${t.meta.site_title}`}>
+  <section class="section fade-in fade-in-1">
+    <h1 class="section-title">{t.articles_page.title}</h1>
+    <p class="text-muted mb-8">{t.articles_page.subtitle}</p>
+
+    <div class="articles-list">
+      {articles.length > 0
+        ? articles.map(article => <ArticleCard article={article} lang={lang} />)
+        : (
+          <div class="text-center mt-8">
+            <p class="lead mb-4">{t.articles_page.no_articles}</p>
+            <p class="text-muted">{t.articles_page.no_articles_subtitle}</p>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

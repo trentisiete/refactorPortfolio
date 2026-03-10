@@ -1,0 +1,141 @@
+/* ========================================
+   ANIMATIONS.CSS - Hero Entrance & Ambient
+   Clean fade + rise entrance, Apple-style
+   ======================================== */
+
+/* ----------------------------------------
+   Hero Fade-In Entrance Animation
+   Staggered fade + translateY with soft ease
+   ---------------------------------------- */
+
+@keyframes heroFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Base: all hero-fade elements start invisible */
+.hero-fade {
+    opacity: 0;
+    animation: heroFadeIn 0.9s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+/* Staggered delays */
+.hero-fade-1 {
+    animation-delay: 0.05s;
+}
+
+.hero-fade-2 {
+    animation-delay: 0.2s;
+}
+
+.hero-fade-3 {
+    animation-delay: 0.4s;
+}
+
+.hero-fade-4 {
+    animation-delay: 0.6s;
+}
+
+.hero-fade-5 {
+    animation-delay: 0.8s;
+}
+
+/* Title & subtitle still use original classes for font styling */
+.hero-title,
+.hero-subtitle {
+    display: block;
+}
+
+/* Responsive - simpler animation on mobile */
+@media (max-width: 768px) {
+    .hero-fade {
+        animation-duration: 0.7s;
+    }
+
+    @keyframes heroFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(16px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+/* Accessibility - respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .hero-fade {
+        animation: none;
+    }
+}
+
+/* ----------------------------------------
+   Generic Fade-in Animations
+   For page sections, articles, etc.
+   ---------------------------------------- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.fade-in-1 {
+    animation-delay: 0.1s;
+}
+
+.fade-in-2 {
+    animation-delay: 0.2s;
+}
+
+.fade-in-3 {
+    animation-delay: 0.3s;
+}
+
+.fade-in-4 {
+    animation-delay: 0.4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fade-in {
+        animation: none;
+        opacity: 1;
+    }
+}
+
+/* ========================================
+   Global Background Dots Pattern
+   Subtle blue dots across entire page
+   ======================================== */
+
+.page-dots-bg {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 1;
+}

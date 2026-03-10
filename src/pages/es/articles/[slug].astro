@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { useTranslations } from '../../../i18n/utils';
+import type { Lang } from '../../../i18n/utils';
+import { getCollection, render } from 'astro:content';
+
+const lang: Lang = 'es';
+const t = useTranslations(lang);
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+  return articles
+    .filter(a => a.data.lang === 'es')
+    .map(article => ({
+      params: { slug: article.slug },
+      props: { article },
+    }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+
+// Find which languages have this same article slug
+const allArticles = await getCollection('articles');
+const availableLangs = allArticles
+  .filter(a => a.slug === article.slug && !a.data.draft)
+  .map(a => a.data.lang) as Lang[];
+
+const dateStr = article.data.date.toLocaleDateString('es-ES', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+const readingTime = article.data.readingTime || 0;
+---
+
+<BaseLayout lang={lang} title={`${article.data.title} | ${t.meta.site_title}`} extraStyles={["/styles/markdown.css", "/styles/article.css"]} availableLangs={availableLangs}>
+  <section class="section fade-in fade-in-1">
+    <a href={`/${lang}/#articles`} class="back-link">{t.buttons.back_to_articles}</a>
+
+    <article>
+      <header class="article__header">
+        <h1 class="article__title">{article.data.title}</h1>
+        {article.data.excerpt && (
+          <p class="article__subtitle">{article.data.excerpt}</p>
+        )}
+        <div class="article__meta">
+          <time>{dateStr}</time>
+          {readingTime > 0 && <span> · {readingTime} {t.articles_page.min_read}</span>}
+        </div>
+        {article.data.tags && article.data.tags.length > 0 && (
+          <div class="article__tags">
+            {article.data.tags.map(tag => <span class="tag">{tag}</span>)}
+          </div>
+        )}
+      </header>
+
+      <div class="markdown-content">
+        <Content />
+      </div>
+    </article>
+  </section>
+</BaseLayout>

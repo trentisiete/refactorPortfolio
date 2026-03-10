@@ -1,0 +1,26 @@
+---
+import type { Lang } from '../i18n/utils';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  lang: Lang;
+  availableLangs?: Lang[];
+}
+
+const { lang, availableLangs } = Astro.props;
+const basePath = `/${lang}`;
+---
+
+<header class="site-header">
+  <div class="container">
+    <div class="site-header__inner">
+      <a href={`${basePath}/`} class="site-header__name">José Arbelaez</a>
+      <div class="site-header__controls">
+        <LanguageSwitcher lang={lang} availableLangs={availableLangs} />
+        <ThemeToggle />
+      </div>
+    </div>
+  </div>
+</header>
+

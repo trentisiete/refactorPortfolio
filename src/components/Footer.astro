@@ -1,0 +1,28 @@
+---
+import type { Lang } from '../i18n/utils';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__links">
+      <a href="https://www.linkedin.com/in/jose-arbelaez-dev/" target="_blank" rel="noopener noreferrer" class="footer__link">
+        LinkedIn
+      </a>
+      <a href="/CV_jose.pdf" target="_blank" rel="noopener noreferrer" class="anthropic-btn">
+        CV
+      </a>
+      <a href="https://github.com/trentisiete" target="_blank" rel="noopener noreferrer" class="footer__link">
+        GitHub
+      </a>
+    </div>
+    <p class="footer__text">{t.footer.copyright}</p>
+  </div>
+</footer>

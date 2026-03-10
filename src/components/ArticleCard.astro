@@ -1,0 +1,144 @@
+---
+import type { Lang } from '../i18n/utils';
+import { useTranslations } from '../i18n/utils';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+  lang: Lang;
+}
+
+const { article, lang } = Astro.props;
+const t = useTranslations(lang);
+
+const locale = lang === 'de' ? 'de-DE' : lang === 'en' ? 'en-US' : 'es-ES';
+const d = typeof article.data.date === 'string' ? new Date(article.data.date) : article.data.date;
+const dateStr = d.toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' });
+const readingTime = article.data.readingTime || 0;
+
+const tagsArray = article.data.tags || [];
+const tagsData = tagsArray.map(t => String(t).trim().toLowerCase().replace(/\s+/g, '-')).join(' ');
+
+const searchable = [
+  article.data.title || '',
+  article.data.excerpt || '',
+  tagsArray.map(t => String(t).trim()).join(' ')
+].join(' ').toLowerCase();
+---
+
+<article class="article-item search-item" data-tags={tagsData} data-searchable={searchable}>
+  <a href={`/${lang}/articles/${article.slug}/`} class="article-item__link">
+    <div class="article-item__meta">
+      <time class="article-item__date">{dateStr}</time>
+      {readingTime > 0 && <span class="article-item__reading">{readingTime} {t.articles_page.min_read}</span>}
+    </div>
+    <h2 class="article-item__title">{article.data.title}</h2>
+    {article.data.excerpt && <p class="article-item__excerpt">{article.data.excerpt}</p>}
+    {tagsArray.length > 0 && (
+      <div class="article-item__tags">
+        {tagsArray.map(tag => (
+          <span class="article-item__tag">#{String(tag).trim()}</span>
+        ))}
+      </div>
+    )}
+  </a>
+</article>
+
+<style>
+  .article-item {
+    position: relative;
+  }
+
+  .article-item__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    padding: var(--space-6) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .article-item:first-child .article-item__link {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .article-item__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+  }
+
+  .article-item__date {
+    font-family: var(--font-mono, 'SF Mono', 'Fira Code', 'Cascadia Code', monospace);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+  }
+
+  .article-item__reading {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono, 'SF Mono', 'Fira Code', monospace);
+  }
+
+  .article-item__reading::before {
+    content: '·';
+    margin-right: var(--space-2);
+  }
+
+  .article-item__title {
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+    line-height: 1.4;
+    transition: color 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .article-item__link:hover .article-item__title {
+    color: var(--color-primary);
+    transform: translateX(6px);
+  }
+
+  .article-item__excerpt {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: var(--space-3);
+    max-width: 700px;
+  }
+
+  .article-item__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .article-item__tag {
+    font-family: var(--font-mono, 'SF Mono', 'Fira Code', monospace);
+    font-size: 11px;
+    color: var(--color-primary);
+    opacity: 0.7;
+    letter-spacing: 0.02em;
+    transition: opacity 0.2s ease;
+  }
+
+  .article-item__link:hover .article-item__tag {
+    opacity: 1;
+  }
+
+  @media (max-width: 640px) {
+    .article-item__link {
+      padding: var(--space-5) 0;
+    }
+    .article-item__title {
+      font-size: var(--text-base);
+    }
+  }
+</style>

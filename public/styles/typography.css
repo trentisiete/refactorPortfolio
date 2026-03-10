@@ -1,0 +1,115 @@
+/* ========================================
+   TYPOGRAPHY.CSS — Research-style
+   ======================================== */
+
+/* Font imports */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ----------------------------------------
+   Headings — serif, bold, editorial feel
+   ---------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-body);
+    font-weight: var(--font-bold);
+    line-height: var(--leading-tight);
+    color: var(--color-text);
+    margin-bottom: var(--space-4);
+}
+
+h1 { font-size: var(--text-4xl); }
+h2 { font-size: var(--text-3xl); }
+h3 { font-size: var(--text-2xl); }
+h4 { font-size: var(--text-xl); }
+h5 { font-size: var(--text-lg); }
+h6 { font-size: var(--text-base); font-weight: var(--font-medium); }
+
+/* ----------------------------------------
+   Body text
+   ---------------------------------------- */
+p {
+    margin-bottom: var(--space-4);
+    line-height: var(--leading-relaxed);
+}
+
+/* Prose — for long-form reading */
+.prose {
+    font-size: var(--text-base);
+    line-height: var(--leading-loose);
+}
+
+.prose p {
+    margin-bottom: var(--space-6);
+}
+
+.prose h2, .prose h3, .prose h4 {
+    margin-top: var(--space-10);
+    margin-bottom: var(--space-4);
+}
+
+/* ----------------------------------------
+   Emphasis
+   ---------------------------------------- */
+strong, b {
+    font-weight: var(--font-bold);
+}
+
+em, i {
+    font-style: italic;
+}
+
+/* ----------------------------------------
+   Code
+   ---------------------------------------- */
+code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    background-color: var(--color-bg-alt);
+    padding: 0.15em 0.4em;
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+}
+
+pre {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    margin-bottom: var(--space-6);
+    line-height: 1.6;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* ----------------------------------------
+   Blockquotes
+   ---------------------------------------- */
+blockquote {
+    border-left: 3px solid var(--color-text-muted);
+    padding-left: var(--space-6);
+    margin: var(--space-6) 0;
+    font-style: italic;
+    color: var(--color-text-secondary);
+}
+
+blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+/* ----------------------------------------
+   Responsive
+   ---------------------------------------- */
+@media (max-width: 640px) {
+    h1 { font-size: var(--text-3xl); }
+    h2 { font-size: var(--text-2xl); }
+    h3 { font-size: var(--text-xl); }
+}

@@ -1,0 +1,136 @@
+/* ============================================================
+   article.css — Reusable styles for academic/technical articles
+   Include via extraStyles=["/styles/article.css"] on slug pages
+   ============================================================ */
+
+/* ---- KaTeX Display Math ---- */
+.markdown-content .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.8rem 0;
+  margin: 1.5rem 0;
+}
+
+.markdown-content .katex-display > .katex {
+  white-space: nowrap;
+}
+
+.markdown-content .katex {
+  font-size: 1.1em;
+  color: var(--color-text);
+}
+
+/* ---- Footnotes ---- */
+.markdown-content .footnotes {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.markdown-content .footnotes ol {
+  padding-left: 1.5rem;
+}
+
+.markdown-content .footnotes li {
+  margin-bottom: 0.75rem;
+}
+
+.markdown-content .footnotes li p {
+  margin: 0;
+}
+
+/* Footnote back-arrow */
+.markdown-content .footnotes a[href^="#fnref"] {
+  text-decoration: none;
+  margin-left: 0.3rem;
+  font-size: 0.85em;
+}
+
+/* Superscript footnote links in text */
+.markdown-content a[href^="#fn"] {
+  text-decoration: none;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.markdown-content sup a {
+  text-decoration: none;
+}
+
+/* ---- Figures & Captions ---- */
+.markdown-content figure {
+  margin: 2rem auto;
+  text-align: center;
+  max-width: 100%;
+}
+
+.markdown-content figure img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.markdown-content figcaption {
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+  line-height: 1.5;
+  max-width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ---- Tables ---- */
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.92rem;
+  overflow-x: auto;
+  display: block;
+}
+
+.markdown-content thead th {
+  background: var(--color-surface);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.markdown-content tbody td {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.markdown-content tbody tr:nth-child(even) {
+  background: var(--color-surface);
+}
+
+/* ---- Minipage side-by-side images ---- */
+.markdown-content .minipage {
+  display: inline-block;
+  width: 48%;
+  vertical-align: top;
+  text-align: center;
+  margin: 0 0.5%;
+}
+
+.markdown-content .minipage img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---- Blockquotes (for callouts/notes) ---- */
+.markdown-content blockquote {
+  border-left: 3px solid var(--color-primary);
+  padding: 0.5rem 1rem;
+  margin: 1.5rem 0;
+  background: var(--color-surface);
+  border-radius: 0 6px 6px 0;
+  color: var(--color-text-secondary);
+}

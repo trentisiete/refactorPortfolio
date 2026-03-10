@@ -1,0 +1,33 @@
+{
+  "intro": {
+    "p1": "I'm José Arbelaez. I work with data, machine learning, and artificial intelligence. This is my space to write about what I learn, what I think, and what keeps me curious.",
+    "p2": "I'm interested in understanding how things work — from language models to the decisions we make when designing systems. I write to think better."
+  },
+  "sections": {
+    "articles_title": "Articles",
+    "latest_articles": "Latest articles"
+  },
+  "articles_page": {
+    "title": "Articles",
+    "subtitle": "Reflections, learnings, and notes on AI, data, and technology.",
+    "no_articles": "No posts yet.",
+    "no_articles_subtitle": "Check my articles in Spanish for now :)",
+    "min_read": "min read"
+  },
+  "search": {
+    "placeholder_articles": "Search articles...",
+    "no_results": "No results found.",
+    "results_count": "results"
+  },
+  "buttons": {
+    "view_all_articles": "View all articles →",
+    "back_to_articles": "← Back to articles"
+  },
+  "footer": {
+    "copyright": "© 2026 José Arbelaez"
+  },
+  "meta": {
+    "site_title": "José Arbelaez",
+    "site_description": "Reflections and learnings on artificial intelligence, data, and technology."
+  }
+}

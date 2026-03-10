@@ -1,0 +1,33 @@
+{
+  "intro": {
+    "p1": "Ich bin José Arbelaez. Ich arbeite mit Daten, Machine Learning und Künstlicher Intelligenz. Dies ist mein Raum, um über das zu schreiben, was ich lerne, was ich denke und was mich beschäftigt.",
+    "p2": "Mich interessiert, wie Dinge funktionieren — von Sprachmodellen bis hin zu den Entscheidungen, die wir beim Entwurf von Systemen treffen. Ich schreibe, um klarer zu denken."
+  },
+  "sections": {
+    "articles_title": "Artikel",
+    "latest_articles": "Neueste Artikel"
+  },
+  "articles_page": {
+    "title": "Artikel",
+    "subtitle": "Reflexionen, Erkenntnisse und Notizen über KI, Daten und Technologie.",
+    "no_articles": "Noch keine Artikel.",
+    "no_articles_subtitle": "Schau dir vorerst meine Artikel auf Spanisch an :)",
+    "min_read": "Min. Lesezeit"
+  },
+  "search": {
+    "placeholder_articles": "Artikel suchen...",
+    "no_results": "Keine Ergebnisse gefunden.",
+    "results_count": "Ergebnisse"
+  },
+  "buttons": {
+    "view_all_articles": "Alle Artikel ansehen →",
+    "back_to_articles": "← Zurück zu Artikeln"
+  },
+  "footer": {
+    "copyright": "© 2026 José Arbelaez"
+  },
+  "meta": {
+    "site_title": "José Arbelaez",
+    "site_description": "Reflexionen und Erkenntnisse über Künstliche Intelligenz, Daten und Technologie."
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "intro": {
+    "p1": "Soy José Arbelaez. Trabajo con datos, machine learning e inteligencia artificial. Este es mi espacio para escribir sobre lo que aprendo, lo que pienso y lo que me inquieta.",
+    "p2": "Me interesa entender cómo funcionan las cosas — desde los modelos de lenguaje hasta las decisiones que tomamos al diseñar sistemas. Escribo para pensar mejor."
+  },
+  "sections": {
+    "articles_title": "Artículos",
+    "latest_articles": "Últimos artículos"
+  },
+  "articles_page": {
+    "title": "Artículos",
+    "subtitle": "Reflexiones, aprendizajes y notas sobre IA, datos y tecnología.",
+    "no_articles": "No posts yet.",
+    "no_articles_subtitle": "estoy organizando mi mente.",
+    "min_read": "min de lectura"
+  },
+  "search": {
+    "placeholder_articles": "Buscar artículos...",
+    "no_results": "No se encontraron resultados.",
+    "results_count": "resultados"
+  },
+  "buttons": {
+    "view_all_articles": "Ver todos los artículos →",
+    "back_to_articles": "← Volver a artículos"
+  },
+  "footer": {
+    "copyright": "© 2026 José Arbelaez"
+  },
+  "meta": {
+    "site_title": "José Arbelaez",
+    "site_description": "Reflexiones y aprendizajes sobre inteligencia artificial, datos y tecnología."
+  }
+}
