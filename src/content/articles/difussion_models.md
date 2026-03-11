@@ -602,14 +602,14 @@ una, su duración estimada, fechas de inicio y fin, y las
 interdependencias existentes.
 
 <figure id="fig:gantt_proyecto_ia_generativa">
-<img src="\public\assets\articles\difussion_models\mi_diagrama_gantt.jpeg" />
+<img src="/assets/articles/difussion_models/mi_diagrama_gantt.jpeg" />
 <figcaption>Fases del Plan de Proyecto de IA Generativa, mostrando la
 distribución temporal de las fases y tareas principales
 detalladamente.</figcaption>
 </figure>
 
 <figure id="fig:gantt_proyecto_ia_generativa">
-<img src="\public\assets\articles\difussion_models\mi_diagrama_gantt2.jpeg" />
+<img src="/assets/articles/difussion_models/mi_diagrama_gantt2.jpeg" />
 <figcaption>Diagrama de Gantt Visual del Plan de Proyecto de IA
 Generativa, mostrando la distribución temporal de las fases y tareas
 principales.</figcaption>
@@ -1231,7 +1231,7 @@ evolución para el modelo VP-SDE Lineal utilizando el *sampler*
 Predictor-Corrector.
 
 <figure id="fig:evolucion_muestras_vp_lineal">
-<img src="\public\assets\articles\difussion_models\evolucion_muestras_vp_lineal.png" />
+<img src="/assets/articles/difussion_models/evolucion_muestras_vp_lineal.png" />
 <figcaption>Evolución de la generación de imágenes con VP-SDE Lineal y
 sampler Predictor-Corrector sobre CIFAR-10. Se muestran instantáneas del
 proceso en diferentes pasos (de izquierda a derecha) desde el ruido
@@ -1247,7 +1247,7 @@ implementados, todos ellos partiendo del mismo ruido inicial (cuando
 aplica) y utilizando el mismo modelo de score (VP-SDE Lineal).
 
 <figure id="fig:comparativa_samplers_vp_lineal">
-<img src="\public\assets\articles\difussion_models\comparativa_samplers_vp_lineal.png" />
+<img src="/assets/articles/difussion_models/comparativa_samplers_vp_lineal.png" />
 <figcaption>Comparación de imágenes finales (CIFAR-10) generadas con el
 modelo VP-SDE Lineal utilizando diferentes samplers:
 Predictor-Corrector, Exponential Integrator, Probability Flow ODE y
@@ -1321,10 +1321,10 @@ resultados para cada modelo.
 
 <figure id="fig:bpd_violin">
 <div class="minipage">
-<img src="\public\assets\articles\difussion_models\fid.jpeg" />
+<img src="/assets/articles/difussion_models/fid.jpeg" />
 </div>
 <div class="minipage">
-<img src="\public\assets\articles\difussion_models\bpd.jpeg" />
+<img src="/assets/articles/difussion_models/bpd.jpeg" />
 </div>
 <figcaption>Gráficos de violín mostrando la distribución de los
 resultados para las métricas FID y BPD entre los diferentes modelos
@@ -1333,10 +1333,10 @@ SDE.</figcaption>
 
 <figure id="fig:is_std_violin">
 <div class="minipage">
-<img src="\public\assets\articles\difussion_models\is_media.jpeg" />
+<img src="/assets/articles/difussion_models/is_media.jpeg" />
 </div>
 <div class="minipage">
-<img src="\public\assets\articles\difussion_models\is_std.jpeg" />
+<img src="/assets/articles/difussion_models/is_std.jpeg" />
 </div>
 <figcaption>Gráficos de violín mostrando la distribución de los
 resultados para la media del Inception Score y su desviación estándar
@@ -1521,7 +1521,7 @@ Para esta tarea, se emplean dos modelos principales:
     arquitectura.
 
     <figure id="fig:classifier_arch">
-    <img src="\public\assets\articles\difussion_models\classifier_architecture_image.png" style="width:70.0%" />
+    <img src="/assets/articles/difussion_models/classifier_architecture_image.png" style="width:70.0%" />
     <figcaption>Representación esquemática de la arquitectura del
     clasificador ‘TimeDependentWideResNet‘.</figcaption>
     </figure>
@@ -1592,14 +1592,14 @@ modelos SDE mencionados, utilizando el
 'ConditionalEulerMaruyamaSampler'.
 
 <figure id="fig:evolucion_condicional_barco">
-<img src="\public\assets\articles\difussion_models\image_dcfe22.png" />
+<img src="/assets/articles/difussion_models/image_dcfe22.png" />
 <figcaption>Evolución de la generación condicional para la clase “Barco”
 en CIFAR-10 utilizando el ‘ConditionalEulerMaruyamaSampler‘. Resultados
 con modelos de score VE-SDE.</figcaption>
 </figure>
 
 <figure id="fig:final_condicional_comparison">
-<img src="\public\assets\articles\difussion_models\final_conditional_comparison.png" />
+<img src="/assets/articles/difussion_models/final_conditional_comparison.png" />
 <figcaption>Comparación de imágenes finales generadas condicionalmente
 para la clase “Barco” con los modelos VE-SDE, VP-SDE Lineal y SubVP-SDE
 Lineal.</figcaption>
@@ -1706,7 +1706,7 @@ visual directa, la tercera fila muestra las imágenes originales de
 CIFAR-10 completas.
 
 <figure id="fig:imputacion_cifar_mnist_3etapas">
-<img src="\public\assets\articles\difussion_models\imputacion_cifar_mnist_3etapas.png" />
+<img src="/assets/articles/difussion_models/imputacion_cifar_mnist_3etapas.png" />
 <figcaption>Proceso y resultado de la imputación de imágenes CIFAR-10
 utilizando máscaras generadas a partir de MNIST y un modelo VE-SDE. Fila
 superior: Imágenes originales de CIFAR-10 con la máscara aplicada (zonas
@@ -1748,10 +1748,10 @@ configuraciones SDE.
 
 <figure id="fig:loss_curves_violin_sdes_50epochs">
 <div class="minipage">
-<img src="\public\assets\articles\difussion_models\graficos/loss_curves_all_sdes.png" />
+<img src="/assets/articles/difussion_models/graficos/loss_curves_all_sdes.png" />
 </div>
 <div class="minipage">
-<img src="\public\assets\articles\difussion_models\graficos/loss_violin_plot_all_sdes.png" />
+<img src="/assets/articles/difussion_models/graficos/loss_violin_plot_all_sdes.png" />
 </div>
 <figcaption>Comportamiento de la función de pérdida durante las primeras
 50 épocas de entrenamiento: (a) Curvas del loss promedio por época para
@@ -1822,10 +1822,10 @@ promedio de la función de pérdida calculado sobre la totalidad de estas
 
 <figure id="fig:loss_barplots_sdes_50epochs">
 <div class="minipage">
-<img src="\public\assets\articles\difussion_models\loss_final_barplot_all_sdes.png" />
+<img src="/assets/articles/difussion_models/loss_final_barplot_all_sdes.png" />
 </div>
 <div class="minipage">
-<img src="\public\assets\articles\difussion_models\loss_average_barplot_all_sdes.png" />
+<img src="/assets/articles/difussion_models/loss_average_barplot_all_sdes.png" />
 </div>
 <figcaption>Resumen cuantitativo del rendimiento del entrenamiento tras
 50 épocas: (a) Valor del loss en la época 50. (b) Valor del loss
