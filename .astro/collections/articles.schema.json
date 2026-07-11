@@ -49,12 +49,27 @@
           ],
           "default": "es"
         },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "article",
+            "blog"
+          ],
+          "default": "article"
+        },
         "readingTime": {
           "type": "number"
         },
         "draft": {
           "type": "boolean",
           "default": false
+        },
+        "translated": {
+          "type": "boolean",
+          "default": false
+        },
+        "sourceHash": {
+          "type": "string"
         },
         "$schema": {
           "type": "string"

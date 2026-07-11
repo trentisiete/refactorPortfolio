@@ -35,7 +35,7 @@ const LANG_NAMES = { es: 'Spanish', en: 'English', de: 'German' };
 const MODEL = process.env.TRANSLATE_MODEL || 'claude-sonnet-5';
 const API_URL = 'https://api.anthropic.com/v1/messages';
 const CHUNK_LIMIT = 15000; // chars de fuente por llamada
-const MAX_TOKENS = 20000;
+const MAX_TOKENS = 32000;
 
 const args = process.argv.slice(2);
 const CHECK_ONLY = args.includes('--check');
@@ -193,10 +193,20 @@ async function translateMarkdownFile(apiKey, raw, sourceLang, targetLang) {
 	);
 	if (!fmOut.startsWith('---')) throw new Error('Frontmatter traducido inválido');
 
-	const sections = parts.body.split(/(?=\n## )/);
+	// Trocear por secciones ## y, si una sección supera el límite,
+	// subdividirla por párrafos (los cortes conservan el texto exacto).
+	const pieces = [];
+	for (const section of parts.body.split(/(?=\n## )/)) {
+		if (section.length <= CHUNK_LIMIT) {
+			pieces.push(section);
+		} else {
+			pieces.push(...section.split(/(?<=\n\n)/));
+		}
+	}
+
 	const chunks = [];
 	let current = '';
-	for (const s of sections) {
+	for (const s of pieces) {
 		if (current && (current.length + s.length) > CHUNK_LIMIT) {
 			chunks.push(current);
 			current = s;
@@ -209,10 +219,11 @@ async function translateMarkdownFile(apiKey, raw, sourceLang, targetLang) {
 	const translated = [];
 	for (let i = 0; i < chunks.length; i++) {
 		log(`    fragmento ${i + 1}/${chunks.length}...`);
-		translated.push(await callClaude(
+		const out = await callClaude(
 			apiKey, system,
-			`This is part ${i + 1} of ${chunks.length} of an article's Markdown body (the frontmatter was translated separately). Translate it:\n\n${chunks[i]}`
-		));
+			`This is part ${i + 1} of ${chunks.length} of an article's Markdown body (the frontmatter was translated separately). It may start or end mid-section; translate it as-is without completing or closing anything:\n\n${chunks[i]}`
+		);
+		translated.push(out.trim());
 	}
 	return `${fmOut}\n\n${translated.join('\n\n')}\n`;
 }
