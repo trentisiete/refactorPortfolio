@@ -7,12 +7,24 @@
     "articles_title": "Articles",
     "latest_articles": "Latest articles"
   },
+  "tabs": {
+    "articles": "My articles",
+    "blog": "Blog"
+  },
+  "views": {
+    "label": "Switch view",
+    "reading": "Reading",
+    "profile": "Career and projects"
+  },
   "articles_page": {
     "title": "Articles",
     "subtitle": "Reflections, learnings, and notes on AI, data, and technology.",
-    "no_articles": "No posts yet.",
+    "no_articles": "No articles yet.",
     "no_articles_subtitle": "Check my articles in Spanish for now :)",
     "min_read": "min read"
+  },
+  "blog_page": {
+    "no_posts": "No blog posts yet."
   },
   "search": {
     "placeholder_articles": "Search articles...",
@@ -21,13 +33,24 @@
   },
   "buttons": {
     "view_all_articles": "View all articles →",
-    "back_to_articles": "← Back to articles"
+    "back_to_articles": "← Back to my articles",
+    "back_to_blog": "← Back to the blog"
   },
   "footer": {
-    "copyright": "© 2026 José Arbelaez"
+    "copyright": "© 2026 José Arbelaez",
+    "focus_view": "Focus View",
+    "exit_focus": "Exit Focus View",
+    "scroll_top": "Scroll to top",
+    "scroll_bottom": "Scroll to bottom",
+    "widen_text": "Widen text",
+    "narrow_text": "Narrow text"
   },
   "meta": {
     "site_title": "José Arbelaez",
     "site_description": "Reflections and learnings on artificial intelligence, data, and technology."
+  },
+  "profile": {
+    "projects_title": "Projects",
+    "projects_empty": "Coming soon"
   }
 }

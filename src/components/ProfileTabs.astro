@@ -1,0 +1,98 @@
+---
+import ProfileEntry from './ProfileEntry.astro';
+import type { ProfileSection } from '../data/profile.es';
+
+interface Props {
+  sections: ProfileSection[];
+  label: string;
+}
+
+const { sections, label } = Astro.props;
+---
+
+<div class="profile-tabs" data-profile-tabs>
+  <div class="profile-tabs__nav" role="tablist" aria-label={label}>
+    {sections.map((section, index) => (
+      <button
+        class:list={["profile-tabs__tab", { "profile-tabs__tab--active": index === 0 }]}
+        type="button"
+        role="tab"
+        id={`profile-tab-${section.id}`}
+        aria-controls={`profile-panel-${section.id}`}
+        aria-selected={index === 0 ? 'true' : 'false'}
+        tabindex={index === 0 ? 0 : -1}
+        data-profile-tab={section.id}
+      >
+        {section.label}
+      </button>
+    ))}
+  </div>
+
+  {sections.map((section, index) => (
+    <section
+      class:list={["profile-tabs__panel", { "profile-tabs__panel--active": index === 0 }]}
+      id={`profile-panel-${section.id}`}
+      role="tabpanel"
+      aria-labelledby={`profile-tab-${section.id}`}
+      data-profile-panel={section.id}
+      hidden={index !== 0}
+    >
+      {section.entries.map(entry => <ProfileEntry entry={entry} />)}
+    </section>
+  ))}
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-profile-tabs]').forEach(root => {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-profile-tab]'));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>('[data-profile-panel]'));
+
+    const activate = (id: string, updateUrl = true) => {
+      tabs.forEach(tab => {
+        const isActive = tab.dataset.profileTab === id;
+        tab.classList.toggle('profile-tabs__tab--active', isActive);
+        tab.setAttribute('aria-selected', String(isActive));
+        tab.tabIndex = isActive ? 0 : -1;
+      });
+
+      panels.forEach(panel => {
+        const isActive = panel.dataset.profilePanel === id;
+        panel.classList.toggle('profile-tabs__panel--active', isActive);
+        panel.toggleAttribute('hidden', !isActive);
+      });
+
+      if (updateUrl) {
+        const url = new URL(window.location.href);
+        url.hash = id;
+        window.history.replaceState(null, '', url);
+      }
+    };
+
+    const initialId = window.location.hash.slice(1);
+    if (tabs.some(tab => tab.dataset.profileTab === initialId)) {
+      activate(initialId, false);
+    }
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => {
+        const id = tab.dataset.profileTab;
+        if (id) activate(id);
+      });
+
+      tab.addEventListener('keydown', event => {
+        let nextIndex = index;
+        if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+        else if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+        else if (event.key === 'Home') nextIndex = 0;
+        else if (event.key === 'End') nextIndex = tabs.length - 1;
+        else return;
+
+        event.preventDefault();
+        const nextTab = tabs[nextIndex];
+        const id = nextTab.dataset.profileTab;
+        if (id) activate(id);
+        nextTab.focus();
+      });
+    });
+  });
+</script>

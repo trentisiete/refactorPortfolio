@@ -4,25 +4,204 @@ import { useTranslations } from '../i18n/utils';
 
 interface Props {
   lang: Lang;
+  reader?: boolean;
 }
 
-const { lang } = Astro.props;
+const { lang, reader = false } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<footer class="footer">
+<footer class:list={["footer", { "footer--reader": reader }]} data-site-footer data-reader-footer={reader ? 'true' : undefined}>
   <div class="container">
-    <div class="footer__links">
-      <a href="https://www.linkedin.com/in/jose-arbelaez-dev/" target="_blank" rel="noopener noreferrer" class="footer__link">
-        LinkedIn
-      </a>
-      <a href="/CV_jose.pdf" target="_blank" rel="noopener noreferrer" class="anthropic-btn">
-        CV
-      </a>
-      <a href="https://github.com/trentisiete" target="_blank" rel="noopener noreferrer" class="footer__link">
-        GitHub
-      </a>
+    {reader && (
+      <div class="footer__reader-panel" data-reader-panel>
+        <div class="footer__reader-controls">
+          <button
+            class="footer__reader-control"
+            type="button"
+            aria-label={t.footer.scroll_top}
+            title={t.footer.scroll_top}
+            data-scroll-top
+          >
+            <!-- Lucide: ArrowUpToLine -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 3h14"></path>
+              <path d="m18 13-6-6-6 6"></path>
+              <path d="M12 7v14"></path>
+            </svg>
+          </button>
+
+          <button
+            class="footer__reader-control footer__reader-control--width"
+            type="button"
+            aria-label={t.footer.widen_text}
+            title={t.footer.widen_text}
+            aria-pressed="false"
+            data-toggle-reader-width
+            data-widen-label={t.footer.widen_text}
+            data-narrow-label={t.footer.narrow_text}
+          >
+            <!-- Lucide: MoveHorizontal -->
+            <svg class="reader-width-icon reader-width-icon--expand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m18 8 4 4-4 4"></path>
+              <path d="M2 12h20"></path>
+              <path d="m6 8-4 4 4 4"></path>
+            </svg>
+            <!-- Lucide: Minimize2 -->
+            <svg class="reader-width-icon reader-width-icon--reduce" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 14h6v6"></path>
+              <path d="m10 14-7 7"></path>
+              <path d="M20 10h-6V4"></path>
+              <path d="m14 10 7-7"></path>
+            </svg>
+          </button>
+
+          <button
+            class="footer__reader-control"
+            type="button"
+            aria-label={t.footer.scroll_bottom}
+            title={t.footer.scroll_bottom}
+            data-scroll-bottom
+          >
+            <!-- Lucide: ArrowDownToLine -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M19 21H5"></path>
+              <path d="m6 11 6 6 6-6"></path>
+              <path d="M12 17V3"></path>
+            </svg>
+          </button>
+        </div>
+
+        <button class="footer__focus-button" type="button" aria-pressed="false" data-focus-enter>
+          {t.footer.focus_view}
+        </button>
+      </div>
+    )}
+
+    <div class="footer__standard-panel" data-standard-footer>
+      <div class="footer__links">
+        <a href="https://www.linkedin.com/in/jose-arbelaez-dev/" target="_blank" rel="noopener noreferrer" class="footer__link">
+          LinkedIn
+        </a>
+        <a href="/CV_jose.pdf" target="_blank" rel="noopener noreferrer" class="anthropic-btn">
+          CV
+        </a>
+        <a href="https://github.com/trentisiete" target="_blank" rel="noopener noreferrer" class="footer__link">
+          GitHub
+        </a>
+      </div>
+      <p class="footer__text">{t.footer.copyright}</p>
     </div>
-    <p class="footer__text">{t.footer.copyright}</p>
   </div>
 </footer>
+
+{reader && (
+  <button
+    class="focus-view-exit"
+    type="button"
+    aria-label={t.footer.exit_focus}
+    title={t.footer.exit_focus}
+    data-focus-exit
+    hidden
+  >
+    <!-- Lucide: Minimize2 -->
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M4 14h6v6"></path>
+      <path d="m10 14-7 7"></path>
+      <path d="M20 10h-6V4"></path>
+      <path d="m14 10 7-7"></path>
+    </svg>
+  </button>
+)}
+
+<script>
+  (function() {
+    const footer = document.querySelector<HTMLElement>('[data-site-footer]');
+    if (!footer) return;
+
+    let hideTimer: number | undefined;
+    window.addEventListener('scroll', () => {
+      footer.classList.add('footer--hidden');
+      window.clearTimeout(hideTimer);
+      hideTimer = window.setTimeout(() => footer.classList.remove('footer--hidden'), 250);
+    }, { passive: true });
+
+    if (footer.dataset.readerFooter !== 'true') return;
+
+    const root = document.documentElement;
+    const sentinel = document.querySelector<HTMLElement>('[data-reading-end-sentinel]');
+    const scrollTopButton = footer.querySelector<HTMLButtonElement>('[data-scroll-top]');
+    const scrollBottomButton = footer.querySelector<HTMLButtonElement>('[data-scroll-bottom]');
+    const widthButton = footer.querySelector<HTMLButtonElement>('[data-toggle-reader-width]');
+    const focusEnter = footer.querySelector<HTMLButtonElement>('[data-focus-enter]');
+    const focusExit = document.querySelector<HTMLButtonElement>('[data-focus-exit]');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const setAtEnd = (atEnd: boolean) => {
+      footer.classList.toggle('footer--at-end', atEnd);
+      if (atEnd) footer.classList.remove('footer--hidden');
+    };
+
+    if (sentinel && 'IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(entries => {
+        setAtEnd(Boolean(entries[0]?.isIntersecting));
+      }, { threshold: 0.01 });
+      observer.observe(sentinel);
+    } else {
+      const updateEndFromScroll = () => {
+        const atEnd = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+        setAtEnd(atEnd);
+      };
+      window.addEventListener('scroll', updateEndFromScroll, { passive: true });
+      updateEndFromScroll();
+    }
+
+    const scrollBehavior = () => reduceMotion.matches ? 'auto' : 'smooth';
+    scrollTopButton?.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: scrollBehavior() });
+    });
+    scrollBottomButton?.addEventListener('click', () => {
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: scrollBehavior() });
+    });
+
+    const applyReaderWidth = (wide: boolean) => {
+      root.classList.toggle('reader-wide', wide);
+      if (!widthButton) return;
+
+      const actionLabel = wide ? widthButton.dataset.narrowLabel : widthButton.dataset.widenLabel;
+      widthButton.setAttribute('aria-pressed', String(wide));
+      if (actionLabel) {
+        widthButton.setAttribute('aria-label', actionLabel);
+        widthButton.title = actionLabel;
+      }
+    };
+
+    applyReaderWidth(root.classList.contains('reader-wide'));
+    widthButton?.addEventListener('click', () => {
+      const wide = !root.classList.contains('reader-wide');
+      applyReaderWidth(wide);
+      try {
+        localStorage.setItem('reader-width', wide ? 'wide' : 'normal');
+      } catch {}
+    });
+
+    const applyFocusView = (enabled: boolean) => {
+      const reference = document.elementFromPoint(window.innerWidth / 2, Math.min(160, window.innerHeight / 3));
+      const previousTop = reference?.getBoundingClientRect().top;
+
+      root.classList.toggle('focus-view', enabled);
+      focusEnter?.setAttribute('aria-pressed', String(enabled));
+      if (focusExit) focusExit.hidden = !enabled;
+
+      if (reference && previousTop !== undefined) {
+        window.requestAnimationFrame(() => {
+          const offset = reference.getBoundingClientRect().top - previousTop;
+          if (offset) window.scrollBy({ top: offset, behavior: 'auto' });
+        });
+      }
+    };
+
+    focusEnter?.addEventListener('click', () => applyFocusView(true));
+    focusExit?.addEventListener('click', () => applyFocusView(false));
+  })();
+</script>

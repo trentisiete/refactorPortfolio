@@ -4,9 +4,11 @@
 
 .markdown-content {
     font-family: var(--font-body);
-    font-size: var(--text-base);
-    line-height: var(--leading-loose);
+    /* 19px sobre 672px utiles mantiene la prosa cerca de 65-72 caracteres. */
+    font-size: var(--text-lg);
+    line-height: 1.7;
     color: var(--color-text);
+    overflow-wrap: break-word;
 }
 
 .markdown-content h1,
@@ -34,7 +36,10 @@
 }
 
 .markdown-content p {
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-4);
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
 }
 
 .markdown-content ul,
@@ -53,7 +58,10 @@
 
 .markdown-content li {
     margin-bottom: var(--space-2);
-    line-height: var(--leading-relaxed);
+    line-height: inherit;
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
 }
 
 .markdown-content a {
@@ -111,6 +119,32 @@
 /* Responsive */
 @media (max-width: 640px) {
     .markdown-content {
-        font-size: var(--text-sm);
+        font-size: var(--text-base);
+        line-height: 1.7;
     }
+}
+/* ----------------------------------------
+   Footnotes (remark-gfm)
+   ---------------------------------------- */
+/* Oculta visualmente el titulo automatico "Footnotes" que genera
+   remark-gfm; el articulo ya aporta su propio encabezado (## Referencias) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.footnotes {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+}
+
+.footnotes p {
+    margin-bottom: var(--space-2);
 }

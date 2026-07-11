@@ -1,0 +1,28 @@
+---
+import ProfileProjectCard from './ProfileProjectCard.astro';
+import type { ProfileProject } from '../data/profile.es';
+import type { Lang } from '../i18n/utils';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  projects: ProfileProject[];
+  lang: Lang;
+}
+
+const { projects, lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="profile-projects" aria-labelledby="profile-projects-title">
+  <h2 id="profile-projects-title">{t.profile.projects_title}</h2>
+
+  <div class="profile-projects__grid">
+    {projects.length > 0 ? (
+      projects.map(project => <ProfileProjectCard project={project} />)
+    ) : (
+      <article class="profile-project-card profile-project-card--placeholder">
+        <p>{t.profile.projects_empty}</p>
+      </article>
+    )}
+  </div>
+</section>

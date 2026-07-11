@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProfileTabs from '../../components/ProfileTabs.astro';
+import ProfileProjects from '../../components/ProfileProjects.astro';
+import { profileDe, profileProjectsDe } from '../../data/profile.de';
+---
+
+<BaseLayout
+  lang="de"
+  view="profile"
+  title={`Werdegang | José Arbelaez`}
+  description="Berufserfahrung, Projekte, Ausbildung und Auszeichnungen von José Arbelaez."
+  extraStyles={["/styles/profile.css"]}
+>
+  <section class="profile-page section fade-in fade-in-1">
+    <header class="profile-intro">
+      <h1>{profileDe.title}</h1>
+      <p>{profileDe.intro}</p>
+    </header>
+
+    <ProfileTabs sections={profileDe.sections} label={profileDe.tabsLabel} />
+    <ProfileProjects projects={profileProjectsDe} lang="de" />
+  </section>
+</BaseLayout>

@@ -3,6 +3,60 @@
    Include via extraStyles=["/styles/article.css"] on slug pages
    ============================================================ */
 
+/* ---- Reading Measure & Wide Technical Content ---- */
+.article-page {
+  --article-measure: 672px;
+}
+
+.reader-wide .article-page {
+  --article-measure: 100%;
+}
+
+.article-page > .back-link {
+  margin-left: max(0px, calc((100% - var(--article-measure)) / 2));
+}
+
+.article-page .article__header {
+  width: 100%;
+  max-width: var(--article-measure);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.article-page .markdown-content {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, var(--article-measure))
+    minmax(0, 1fr);
+}
+
+.article-page .markdown-content > * {
+  grid-column: 2;
+  min-width: 0;
+}
+
+.article-page .markdown-content > :is(
+  .katex-display,
+  figure,
+  img,
+  p:has(> img:only-child)
+) {
+  grid-column: 1 / -1;
+}
+
+/* Hasta cinco columnas siguen la medida de lectura; las tablas más densas usan el ancho técnico. */
+.article-page .markdown-content > table {
+  grid-column: 2;
+  justify-self: center;
+}
+
+.article-page .markdown-content > table:has(tr > :nth-child(6)) {
+  grid-column: 1 / -1;
+  justify-self: stretch;
+  width: 100%;
+}
+
 /* ---- KaTeX Display Math ---- */
 .markdown-content .katex-display {
   overflow-x: auto;
@@ -86,9 +140,10 @@
 
 /* ---- Tables ---- */
 .markdown-content table {
-  width: 100%;
+  width: fit-content;
+  max-width: 100%;
   border-collapse: collapse;
-  margin: 1.5rem 0;
+  margin: 1.5rem auto;
   font-size: 0.92rem;
   overflow-x: auto;
   display: block;
@@ -133,4 +188,210 @@
   background: var(--color-surface);
   border-radius: 0 6px 6px 0;
   color: var(--color-text-secondary);
+}
+
+/* ---- Expanded previews for images, tables and code ---- */
+html.content-preview-open {
+  overflow: hidden;
+}
+
+.content-preview-source {
+  cursor: zoom-in;
+}
+
+.content-preview-source:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+}
+
+.content-preview-trigger {
+  position: fixed;
+  z-index: 160;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  color: var(--color-text-secondary);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.12);
+  cursor: pointer;
+  transition: color var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.content-preview-trigger[hidden] {
+  display: none;
+}
+
+.content-preview-trigger:hover,
+.content-preview-trigger:focus-visible {
+  color: var(--color-primary);
+  background: var(--color-bg-alt);
+  border-color: var(--color-primary);
+}
+
+.content-preview-trigger:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.content-preview-trigger svg,
+.content-preview-dialog__close svg {
+  width: 18px;
+  height: 18px;
+}
+
+.content-preview-dialog {
+  inset: 0;
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  max-height: none;
+  margin: 0;
+  padding: clamp(12px, 3vw, 40px);
+  overflow: hidden;
+  color: var(--color-text);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.content-preview-dialog[open] {
+  display: grid;
+  place-items: center;
+}
+
+.content-preview-dialog::backdrop {
+  background: rgb(0 0 0 / 0.82);
+}
+
+.content-preview-dialog__close {
+  position: fixed;
+  top: var(--space-4);
+  right: var(--space-4);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  color: #ffffff;
+  background: rgb(0 0 0 / 0.35);
+  border: 1px solid rgb(255 255 255 / 0.32);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.content-preview-dialog__close:hover,
+.content-preview-dialog__close:focus-visible {
+  color: #ffffff;
+  background: rgb(0 0 0 / 0.7);
+  border-color: rgb(255 255 255 / 0.7);
+}
+
+.content-preview-dialog__close:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.content-preview-dialog__body.markdown-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: 94vw;
+  max-height: 90vh;
+  padding: 0;
+  overflow: auto;
+  font-size: var(--text-base);
+  background: transparent;
+  overscroll-behavior: contain;
+}
+
+dialog.content-preview-dialog .content-preview-dialog__body.markdown-content > img {
+  display: block;
+  width: auto;
+  max-width: 94vw;
+  height: auto;
+  max-height: 90vh;
+  margin: 0 auto;
+  object-fit: contain;
+  box-shadow: 0 18px 60px rgb(0 0 0 / 0.45);
+}
+
+dialog.content-preview-dialog[data-preview-kind="table"] .content-preview-dialog__body.markdown-content {
+  padding: var(--space-5);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 18px 60px rgb(0 0 0 / 0.45);
+}
+
+dialog.content-preview-dialog .content-preview-dialog__body.markdown-content > table {
+  display: table;
+  width: max-content;
+  max-width: none;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+dialog.content-preview-dialog .content-preview-dialog__body.markdown-content > pre {
+  width: max-content;
+  max-width: none;
+  margin: 0;
+  overflow: visible;
+  box-shadow: 0 18px 60px rgb(0 0 0 / 0.45);
+}
+
+@media (max-width: 720px) {
+  .article-page > .back-link {
+    margin-left: 0;
+  }
+
+  .article-page .markdown-content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .article-page .markdown-content > * {
+    grid-column: 1;
+  }
+
+  .article-page .markdown-content > table,
+  .article-page .markdown-content > table:has(tr > :nth-child(6)) {
+    grid-column: 1;
+  }
+
+  .content-preview-trigger {
+    display: none;
+  }
+
+  .content-preview-dialog {
+    padding: var(--space-2);
+  }
+
+  .content-preview-dialog__body.markdown-content {
+    max-width: calc(100vw - 16px);
+    max-height: 92vh;
+  }
+
+  dialog.content-preview-dialog[data-preview-kind="table"] .content-preview-dialog__body.markdown-content {
+    padding: var(--space-3);
+  }
+
+  .content-preview-dialog__close {
+    top: var(--space-2);
+    right: var(--space-2);
+  }
+}
+
+@media (hover: none) {
+  .content-preview-trigger {
+    display: none;
+  }
 }

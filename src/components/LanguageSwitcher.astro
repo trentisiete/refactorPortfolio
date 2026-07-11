@@ -5,9 +5,10 @@ import { languages, getLocalizedPath } from '../i18n/utils';
 interface Props {
   lang: Lang;
   availableLangs?: Lang[];
+  paths?: Partial<Record<Lang, string>>;
 }
 
-const { lang, availableLangs } = Astro.props;
+const { lang, availableLangs, paths } = Astro.props;
 const currentPath = Astro.url.pathname;
 
 // If availableLangs is provided, only show those languages; otherwise show all
@@ -19,7 +20,7 @@ const langsToShow = availableLangs
 <div class="lang-switcher">
   {langsToShow.map(([code, label]) => (
     <a
-      href={getLocalizedPath(currentPath, code as Lang)}
+      href={paths?.[code as Lang] ?? getLocalizedPath(currentPath, code as Lang)}
       class:list={["lang-switcher__link", { "lang-switcher__link--active": code === lang }]}
       aria-label={label}
     >
@@ -27,4 +28,3 @@ const langsToShow = availableLangs
     </a>
   ))}
 </div>
-

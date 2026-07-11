@@ -7,12 +7,24 @@
     "articles_title": "Artikel",
     "latest_articles": "Neueste Artikel"
   },
+  "tabs": {
+    "articles": "Meine Artikel",
+    "blog": "Blog"
+  },
+  "views": {
+    "label": "Ansicht wechseln",
+    "reading": "Lesen",
+    "profile": "Werdegang und Projekte"
+  },
   "articles_page": {
     "title": "Artikel",
     "subtitle": "Reflexionen, Erkenntnisse und Notizen über KI, Daten und Technologie.",
     "no_articles": "Noch keine Artikel.",
     "no_articles_subtitle": "Schau dir vorerst meine Artikel auf Spanisch an :)",
     "min_read": "Min. Lesezeit"
+  },
+  "blog_page": {
+    "no_posts": "Noch keine Blogbeiträge."
   },
   "search": {
     "placeholder_articles": "Artikel suchen...",
@@ -21,13 +33,24 @@
   },
   "buttons": {
     "view_all_articles": "Alle Artikel ansehen →",
-    "back_to_articles": "← Zurück zu Artikeln"
+    "back_to_articles": "← Zurück zu meinen Artikeln",
+    "back_to_blog": "← Zurück zum Blog"
   },
   "footer": {
-    "copyright": "© 2026 José Arbelaez"
+    "copyright": "© 2026 José Arbelaez",
+    "focus_view": "Focus View",
+    "exit_focus": "Focus View beenden",
+    "scroll_top": "Zum Anfang",
+    "scroll_bottom": "Zum Ende",
+    "widen_text": "Text verbreitern",
+    "narrow_text": "Text verschmälern"
   },
   "meta": {
     "site_title": "José Arbelaez",
     "site_description": "Reflexionen und Erkenntnisse über Künstliche Intelligenz, Daten und Technologie."
+  },
+  "profile": {
+    "projects_title": "Projekte",
+    "projects_empty": "Demnächst"
   }
 }

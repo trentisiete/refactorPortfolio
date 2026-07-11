@@ -10,7 +10,7 @@ const t = useTranslations(lang);
 
 const allArticles = await getCollection('articles');
 const articles = allArticles
-  .filter(a => a.data.lang === lang && !a.data.draft && !a.data.title.includes('DRAFT') && !a.id.includes('DRAFT'))
+  .filter(a => a.data.lang === lang && a.data.kind === 'article' && !a.data.draft && !a.data.title.includes('DRAFT') && !a.id.includes('DRAFT'))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 

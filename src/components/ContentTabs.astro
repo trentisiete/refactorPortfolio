@@ -1,0 +1,165 @@
+---
+import type { Lang } from '../i18n/utils';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const tabId = Math.random().toString(36).slice(2, 9);
+---
+
+<div class="content-tabs" data-tabs-id={tabId}>
+  <div class="content-tabs__nav" role="tablist">
+    <button
+      class="content-tabs__tab content-tabs__tab--active"
+      role="tab"
+      aria-selected="true"
+      aria-controls={`tab-panel-articles-${tabId}`}
+      id={`tab-articles-${tabId}`}
+      data-tab="articles"
+    >
+      {t.tabs.articles}
+    </button>
+    <button
+      class="content-tabs__tab"
+      role="tab"
+      aria-selected="false"
+      aria-controls={`tab-panel-blog-${tabId}`}
+      id={`tab-blog-${tabId}`}
+      data-tab="blog"
+    >
+      {t.tabs.blog}
+    </button>
+  </div>
+
+  <div
+    class="content-tabs__panel content-tabs__panel--active"
+    role="tabpanel"
+    id={`tab-panel-articles-${tabId}`}
+    aria-labelledby={`tab-articles-${tabId}`}
+    data-panel="articles"
+  >
+    <slot name="articles" />
+  </div>
+
+  <div
+    class="content-tabs__panel"
+    role="tabpanel"
+    id={`tab-panel-blog-${tabId}`}
+    aria-labelledby={`tab-blog-${tabId}`}
+    data-panel="blog"
+    hidden
+  >
+    <slot name="blog" />
+  </div>
+</div>
+
+<script>
+  (function() {
+    const tabsContainers = document.querySelectorAll('.content-tabs');
+
+    tabsContainers.forEach(container => {
+      const tabs = container.querySelectorAll('[data-tab]');
+      const panels = container.querySelectorAll('[data-panel]');
+
+      const activateTab = (target: string) => {
+        tabs.forEach(tab => {
+          const isTarget = tab.getAttribute('data-tab') === target;
+          tab.classList.toggle('content-tabs__tab--active', isTarget);
+          tab.setAttribute('aria-selected', String(isTarget));
+        });
+
+        panels.forEach(panel => {
+          const isTarget = panel.getAttribute('data-panel') === target;
+          panel.classList.toggle('content-tabs__panel--active', isTarget);
+          panel.toggleAttribute('hidden', !isTarget);
+        });
+      };
+
+      const initialTab = new URLSearchParams(window.location.search).get('tab');
+      if (initialTab === 'articles' || initialTab === 'blog') {
+        activateTab(initialTab);
+      }
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const target = tab.getAttribute('data-tab');
+          if (!target) return;
+
+          activateTab(target);
+
+          const url = new URL(window.location.href);
+          url.searchParams.set('tab', target);
+          url.hash = 'content';
+          window.history.replaceState(null, '', url);
+        });
+      });
+    });
+  })();
+</script>
+
+<style>
+  .content-tabs__nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    margin-bottom: var(--space-8);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .content-tabs__tab {
+    font-family: var(--font-body);
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    color: var(--color-text-muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: var(--space-2) 0;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    margin-bottom: -1px;
+    margin-right: var(--space-8);
+    line-height: var(--leading-tight);
+  }
+
+  .content-tabs__tab:hover {
+    color: var(--color-text-secondary);
+  }
+
+  .content-tabs__tab--active {
+    color: var(--color-text);
+    border-bottom-color: var(--color-text);
+  }
+
+  .content-tabs__panel {
+    display: none;
+    animation: fadeIn 0.3s ease forwards;
+  }
+
+  .content-tabs__panel--active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .content-tabs__tab {
+      padding: var(--space-2) 0;
+      font-size: var(--text-lg);
+      margin-right: var(--space-6);
+    }
+  }
+</style>

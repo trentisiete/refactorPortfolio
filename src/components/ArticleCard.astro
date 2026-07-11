@@ -17,17 +17,11 @@ const dateStr = d.toLocaleDateString(locale, { year: 'numeric', month: 'short', 
 const readingTime = article.data.readingTime || 0;
 
 const tagsArray = article.data.tags || [];
-const tagsData = tagsArray.map(t => String(t).trim().toLowerCase().replace(/\s+/g, '-')).join(' ');
-
-const searchable = [
-  article.data.title || '',
-  article.data.excerpt || '',
-  tagsArray.map(t => String(t).trim()).join(' ')
-].join(' ').toLowerCase();
+const baseSlug = article.slug.split('/').pop();
 ---
 
-<article class="article-item search-item" data-tags={tagsData} data-searchable={searchable}>
-  <a href={`/${lang}/articles/${article.slug}/`} class="article-item__link">
+<article class="article-item">
+  <a href={`/${lang}/articles/${baseSlug}/`} class="article-item__link">
     <div class="article-item__meta">
       <time class="article-item__date">{dateStr}</time>
       {readingTime > 0 && <span class="article-item__reading">{readingTime} {t.articles_page.min_read}</span>}
@@ -55,10 +49,6 @@ const searchable = [
     color: inherit;
     padding: var(--space-6) 0;
     border-bottom: 1px solid var(--color-border);
-  }
-
-  .article-item:first-child .article-item__link {
-    border-top: 1px solid var(--color-border);
   }
 
   .article-item__meta {

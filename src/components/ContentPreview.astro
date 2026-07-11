@@ -1,0 +1,197 @@
+---
+import type { Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const translations = {
+  es: {
+    expand: 'Ampliar contenido',
+    close: 'Cerrar vista ampliada',
+    preview: 'Vista ampliada del contenido',
+  },
+  en: {
+    expand: 'Expand content',
+    close: 'Close expanded view',
+    preview: 'Expanded content view',
+  },
+  de: {
+    expand: 'Inhalt vergrößern',
+    close: 'Vergrößerte Ansicht schließen',
+    preview: 'Vergrößerte Inhaltsansicht',
+  },
+} as const;
+const labels = translations[lang];
+---
+
+<div
+  class="content-preview"
+  data-content-preview-root
+>
+  <button
+    class="content-preview-trigger"
+    type="button"
+    aria-label={labels.expand}
+    title={labels.expand}
+    data-content-preview-trigger
+    hidden
+  >
+    <!-- Lucide: Maximize2 -->
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M15 3h6v6"></path>
+      <path d="m21 3-7 7"></path>
+      <path d="m3 21 7-7"></path>
+      <path d="M9 21H3v-6"></path>
+    </svg>
+  </button>
+
+  <dialog class="content-preview-dialog" aria-label={labels.preview} data-content-preview-dialog>
+    <button
+      class="content-preview-dialog__close"
+      type="button"
+      aria-label={labels.close}
+      title={labels.close}
+      data-content-preview-close
+    >
+      <!-- Lucide: X -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 6 6 18"></path>
+        <path d="m6 6 12 12"></path>
+      </svg>
+    </button>
+    <div class="content-preview-dialog__body markdown-content" data-content-preview-body></div>
+  </dialog>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-content-preview-root]').forEach(root => {
+    if (root.dataset.previewReady === 'true') return;
+    root.dataset.previewReady = 'true';
+
+    const section = root.closest<HTMLElement>('.article-page');
+    const content = section?.querySelector<HTMLElement>('.article > .markdown-content');
+    const trigger = root.querySelector<HTMLButtonElement>('[data-content-preview-trigger]');
+    const dialog = root.querySelector<HTMLDialogElement>('[data-content-preview-dialog]');
+    const closeButton = root.querySelector<HTMLButtonElement>('[data-content-preview-close]');
+    const previewBody = root.querySelector<HTMLElement>('[data-content-preview-body]');
+
+    if (!content || !trigger || !dialog || !closeButton || !previewBody) return;
+    const sources = Array.from(content.querySelectorAll<HTMLElement>('img, table, pre'));
+    let activeSource: HTMLElement | null = null;
+    let hideTimer: number | undefined;
+
+    const getKind = (source: HTMLElement) => {
+      if (source.tagName === 'IMG') return 'image';
+      if (source.tagName === 'TABLE') return 'table';
+      return 'code';
+    };
+
+    const positionTrigger = () => {
+      if (!activeSource || trigger.hidden) return;
+
+      const rect = activeSource.getBoundingClientRect();
+      const buttonSize = 36;
+      const gap = 10;
+      const viewportGap = 8;
+
+      if (rect.bottom < 0 || rect.top > window.innerHeight) {
+        trigger.hidden = true;
+        return;
+      }
+
+      let left = rect.right + gap;
+      if (left + buttonSize > window.innerWidth - viewportGap) {
+        left = rect.left - buttonSize - gap;
+      }
+      if (left < viewportGap) {
+        left = Math.max(viewportGap, Math.min(window.innerWidth - buttonSize - viewportGap, rect.right - buttonSize));
+      }
+
+      const top = Math.max(viewportGap, Math.min(window.innerHeight - buttonSize - viewportGap, rect.top));
+      trigger.style.left = `${Math.round(left)}px`;
+      trigger.style.top = `${Math.round(top)}px`;
+    };
+
+    const showTrigger = (source: HTMLElement) => {
+      window.clearTimeout(hideTimer);
+      activeSource = source;
+      trigger.hidden = false;
+      positionTrigger();
+    };
+
+    const scheduleTriggerHide = () => {
+      window.clearTimeout(hideTimer);
+      hideTimer = window.setTimeout(() => {
+        if (document.activeElement === trigger) return;
+        trigger.hidden = true;
+      }, 120);
+    };
+
+    const openPreview = (source: HTMLElement) => {
+      activeSource = source;
+      const kind = getKind(source);
+      const clone = source.cloneNode(true) as HTMLElement;
+
+      clone.classList.remove('content-preview-source');
+      clone.removeAttribute('tabindex');
+      clone.removeAttribute('aria-keyshortcuts');
+      clone.querySelectorAll('[id]').forEach(element => element.removeAttribute('id'));
+      previewBody.replaceChildren(clone);
+      dialog.dataset.previewKind = kind;
+      document.documentElement.classList.add('content-preview-open');
+
+      if (typeof dialog.showModal === 'function') dialog.showModal();
+      else dialog.setAttribute('open', '');
+    };
+
+    const closePreview = () => {
+      if (dialog.open && typeof dialog.close === 'function') dialog.close();
+      else dialog.removeAttribute('open');
+    };
+
+    sources.forEach(source => {
+      source.classList.add('content-preview-source');
+      if (!source.hasAttribute('tabindex')) source.tabIndex = 0;
+      source.setAttribute('aria-keyshortcuts', 'Enter Space');
+
+      source.addEventListener('pointerenter', () => showTrigger(source));
+      source.addEventListener('pointerleave', scheduleTriggerHide);
+      source.addEventListener('focus', () => showTrigger(source));
+      source.addEventListener('blur', scheduleTriggerHide);
+
+      source.addEventListener('click', event => {
+        if (event.target instanceof Element && event.target.closest('a, button')) return;
+        if (window.getSelection()?.toString().trim()) return;
+        openPreview(source);
+      });
+
+      source.addEventListener('keydown', event => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        openPreview(source);
+      });
+    });
+
+    trigger.addEventListener('pointerenter', () => window.clearTimeout(hideTimer));
+    trigger.addEventListener('pointerleave', scheduleTriggerHide);
+    trigger.addEventListener('click', () => {
+      if (activeSource) openPreview(activeSource);
+    });
+
+    closeButton.addEventListener('click', closePreview);
+    dialog.addEventListener('click', event => {
+      if (event.target === dialog) closePreview();
+    });
+    dialog.addEventListener('close', () => {
+      document.documentElement.classList.remove('content-preview-open');
+      previewBody.replaceChildren();
+      delete dialog.dataset.previewKind;
+      activeSource?.focus({ preventScroll: true });
+    });
+
+    window.addEventListener('scroll', positionTrigger, { passive: true });
+    window.addEventListener('resize', positionTrigger, { passive: true });
+  });
+</script>

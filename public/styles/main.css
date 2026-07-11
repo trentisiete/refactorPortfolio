@@ -145,6 +145,8 @@ body {
 
 main {
     flex-grow: 1;
+    /* Deja sitio al footer fijo para que no tape el final del contenido */
+    padding-bottom: 10rem;
 }
 
 ::selection {

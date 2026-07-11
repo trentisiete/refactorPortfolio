@@ -1,0 +1,94 @@
+---
+import type { ProfileEntry } from '../data/profile.es';
+
+interface Props {
+  entry: ProfileEntry;
+}
+
+const { entry } = Astro.props;
+const hasBody = Boolean(entry.details?.length || entry.links?.length);
+---
+
+{hasBody ? (
+  <details class="profile-entry">
+    <summary class="profile-entry__row">
+      <span class="profile-entry__logo" aria-hidden={!entry.logo.src ? 'true' : undefined}>
+        <span class="profile-entry__logo-face">
+          {entry.logo.src ? (
+            <img src={entry.logo.src} alt={entry.logo.alt ?? ''} loading="lazy" />
+          ) : (
+            <span>{entry.logo.initials}</span>
+          )}
+        </span>
+      </span>
+      <span class="profile-entry__heading">
+        <span class="profile-entry__title">{entry.title}</span>
+        <span class="profile-entry__organization">{entry.organization}</span>
+        {entry.location && <span class="profile-entry__location">{entry.location}</span>}
+      </span>
+      {entry.period ? <span class="profile-entry__period">{entry.period}</span> : <span />}
+      <span class="profile-entry__toggle" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m6 9 6 6 6-6"></path>
+        </svg>
+      </span>
+    </summary>
+
+    <div class="profile-entry__body">
+      {entry.details && entry.details.length > 0 && (
+        <ul class="profile-entry__details">
+          {entry.details.map(detail => <li>{detail}</li>)}
+        </ul>
+      )}
+
+      {entry.links && entry.links.length > 0 && (
+        <div class="profile-entry__links">
+          {entry.links.map(link => (
+            <a
+              href={link.href}
+              target={link.external ? '_blank' : undefined}
+              rel={link.external ? 'noopener noreferrer' : undefined}
+            >
+              <span>{link.label}</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                {link.external ? (
+                  <>
+                    <path d="M15 3h6v6"></path>
+                    <path d="M10 14 21 3"></path>
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  </>
+                ) : (
+                  <>
+                    <path d="M5 12h14"></path>
+                    <path d="m13 6 6 6-6 6"></path>
+                  </>
+                )}
+              </svg>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </details>
+) : (
+  <article class="profile-entry">
+    <div class="profile-entry__row profile-entry__row--static">
+      <span class="profile-entry__logo" aria-hidden={!entry.logo.src ? 'true' : undefined}>
+        <span class="profile-entry__logo-face">
+          {entry.logo.src ? (
+            <img src={entry.logo.src} alt={entry.logo.alt ?? ''} loading="lazy" />
+          ) : (
+            <span>{entry.logo.initials}</span>
+          )}
+        </span>
+      </span>
+      <span class="profile-entry__heading">
+        <span class="profile-entry__title">{entry.title}</span>
+        <span class="profile-entry__organization">{entry.organization}</span>
+        {entry.location && <span class="profile-entry__location">{entry.location}</span>}
+      </span>
+      {entry.period ? <span class="profile-entry__period">{entry.period}</span> : <span />}
+      <span class="profile-entry__toggle-spacer" aria-hidden="true"></span>
+    </div>
+  </article>
+)}

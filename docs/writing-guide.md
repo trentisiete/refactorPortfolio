@@ -321,3 +321,46 @@ Lenguajes soportados: `python`, `javascript`, `typescript`, `bash`, `css`, `html
 | Ecuaciones | remark-math + rehype-katex (KaTeX) |
 | Tablas/Footnotes | remark-gfm |
 | CSS de artículos | `/styles/article.css` + `/styles/markdown.css` |
+
+---
+
+## Sistema de idiomas y traducción automática
+
+El contenido vive en carpetas por idioma; la carpeta define el idioma y el
+nombre de archivo (compartido entre idiomas) vincula las traducciones:
+
+```
+src/content/articles/es/mi-articulo.md    <- escrito a mano
+src/content/articles/en/mi-articulo.md    <- generado automáticamente
+src/content/articles/de/mi-articulo.md    <- generado automáticamente
+```
+
+### Flujo de publicación
+
+1. Escribe el artículo en la carpeta de tu idioma (es, en o de da igual).
+2. Cuando esté listo, pon `draft: false` y haz `git commit`.
+3. El hook `pre-commit` ejecuta `scripts/translate.mjs`: traduce a los otros
+   dos idiomas con la API de Claude y añade las traducciones al mismo commit.
+4. `git push` y listo.
+
+Los borradores (`draft: true`) no se traducen. Los archivos generados llevan
+`translated: true` y `sourceHash` en el frontmatter: si editas la fuente, se
+regeneran en el siguiente commit; si no, no se vuelve a llamar a la API.
+Si algún día retocas una traducción a mano, quita su `translated: true` y el
+sistema no la volverá a tocar.
+
+### Requisitos
+
+- `.env` en la raíz con `ANTHROPIC_API_KEY=...` (no se sube al repo).
+- Los hooks se activan solos con `npm install` (postinstall). En un clon
+  nuevo sin install: `git config core.hooksPath .githooks`.
+
+### Comandos útiles
+
+```bash
+npm run translate:check   # ver qué está pendiente de traducir (sin API)
+npm run translate         # traducir ahora, sin esperar al commit
+```
+
+Si el hook no encuentra la API key o falla la red, avisa pero nunca bloquea
+el commit; lo pendiente se traduce en el siguiente commit o con `npm run translate`.

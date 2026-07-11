@@ -7,12 +7,24 @@
     "articles_title": "Artículos",
     "latest_articles": "Últimos artículos"
   },
+  "tabs": {
+    "articles": "Mis artículos",
+    "blog": "Blog"
+  },
+  "views": {
+    "label": "Cambiar de vista",
+    "reading": "Lectura",
+    "profile": "Trayectoria y proyectos"
+  },
   "articles_page": {
     "title": "Artículos",
     "subtitle": "Reflexiones, aprendizajes y notas sobre IA, datos y tecnología.",
-    "no_articles": "No posts yet.",
+    "no_articles": "Todavía no hay artículos.",
     "no_articles_subtitle": "estoy organizando mi mente.",
     "min_read": "min de lectura"
+  },
+  "blog_page": {
+    "no_posts": "Todavía no hay entradas en el blog."
   },
   "search": {
     "placeholder_articles": "Buscar artículos...",
@@ -21,13 +33,24 @@
   },
   "buttons": {
     "view_all_articles": "Ver todos los artículos →",
-    "back_to_articles": "← Volver a artículos"
+    "back_to_articles": "← Volver a mis artículos",
+    "back_to_blog": "← Volver al blog"
   },
   "footer": {
-    "copyright": "© 2026 José Arbelaez"
+    "copyright": "© 2026 José Arbelaez",
+    "focus_view": "Focus View",
+    "exit_focus": "Salir de Focus View",
+    "scroll_top": "Subir al inicio",
+    "scroll_bottom": "Bajar al final",
+    "widen_text": "Ensanchar texto",
+    "narrow_text": "Reducir texto"
   },
   "meta": {
     "site_title": "José Arbelaez",
     "site_description": "Reflexiones y aprendizajes sobre inteligencia artificial, datos y tecnología."
+  },
+  "profile": {
+    "projects_title": "Proyectos",
+    "projects_empty": "Próximamente"
   }
 }

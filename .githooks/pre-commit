@@ -1,0 +1,5 @@
+#!/bin/sh
+# Traduce automaticamente el contenido nuevo/modificado y lo añade al commit.
+# Nunca bloquea el commit: si falta la API key o falla la red, avisa y sigue.
+node scripts/translate.mjs --hook
+exit 0
