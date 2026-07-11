@@ -1,5 +1,5 @@
 // translated: true
-// sourceHash: aa766361b055720d
+// sourceHash: 9dd2a10756ef7c03
 import type { ProfileData, ProfileProject } from './profile.es';
 
 export const profileDe: ProfileData = {
@@ -148,11 +148,13 @@ export const profileProjectsDe: ProfileProject[] = [
     excerpt: 'Gaußsche Prozesse, Bayes-Optimierung und Expected Improvement zur Suche nach guten Konfigurationen bei begrenztem Auswertungsbudget.',
     year: '2026',
     github: 'https://github.com/trentisiete/surrogate_models',
+    articleHref: '/de/articles/surrogate_models/',
   },
   {
     title: 'Bilderzeugung mit Diffusionsmodellen',
     excerpt: 'Implementierung des SDE-Frameworks von Song et al.: Training per Denoising Score Matching, Sampler, bedingte Generierung und Imputation auf CIFAR-10.',
     year: '2025',
     github: 'https://github.com/trentisiete/DiffusionImaGen',
+    articleHref: '/de/articles/diffusion_models/',
   },
 ];

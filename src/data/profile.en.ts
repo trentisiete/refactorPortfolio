@@ -1,5 +1,5 @@
 // translated: true
-// sourceHash: aa766361b055720d
+// sourceHash: 9dd2a10756ef7c03
 import type { ProfileData, ProfileProject } from './profile.es';
 
 export const profileEn: ProfileData = {
@@ -148,6 +148,7 @@ export const profileProjectsEn: ProfileProject[] = [
     excerpt: 'Gaussian processes, Bayesian optimization and Expected Improvement for finding strong configurations under a limited evaluation budget.',
     year: '2026',
     github: 'https://github.com/trentisiete/surrogate_models',
+    articleHref: '/en/articles/surrogate_models/',
   },
   {
     title: 'Image generation with diffusion models',
