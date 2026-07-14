@@ -274,6 +274,7 @@ summary.profile-entry__row:focus-visible {
 }
 
 .profile-project-card {
+    --profile-project-surface: #faf9f5;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -281,10 +282,14 @@ summary.profile-entry__row:focus-visible {
     min-height: 200px;
     padding: var(--space-8) var(--space-6) var(--space-6);
     color: var(--color-text);
-    background: var(--color-surface);
+    background: var(--profile-project-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     transition: border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+[data-theme="dark"] .profile-project-card {
+    --profile-project-surface: var(--color-surface);
 }
 
 .profile-project-card:hover {
@@ -302,7 +307,7 @@ summary.profile-entry__row:focus-visible {
     font-size: var(--text-xs);
     letter-spacing: 0.04em;
     color: var(--color-text-muted);
-    background: var(--color-surface);
+    background: var(--profile-project-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
     transition: border-color var(--transition-fast);
