@@ -177,7 +177,7 @@
     transition: opacity var(--transition-slow), transform var(--transition-slow);
 }
 
-/* Se oculta al hacer scroll y reaparece tras 3 segundos de inactividad. */
+/* Se oculta al hacer scroll y reaparece tras 2 segundos de inactividad. */
 .footer--hidden {
     opacity: 0;
     transform: translateY(12px);

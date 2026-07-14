@@ -43,8 +43,6 @@ La calibración mejora la correspondencia entre confianza y frecuencia de aciert
 
 El hallazgo más importante fue de ontología, no de capacidad visual. El ONNX y su metadata llaman `Pothole` al canal 3 y `Other` al 4, pero en la partición de calibración el canal 4 solapa 20/20 potholes chinos y el canal 3 solapa 32/33 regiones `Repair/Other`. La permutación 3↔4 se fijó usando solo calibración y se registró explícitamente antes de regenerar evaluación. Con la correspondencia correcta, `Pothole` alcanza AP50 = 0.988 en China y 0.683 en Estados Unidos. Este episodio demuestra que ponderar una supuesta «peor clase» antes de auditar etiquetas puede optimizar el problema equivocado.
 
----
-
 ## 1. Declaración de integridad y autoría
 
 Esta memoria separa tres tipos de evidencia:
@@ -62,8 +60,6 @@ El detector base no fue entrenado en este proyecto. Es un componente preentrenad
 - No se afirma que el buen F1 agregado implique robustez uniforme entre países o condiciones.
 - No se interpreta país como grupo protegido ni “peor país” como una medida de fairness demográfica.
 - No se convierte una caja visual en un diagnóstico estructural.
-
----
 
 ## 2. Del archivo al criterio profesional
 
@@ -141,8 +137,6 @@ Waterbirds demuestra que una métrica global puede ocultar el peor subgrupo.
 
 El aprendizaje no es “volver a auditar Waterbirds”. Es adoptar el principio de que el caso peor importa y llevarlo a otro problema. RoadGuard usa país como dominio de robustez y añade una respuesta operacional: cuando la evidencia es insuficiente, el sistema se abstiene.
 
----
-
 ## 3. Marco teórico seleccionado
 
 De `Teoria` se eligieron los conceptos directamente relacionados con el nuevo problema.
@@ -185,8 +179,6 @@ El umbral `τ = 0.375` se eligió en calibración como el mejor F1 entre candida
 
 > **Distinción importante.** “Peor país” es una medida de robustez de dominio. No es una medida de equidad demográfica; una evaluación de fairness necesitaría variables sociales y un marco apropiado.
 
----
-
 ## 4. Problema, objetivo y preguntas
 
 ### Problema
@@ -216,8 +208,6 @@ Diseñar y evaluar un sistema local, reproducible y conservador que detecte dañ
 - **H3.** `blur` causará más pérdida de recall que una reducción moderada de iluminación.
 - **H4.** Las clases con poca transferencia exigirán abstención por clase, no un umbral global optimista.
 
----
-
 ## 5. Arquitectura de RoadGuard
 
 ```mermaid
@@ -246,8 +236,6 @@ flowchart LR
 5. `triage.py`: aceptación, revisión y prioridad advisory.
 6. `visualize.py`: fiabilidad, comparación de políticas, estrés y ejemplos.
 7. `run_experiment.py`: protocolo completo y artefactos reproducibles.
-
----
 
 ## 6. Modelo, datos y seguridad
 
@@ -299,8 +287,6 @@ Antes de extraer se comprobó que las entradas fueran únicamente imágenes/XML 
 | Estados Unidos | 72 | 108 | clean, dark, blur |
 
 Total: 360 imágenes distintas. Cada imagen de evaluación se procesa en tres condiciones, pero esas transformaciones no se tratan como muestras independientes.
-
----
 
 ## 7. Protocolo experimental
 
@@ -375,8 +361,6 @@ La prioridad combina clase, área relativa y confianza calibrada:
 
 Estas etiquetas organizan trabajo. No estiman profundidad ni autorizan una acción vial.
 
----
-
 ## 8. Resultados
 
 ### 8.1 Auditoría de ontología
@@ -438,8 +422,6 @@ El intervalo pareado confirma una reducción pequeña pero consistente en China;
 
 `dark` altera poco el resultado limpio. `Blur` es el principal fallo: destruye bordes y localización, por lo que un mejor umbral solo puede proteger precisión, no recuperar la información perdida.
 
----
-
 ## 9. Análisis por clase y fallos
 
 ### AP50 en imágenes limpias
@@ -475,8 +457,6 @@ Después del mapeo, el calibrador aprende parámetros no degenerados para las ci
 
 Una tasa de revisión alta no es automáticamente buena. Aquí refleja principalmente blur deliberado y menor cobertura del dominio estadounidense. En producción debería optimizarse la curva riesgo–cobertura con costes reales y datos locales.
 
----
-
 ## 10. Evidencia cualitativa
 
 | China · MotorBike | Estados Unidos |
@@ -491,8 +471,6 @@ Lectura crítica:
 - la escena urbana estadounidense añade vehículos, marcas y perspectiva;
 - el área de una caja es una aproximación visual, no severidad estructural;
 - Street View y MotorBike representan pipelines de captura distintos.
-
----
 
 ## 11. Uso responsable
 
@@ -538,8 +516,6 @@ Las correcciones deberían alimentar una cola de reetiquetado y recalibración.
 - **GO limitado** para priorizar daños aceptados, siempre con revisión y con el mapeo de ontología bloqueado por versión.
 - Recalibrar si ECE, cobertura o precisión salen de los límites operativos acordados.
 
----
-
 ## 12. Qué aprendí
 
 ### Aprendizajes técnicos
@@ -568,8 +544,6 @@ Las correcciones deberían alimentar una cola de reetiquetado y recalibración.
 
 > La evolución completa puede resumirse así: pasé de preguntar “¿qué accuracy obtengo?” a preguntar “¿bajo qué condiciones, para quién y con qué mecanismo de recuperación puedo confiar en esta salida?”.
 
----
-
 ## 13. Conclusiones y siguiente etapa
 
 RoadGuard integra clasificación, transferencia, augmentation, detección, robustez y auditoría en un sistema ejecutable. La calibración reduce ECE, aunque su threshold global no mejora F1 en todos los dominios. El estrés identifica blur como amenaza y la auditoría descubre una permutación silenciosa de clases que habría producido una conclusión falsa sobre `Pothole`.
@@ -595,8 +569,6 @@ La metodología completa de continuación se encuentra en [`FASE_II_APRENDIZAJE_
 | calibración | ¿se reduce riesgo con mejor cobertura? | curva risk–coverage y coste esperado |
 | piloto | ¿ayuda al inspector sin sobrecargarlo? | tiempo, override y falsos negativos |
 | operación | ¿se mantiene estable? | monitor de drift y plan de rollback |
-
----
 
 ## 14. Reproducibilidad
 
@@ -656,8 +628,6 @@ Demo sobre una imagen:
 
 Las pruebas automatizadas cubren IoU/matching, calibración y triage. El resultado actual es **4 tests aprobados**.
 
----
-
 ## 15. Referencias
 
 ### Material de la asignatura
@@ -676,8 +646,6 @@ Las pruebas automatizadas cubren IoU/matching, calibración y triage. El resulta
 5. Sekilab. [RoadDamageDetector / RDD2022](https://github.com/sekilab/RoadDamageDetector).
 6. Hugging Face. [Model card: pothole-detection-yolov8](https://huggingface.co/vinothvikas1987/pothole-detection-yolov8).
 7. European Union. Regulation (EU) 2024/1689 laying down harmonised rules on artificial intelligence.
-
----
 
 ## Declaración final
 
