@@ -395,3 +395,183 @@ dialog.content-preview-dialog .content-preview-dialog__body.markdown-content > p
     display: none;
   }
 }
+
+/* ---- Graficas nativas (graphs.js) ---- */
+.graph-hbar,
+.graph-flow {
+  --graph-bar: #2563eb;
+  margin: 2rem 0;
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+[data-theme="dark"] .graph-hbar,
+[data-theme="dark"] .graph-flow {
+  --graph-bar: #60a5fa;
+}
+
+.graph-duo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: 2rem 0;
+}
+
+.graph-duo .graph-hbar,
+.graph-duo .graph-flow {
+  margin: 0;
+}
+
+.graph__head {
+  margin-bottom: var(--space-5);
+}
+
+.graph__title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+  text-align: left;
+}
+
+.graph__subtitle {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-align: left;
+}
+
+.graph__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.graph__row {
+  display: grid;
+  grid-template-columns: minmax(90px, 9em) minmax(0, 1fr) 4.5em;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.graph__label {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.graph__track {
+  display: block;
+  height: 14px;
+  background: var(--color-bg-alt);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.graph__fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--graph-bar);
+  border-radius: 3px;
+  transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.graph--in .graph__fill {
+  width: var(--graph-w);
+}
+
+.graph__value {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.graph__note {
+  margin: var(--space-5) 0 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-style: italic;
+  color: var(--color-text-muted);
+  text-align: left;
+}
+
+/* Etapas numeradas */
+.graph__steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.graph__step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.graph__step-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.graph__step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--font-bold);
+  color: var(--graph-bar);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+}
+
+.graph__step-name {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+}
+
+.graph__step-desc {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  text-align: left;
+}
+
+@media (max-width: 720px) {
+  .graph-duo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .graph__row {
+    grid-template-columns: minmax(72px, 7em) minmax(0, 1fr) 4em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .graph__fill {
+    transition: none;
+  }
+}

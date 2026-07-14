@@ -17,7 +17,7 @@ This project studies how that unstructured language can be transformed into repr
 
 The result is not simply a collection of isolated exercises. It is a connected body of technical and empirical knowledge. Every stage was built on data structures, preprocessing decisions, and evaluation artifacts produced in the stages before it. The project therefore documents both model performance and the methodological path required to obtain, interpret, and compare that performance.
 
-![Research progression from corpus construction to structured opinion explanation](/assets/articles/bgg_review_intelligence/research-progression.svg)
+<div class="graph-flow" data-title="From review text to research evidence" data-note="Each stage inherits the data decisions and artifacts of the stages before it."><div data-step="Corpus">Acquisition, cleaning, language and annotation with traceability</div><div data-step="Sparse models">TF-IDF, opinion cues and controlled classical benchmarks</div><div data-step="Sequence">FastText, FNN and LSTM to test the value of word order</div><div data-step="Context">BERT fine-tuning with token meaning conditioned on the full review</div><div data-step="Explanation">Aspects, polarity and evidence grounded in review language</div></div>
 
 *The research progression is cumulative: later models depend on the corpus, preprocessing decisions, and evaluation artifacts established earlier.*
 
@@ -203,7 +203,7 @@ These results provide strong evidence that contextual transfer learning is highl
 
 The BERT score is not presented as a direct numerical victory over the full-corpus SVM or LSTM because the models were not evaluated on the same benchmark. The result establishes the value of the contextual approach within its own documented setting. It also shows how pretrained linguistic knowledge can achieve high performance after only two fine-tuning epochs on a corpus much smaller than the complete P2 collection.
 
-![Reported macro-F1 results separated by comparable experimental setting](/assets/articles/bgg_review_intelligence/model-performance-overview.svg)
+<div class="graph-duo"><div class="graph-hbar" data-title="Classical models" data-subtitle="Macro-F1 on the shared balanced P2 test set" data-note="Controlled comparison: same corpus partitions and target labels." data-max="0.9" data-decimals="4"><div data-label="Linear SVM" data-value="0.7309"></div><div data-label="Naive Bayes" data-value="0.7254"></div><div data-label="XGBoost" data-value="0.6871"></div><div data-label="Random forest" data-value="0.6346"></div></div><div class="graph-hbar" data-title="Neural and contextual models" data-subtitle="Macro-F1 in the reported P3 settings" data-note="BERT used a separate ~60k-review corpus and raw text; FNN and LSTM share a static-embedding setting." data-max="0.9" data-decimals="4"><div data-label="BERT" data-value="0.8432"></div><div data-label="FastText LSTM" data-value="0.7520"></div><div data-label="FastText FNN" data-value="0.6950"></div></div></div>
 
 *The classical models share a controlled test set. The neural and contextual results preserve the settings reported in the P3 record, so the panels are intentionally separated rather than presented as one league table.*
 

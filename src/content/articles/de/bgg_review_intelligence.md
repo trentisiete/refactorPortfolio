@@ -7,7 +7,7 @@ draft: false
 readingTime: 10
 lang: "de"
 translated: true
-sourceHash: "2a1f03b5cc521ca4"
+sourceHash: "d173638160ec1cab"
 ---
 
 ## Eine mehrstufige Studie zu linguistischer Vorverarbeitung, Sentiment-Klassifikation, kontextuellem Lernen und aspektbasierter Analyse
@@ -18,7 +18,7 @@ Dieses Projekt untersucht, wie sich diese unstrukturierte Sprache in reproduzier
 
 Das Ergebnis ist nicht einfach eine Sammlung isolierter Übungen. Es ist ein zusammenhängender Korpus aus technischem und empirischem Wissen. Jede Phase baute auf Datenstrukturen, Vorverarbeitungsentscheidungen und Evaluationsartefakten auf, die in den vorangegangenen Phasen entstanden waren. Das Projekt dokumentiert daher sowohl die Modellleistung als auch den methodischen Weg, der nötig war, um diese Leistung zu erhalten, zu interpretieren und zu vergleichen.
 
-![Forschungsverlauf von der Korpuserstellung bis zur strukturierten Meinungserklärung](/assets/articles/bgg_review_intelligence/research-progression.svg)
+<div class="graph-flow" data-title="Vom Rezensionstext zur Forschungsevidenz" data-note="Jede Stufe erbt die Datenentscheidungen und Artefakte der vorherigen Stufen."><div data-step="Korpus">Beschaffung, Bereinigung, Sprache und Annotation mit Nachvollziehbarkeit</div><div data-step="Sparse-Modelle">TF-IDF, Meinungssignale und kontrollierte klassische Benchmarks</div><div data-step="Sequenz">FastText, FNN und LSTM zur Prüfung des Werts der Wortreihenfolge</div><div data-step="Kontext">BERT-Fine-Tuning mit Tokenbedeutung im Kontext der gesamten Rezension</div><div data-step="Erklärung">Aspekte, Polarität und Belege verankert in der Sprache der Rezension</div></div>
 
 *Der Forschungsverlauf ist kumulativ: spätere Modelle hängen vom Korpus, den Vorverarbeitungsentscheidungen und den Evaluationsartefakten ab, die zuvor festgelegt wurden.*
 
@@ -204,7 +204,7 @@ Diese Ergebnisse liefern starke Belege dafür, dass kontextuelles Transferlernen
 
 Der BERT-Wert wird nicht als direkter numerischer Sieg über die SVM auf dem vollständigen Korpus oder das LSTM dargestellt, da die Modelle nicht auf demselben Benchmark evaluiert wurden. Das Ergebnis belegt den Wert des kontextuellen Ansatzes innerhalb seines eigenen dokumentierten Rahmens. Es zeigt auch, wie vortrainiertes sprachliches Wissen nach nur zwei Feintuning-Epochen auf einem Korpus, der viel kleiner als die vollständige P2-Sammlung ist, hohe Leistung erzielen kann.
 
-![Berichtete Macro-F1-Ergebnisse, getrennt nach vergleichbarem experimentellem Rahmen](/assets/articles/bgg_review_intelligence/model-performance-overview.svg)
+<div class="graph-duo"><div class="graph-hbar" data-title="Klassische Modelle" data-subtitle="Macro-F1 auf dem gemeinsamen balancierten P2-Testset" data-note="Kontrollierter Vergleich: gleiche Korpuspartitionen und Ziellabels." data-max="0.9" data-decimals="4"><div data-label="Linear SVM" data-value="0.7309"></div><div data-label="Naive Bayes" data-value="0.7254"></div><div data-label="XGBoost" data-value="0.6871"></div><div data-label="Random forest" data-value="0.6346"></div></div><div class="graph-hbar" data-title="Neuronale und kontextuelle Modelle" data-subtitle="Macro-F1 in den dokumentierten P3-Einstellungen" data-note="BERT nutzte ein separates Korpus mit ~60k Rezensionen und Rohtext; FNN und LSTM teilen ein statisches Embedding-Setting." data-max="0.9" data-decimals="4"><div data-label="BERT" data-value="0.8432"></div><div data-label="FastText LSTM" data-value="0.7520"></div><div data-label="FastText FNN" data-value="0.6950"></div></div></div>
 
 *Die klassischen Modelle teilen sich ein kontrolliertes Test-Set. Die neuronalen und kontextuellen Ergebnisse bewahren die im P3-Datensatz berichteten Rahmenbedingungen, weshalb die Panels bewusst getrennt und nicht als eine einzige Rangtabelle dargestellt werden.*
 

@@ -196,6 +196,7 @@ export const profileProjectsEs: ProfileProject[] = [
     excerpt: 'Detección fiable de daños viales: transferencia entre países, calibración de confianza, política de abstención y priorización explicable del mantenimiento.',
     year: '2026',
     github: 'https://github.com/trentisiete/RoadGuard',
+    articleHref: '/es/articles/roadguard/',
   },
   {
     title: 'BGG Review Intelligence',

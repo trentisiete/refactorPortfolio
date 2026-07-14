@@ -18,3 +18,8 @@ Thumbs.db
 
 # Astro generated cache
 .astro/
+
+# Archivos personales y de herramientas
+*.zip
+*.ai
+.commandcode/

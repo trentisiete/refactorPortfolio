@@ -7,7 +7,7 @@ draft: false
 readingTime: 10
 lang: "es"
 translated: true
-sourceHash: "2a1f03b5cc521ca4"
+sourceHash: "d173638160ec1cab"
 ---
 
 ## Un estudio en varias etapas de preprocesamiento lingüístico, clasificación de sentimiento, aprendizaje contextual y análisis basado en aspectos
@@ -18,7 +18,7 @@ Este proyecto estudia cómo ese lenguaje no estructurado puede transformarse en 
 
 El resultado no es simplemente una colección de ejercicios aislados. Es un cuerpo conectado de conocimiento técnico y empírico. Cada etapa se construyó sobre las estructuras de datos, decisiones de preprocesamiento y artefactos de evaluación producidos en las etapas anteriores. El proyecto documenta, por tanto, tanto el rendimiento de los modelos como el camino metodológico necesario para obtener, interpretar y comparar ese rendimiento.
 
-![Progresión de la investigación desde la construcción del corpus hasta la explicación estructurada de la opinión](/assets/articles/bgg_review_intelligence/research-progression.svg)
+<div class="graph-flow" data-title="Del texto de las reseñas a la evidencia de investigación" data-note="Cada etapa hereda las decisiones de datos y los artefactos de las etapas anteriores."><div data-step="Corpus">Adquisición, limpieza, idioma y anotación con trazabilidad</div><div data-step="Modelos dispersos">TF-IDF, señales de opinión y benchmarks clásicos controlados</div><div data-step="Secuencia">FastText, FNN y LSTM para probar el valor del orden de las palabras</div><div data-step="Contexto">Fine-tuning de BERT con el significado condicionado a la reseña completa</div><div data-step="Explicación">Aspectos, polaridad y evidencia ancladas al lenguaje de la reseña</div></div>
 
 *La progresión de la investigación es acumulativa: los modelos posteriores dependen del corpus, las decisiones de preprocesamiento y los artefactos de evaluación establecidos anteriormente.*
 
@@ -204,7 +204,7 @@ Estos resultados aportan evidencia sólida de que la transferencia de aprendizaj
 
 La puntuación de BERT no se presenta como una victoria numérica directa sobre el SVM del corpus completo o la LSTM, porque los modelos no se evaluaron sobre el mismo benchmark. El resultado establece el valor del enfoque contextual dentro de su propio entorno documentado. También muestra cómo el conocimiento lingüístico preentrenado puede lograr un alto rendimiento tras solo dos épocas de ajuste sobre un corpus mucho más pequeño que la colección P2 completa.
 
-![Resultados de macro-F1 reportados separados por entorno experimental comparable](/assets/articles/bgg_review_intelligence/model-performance-overview.svg)
+<div class="graph-duo"><div class="graph-hbar" data-title="Modelos clásicos" data-subtitle="Macro-F1 en el test balanceado compartido de P2" data-note="Comparación controlada: mismas particiones del corpus y mismas etiquetas." data-max="0.9" data-decimals="4"><div data-label="Linear SVM" data-value="0.7309"></div><div data-label="Naive Bayes" data-value="0.7254"></div><div data-label="XGBoost" data-value="0.6871"></div><div data-label="Random forest" data-value="0.6346"></div></div><div class="graph-hbar" data-title="Modelos neuronales y contextuales" data-subtitle="Macro-F1 en las configuraciones documentadas de P3" data-note="BERT usó un corpus aparte de ~60k reseñas y texto crudo; FNN y LSTM comparten embeddings estáticos." data-max="0.9" data-decimals="4"><div data-label="BERT" data-value="0.8432"></div><div data-label="FastText LSTM" data-value="0.7520"></div><div data-label="FastText FNN" data-value="0.6950"></div></div></div>
 
 *Los modelos clásicos comparten un conjunto de test controlado. Los resultados neuronales y contextuales conservan los entornos reportados en el registro P3, por lo que los paneles se separan intencionalmente en lugar de presentarse como una única tabla comparativa.*
 

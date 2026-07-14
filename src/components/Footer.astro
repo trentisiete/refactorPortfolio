@@ -11,7 +11,7 @@ const { lang, reader = false } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<footer class:list={["footer", { "footer--reader": reader }]} data-site-footer data-reader-footer={reader ? 'true' : undefined}>
+<footer class:list={["footer", "footer--hidden", { "footer--reader": reader }]} data-site-footer data-reader-footer={reader ? 'true' : undefined}>
   <div class="container">
     {reader && (
       <div class="footer__reader-panel" data-reader-panel>
@@ -119,11 +119,18 @@ const t = useTranslations(lang);
     const footer = document.querySelector<HTMLElement>('[data-site-footer]');
     if (!footer) return;
 
-    let hideTimer: number | undefined;
-    window.addEventListener('scroll', () => {
+    const idleDelay = 3000;
+    let showTimer: number | undefined;
+
+    const showFooterAfterIdle = () => {
       footer.classList.add('footer--hidden');
-      window.clearTimeout(hideTimer);
-      hideTimer = window.setTimeout(() => footer.classList.remove('footer--hidden'), 250);
+      window.clearTimeout(showTimer);
+      showTimer = window.setTimeout(() => footer.classList.remove('footer--hidden'), idleDelay);
+    };
+
+    showFooterAfterIdle();
+    window.addEventListener('scroll', () => {
+      showFooterAfterIdle();
     }, { passive: true });
 
     if (footer.dataset.readerFooter !== 'true') return;
@@ -139,7 +146,6 @@ const t = useTranslations(lang);
 
     const setAtEnd = (atEnd: boolean) => {
       footer.classList.toggle('footer--at-end', atEnd);
-      if (atEnd) footer.classList.remove('footer--hidden');
     };
 
     if (sentinel && 'IntersectionObserver' in window) {

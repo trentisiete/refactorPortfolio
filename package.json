@@ -7,8 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "translate": "node scripts/translate.mjs",
-    "translate:check": "node scripts/translate.mjs --check",
-    "postinstall": "node scripts/setup-hooks.mjs"
+    "translate:check": "node scripts/translate.mjs --check"
   },
   "dependencies": {
     "astro": "^5.3.0",
