@@ -10,17 +10,6 @@ readingTime: 10
 
 # RoadGuard
 
-## Detección vial fiable bajo cambio de dominio
-
-**Autor:** José Arbeláez<br>
-**Asignatura:** Visión Artificial<br>
-**Tipo de entrega:** proyecto integrador, memoria de aprendizaje y pieza de portafolio<br>
-**Fecha:** 14 de julio de 2026
-
-> **Tesis del proyecto.** En inspección visual aplicada, una confianza alta no equivale a fiabilidad. El valor profesional aparece cuando el sistema mide su incertidumbre, prueba su transferencia y deriva los casos inseguros a una persona.
-
----
-
 ## Resumen ejecutivo
 
 RoadGuard es el cierre profesional de una trayectoria que comenzó con clasificación de imágenes, continuó con transfer learning y data augmentation, pasó por detección de objetos y llegó al análisis de robustez y sesgo. El nuevo proyecto no repite el experimento de Waterbirds ni presenta un detector descargado como si fuera un modelo propio. Formula un problema distinto y más cercano a producción:
