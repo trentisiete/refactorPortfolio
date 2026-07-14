@@ -575,3 +575,71 @@ dialog.content-preview-dialog .content-preview-dialog__body.markdown-content > p
     transition: none;
   }
 }
+
+/* ---- RoadGuard · Chart.js cards inspired by shadcn/ui ---- */
+.markdown-content figure.roadguard-chart {
+  --roadguard-chart-blue: #2563eb;
+  --roadguard-chart-teal: #0d9488;
+  --roadguard-chart-amber: #d97706;
+  --roadguard-chart-red: #dc2626;
+  width: min(100%, 980px);
+  margin: 2.25rem auto;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  text-align: left;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+}
+
+[data-theme="dark"] .markdown-content figure.roadguard-chart {
+  --roadguard-chart-blue: #60a5fa;
+  --roadguard-chart-teal: #2dd4bf;
+  --roadguard-chart-amber: #f59e0b;
+  --roadguard-chart-red: #f87171;
+}
+
+.roadguard-chart__header {
+  margin-bottom: var(--space-5);
+}
+
+.roadguard-chart__header h4 {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-text);
+}
+
+.roadguard-chart__header p {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.roadguard-chart__canvas {
+  position: relative;
+  width: 100%;
+  height: clamp(320px, 48vw, 440px);
+}
+
+.markdown-content figure.roadguard-chart figcaption {
+  max-width: none;
+  margin: var(--space-4) 0 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-style: normal;
+  color: var(--color-text-muted);
+  text-align: left;
+}
+
+@media (max-width: 720px) {
+  .markdown-content figure.roadguard-chart {
+    width: 100%;
+    padding: var(--space-4);
+  }
+
+  .roadguard-chart__canvas {
+    height: 340px;
+  }
+}

@@ -1,0 +1,250 @@
+---
+---
+
+<script>
+  import {
+    BarController,
+    BarElement,
+    CategoryScale,
+    Chart,
+    Legend,
+    LinearScale,
+    LineController,
+    LineElement,
+    PointElement,
+    Tooltip,
+  } from 'chart.js';
+
+  Chart.register(
+    BarController,
+    BarElement,
+    CategoryScale,
+    Legend,
+    LinearScale,
+    LineController,
+    LineElement,
+    PointElement,
+    Tooltip,
+  );
+
+  type ChartRoot = HTMLElement & { dataset: { roadguardChart?: string } };
+
+  const charts: Chart[] = [];
+
+  const cssValue = (styles: CSSStyleDeclaration, property: string) =>
+    styles.getPropertyValue(property).trim();
+
+  const getPalette = (root: HTMLElement) => {
+    const styles = getComputedStyle(root);
+    return {
+      blue: cssValue(styles, '--roadguard-chart-blue'),
+      teal: cssValue(styles, '--roadguard-chart-teal'),
+      amber: cssValue(styles, '--roadguard-chart-amber'),
+      red: cssValue(styles, '--roadguard-chart-red'),
+      text: cssValue(styles, '--color-text'),
+      muted: cssValue(styles, '--color-text-muted'),
+      border: cssValue(styles, '--color-border'),
+      surface: cssValue(styles, '--color-surface'),
+    };
+  };
+
+  const baseOptions = (palette: ReturnType<typeof getPalette>) => ({
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: {
+      duration: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 650,
+      easing: 'easeOutQuart' as const,
+    },
+    interaction: {
+      mode: 'index' as const,
+      intersect: false,
+    },
+    plugins: {
+      legend: {
+        position: 'bottom' as const,
+        labels: {
+          color: palette.muted,
+          usePointStyle: true,
+          pointStyle: 'circle' as const,
+          boxWidth: 8,
+          boxHeight: 8,
+          padding: 18,
+          font: { size: 12 },
+        },
+      },
+      tooltip: {
+        backgroundColor: palette.text,
+        titleColor: palette.surface,
+        bodyColor: palette.surface,
+        padding: 11,
+        cornerRadius: 6,
+        displayColors: true,
+      },
+    },
+  });
+
+  const scoreScale = (palette: ReturnType<typeof getPalette>, title: string) => ({
+    beginAtZero: true,
+    min: 0,
+    max: 1,
+    grid: { color: palette.border },
+    border: { display: false },
+    ticks: {
+      color: palette.muted,
+      stepSize: 0.2,
+      callback: (value: string | number) => Number(value).toFixed(1),
+    },
+    title: {
+      display: true,
+      text: title,
+      color: palette.muted,
+      font: { size: 12, weight: 500 as const },
+    },
+  });
+
+  const chartConfig = (kind: string, palette: ReturnType<typeof getPalette>) => {
+    const common = baseOptions(palette);
+
+    if (kind === 'reliability') {
+      return {
+        type: 'line' as const,
+        data: {
+          datasets: [
+            {
+              label: 'Calibración perfecta',
+              data: [{ x: 0, y: 0 }, { x: 1, y: 1 }],
+              borderColor: palette.muted,
+              borderDash: [6, 5],
+              borderWidth: 1.5,
+              pointRadius: 0,
+            },
+            {
+              label: 'Confianza original',
+              data: [
+                { x: 0.031, y: 0.051 }, { x: 0.147, y: 0.191 },
+                { x: 0.247, y: 0.357 }, { x: 0.349, y: 0.606 },
+                { x: 0.451, y: 0.752 }, { x: 0.549, y: 0.827 },
+                { x: 0.652, y: 0.870 }, { x: 0.755, y: 0.991 },
+                { x: 0.846, y: 0.999 }, { x: 0.932, y: 0.999 },
+              ],
+              borderColor: palette.red,
+              backgroundColor: palette.red,
+              pointBackgroundColor: palette.red,
+              borderWidth: 2.5,
+              pointRadius: 3.5,
+              pointHoverRadius: 5,
+              tension: 0.18,
+            },
+            {
+              label: 'Confianza calibrada',
+              data: [
+                { x: 0.031, y: 0.040 }, { x: 0.147, y: 0.085 },
+                { x: 0.247, y: 0.258 }, { x: 0.349, y: 0.250 },
+                { x: 0.451, y: 0.336 }, { x: 0.549, y: 0.676 },
+                { x: 0.652, y: 0.701 }, { x: 0.755, y: 0.771 },
+                { x: 0.853, y: 0.870 }, { x: 0.958, y: 0.982 },
+              ],
+              borderColor: palette.teal,
+              backgroundColor: palette.teal,
+              pointBackgroundColor: palette.teal,
+              borderWidth: 2.5,
+              pointRadius: 3.5,
+              pointHoverRadius: 5,
+              tension: 0.18,
+            },
+          ],
+        },
+        options: {
+          ...common,
+          interaction: { mode: 'nearest' as const, intersect: false },
+          scales: {
+            x: scoreScale(palette, 'Confianza media'),
+            y: scoreScale(palette, 'Precisión empírica'),
+          },
+          plugins: {
+            ...common.plugins,
+            tooltip: {
+              ...common.plugins.tooltip,
+              callbacks: {
+                label: (context: { dataset: { label?: string }; parsed: { x: number; y: number } }) =>
+                  `${context.dataset.label}: confianza ${context.parsed.x.toFixed(3)} · precisión ${context.parsed.y.toFixed(3)}`,
+              },
+            },
+          },
+        },
+      };
+    }
+
+    if (kind === 'policy') {
+      return {
+        type: 'bar' as const,
+        data: {
+          labels: ['China · cruda', 'China · calibrada', 'EE. UU. · cruda', 'EE. UU. · calibrada'],
+          datasets: [
+            { label: 'Precisión', data: [0.868, 0.840, 0.725, 0.707], backgroundColor: palette.blue, borderRadius: 4 },
+            { label: 'Recall', data: [0.907, 0.907, 0.674, 0.707], backgroundColor: palette.teal, borderRadius: 4 },
+            { label: 'F1', data: [0.887, 0.872, 0.699, 0.707], backgroundColor: palette.amber, borderRadius: 4 },
+          ],
+        },
+        options: {
+          ...common,
+          scales: {
+            x: {
+              grid: { display: false },
+              border: { display: false },
+              ticks: { color: palette.muted, maxRotation: 0, autoSkip: false },
+            },
+            y: scoreScale(palette, 'Puntuación'),
+          },
+        },
+      };
+    }
+
+    if (kind === 'stress') {
+      return {
+        type: 'bar' as const,
+        data: {
+          labels: ['China (Moto)', 'Estados Unidos'],
+          datasets: [
+            { label: 'Limpia', data: [0.872, 0.707], backgroundColor: palette.teal, borderRadius: 4 },
+            { label: 'Oscura', data: [0.872, 0.711], backgroundColor: palette.blue, borderRadius: 4 },
+            { label: 'Desenfoque', data: [0.629, 0.261], backgroundColor: palette.amber, borderRadius: 4 },
+          ],
+        },
+        options: {
+          ...common,
+          scales: {
+            x: {
+              grid: { display: false },
+              border: { display: false },
+              ticks: { color: palette.muted },
+            },
+            y: scoreScale(palette, 'F1'),
+          },
+        },
+      };
+    }
+
+    return null;
+  };
+
+  const renderCharts = () => {
+    charts.splice(0).forEach(chart => chart.destroy());
+
+    document.querySelectorAll<ChartRoot>('[data-roadguard-chart]').forEach(root => {
+      const canvas = root.querySelector<HTMLCanvasElement>('canvas');
+      const kind = root.dataset.roadguardChart;
+      if (!canvas || !kind) return;
+
+      const config = chartConfig(kind, getPalette(root));
+      if (config) charts.push(new Chart(canvas, config));
+    });
+  };
+
+  renderCharts();
+
+  const themeObserver = new MutationObserver(mutations => {
+    if (mutations.some(mutation => mutation.attributeName === 'data-theme')) renderCharts();
+  });
+  themeObserver.observe(document.documentElement, { attributes: true });
+</script>

@@ -378,7 +378,7 @@ La correspondencia canónica se fijó como $m(3)=4$ y $m(4)=3$. `predictions.csv
 
 ### 8.2 Fiabilidad de la confianza
 
-![Diagrama de fiabilidad](/assets/articles/roadguard/calibration_reliability.png)
+<figure class="roadguard-chart" data-roadguard-chart="reliability"><div class="roadguard-chart__header"><h4>Fiabilidad de la confianza</h4><p>Evaluación con imágenes limpias</p></div><div class="roadguard-chart__canvas"><canvas role="img" aria-label="Comparación entre la confianza original, la confianza calibrada y la calibración perfecta"></canvas></div><figcaption>La curva calibrada se aproxima más a la diagonal de calibración perfecta.</figcaption></figure>
 
 El ECE limpio disminuye de **0.089** a **0.029**. La calibración aproxima confianza y precisión empírica, pero esto no garantiza que un único umbral maximice F1 en todos los dominios.
 
@@ -399,7 +399,7 @@ El ECE limpio disminuye de **0.089** a **0.029**. La calibración aproxima confi
 | Estados Unidos | blur | cruda | 0.455 | 0.148 | 0.223 |
 | Estados Unidos | blur | calibrada | **0.462** | **0.181** | **0.261** |
 
-![Comparación de políticas](/assets/articles/roadguard/policy_comparison.png)
+<figure class="roadguard-chart" data-roadguard-chart="policy"><div class="roadguard-chart__header"><h4>Política base frente a política calibrada</h4><p>Precisión, recall y F1 por dominio en imágenes limpias</p></div><div class="roadguard-chart__canvas"><canvas role="img" aria-label="Comparación de precisión, recall y F1 para las políticas cruda y calibrada en China y Estados Unidos"></canvas></div><figcaption>La calibración modifica el equilibrio entre precisión y cobertura de forma distinta en cada país.</figcaption></figure>
 
 La política calibrada intercambia precision y recall de forma distinta por dominio. Ayuda bajo blur y en Estados Unidos, pero reduce F1 limpio y dark en China. Por tanto, se conserva como política de fiabilidad probabilística, no como una afirmación de superioridad universal en clasificación.
 
@@ -418,7 +418,7 @@ El intervalo pareado confirma una reducción pequeña pero consistente en China;
 
 ### 8.5 Estrés visual
 
-![Robustez bajo estrés](/assets/articles/roadguard/stress_robustness.png)
+<figure class="roadguard-chart" data-roadguard-chart="stress"><div class="roadguard-chart__header"><h4>Robustez ante degradaciones visuales</h4><p>F1 de la política calibrada por país y condición</p></div><div class="roadguard-chart__canvas"><canvas role="img" aria-label="F1 de la política calibrada con imágenes limpias, oscuras y desenfocadas en China y Estados Unidos"></canvas></div><figcaption>El desenfoque concentra la mayor pérdida, especialmente en Estados Unidos.</figcaption></figure>
 
 `dark` altera poco el resultado limpio. `Blur` es el principal fallo: destruye bordes y localización, por lo que un mejor umbral solo puede proteger precisión, no recuperar la información perdida.
 
