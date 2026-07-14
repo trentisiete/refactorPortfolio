@@ -1,5 +1,5 @@
 // translated: true
-// sourceHash: 9dd2a10756ef7c03
+// sourceHash: fac4b5bb820e9112
 import type { ProfileData, ProfileProject } from './profile.es';
 
 export const profileDe: ProfileData = {
@@ -149,6 +149,18 @@ export const profileProjectsDe: ProfileProject[] = [
     year: '2026',
     github: 'https://github.com/trentisiete/surrogate_models',
     articleHref: '/de/articles/surrogate_models/',
+  },
+  {
+    title: 'RoadGuard',
+    excerpt: 'Zuverlässige Erkennung von Straßenschäden: länderübergreifender Transfer, Konfidenzkalibrierung, Abstentionsstrategie und erklärbare Priorisierung der Instandhaltung.',
+    year: '2026',
+    github: 'https://github.com/trentisiete/RoadGuard',
+  },
+  {
+    title: 'BGG Review Intelligence',
+    excerpt: 'Von BoardGameGeek-Rezensionen zu strukturiertem Meinungswissen: linguistische Vorverarbeitung, Sentiment-Klassifikation und aspektbasierte Analyse.',
+    year: '2025',
+    articleHref: '/de/articles/bgg_review_intelligence/',
   },
   {
     title: 'Bilderzeugung mit Diffusionsmodellen',

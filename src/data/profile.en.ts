@@ -1,5 +1,5 @@
 // translated: true
-// sourceHash: 9dd2a10756ef7c03
+// sourceHash: fac4b5bb820e9112
 import type { ProfileData, ProfileProject } from './profile.es';
 
 export const profileEn: ProfileData = {
@@ -149,6 +149,18 @@ export const profileProjectsEn: ProfileProject[] = [
     year: '2026',
     github: 'https://github.com/trentisiete/surrogate_models',
     articleHref: '/en/articles/surrogate_models/',
+  },
+  {
+    title: 'RoadGuard',
+    excerpt: 'Reliable road damage detection: cross-country transfer, confidence calibration, abstention policy and explainable maintenance prioritization.',
+    year: '2026',
+    github: 'https://github.com/trentisiete/RoadGuard',
+  },
+  {
+    title: 'BGG Review Intelligence',
+    excerpt: 'From BoardGameGeek reviews to structured opinion knowledge: linguistic preprocessing, sentiment classification and aspect-based analysis.',
+    year: '2025',
+    articleHref: '/en/articles/bgg_review_intelligence/',
   },
   {
     title: 'Image generation with diffusion models',

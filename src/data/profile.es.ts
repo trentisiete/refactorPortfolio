@@ -192,6 +192,18 @@ export const profileProjectsEs: ProfileProject[] = [
     articleHref: '/es/articles/surrogate_models/',
   },
   {
+    title: 'RoadGuard',
+    excerpt: 'Detección fiable de daños viales: transferencia entre países, calibración de confianza, política de abstención y priorización explicable del mantenimiento.',
+    year: '2026',
+    github: 'https://github.com/trentisiete/RoadGuard',
+  },
+  {
+    title: 'BGG Review Intelligence',
+    excerpt: 'De reseñas de BoardGameGeek a conocimiento estructurado de opinión: preprocesado lingüístico, clasificación de sentimiento y análisis basado en aspectos.',
+    year: '2025',
+    articleHref: '/es/articles/bgg_review_intelligence/',
+  },
+  {
     title: 'Generación de imágenes con modelos de difusión',
     excerpt: 'Implementación del marco de SDEs de Song et al.: entrenamiento por denoising score matching, samplers, generación condicional e imputación sobre CIFAR-10.',
     year: '2025',
