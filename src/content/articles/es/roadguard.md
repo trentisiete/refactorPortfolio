@@ -8,8 +8,6 @@ lang: "es"
 readingTime: 10
 ---
 
-# RoadGuard
-
 ## Resumen ejecutivo
 
 RoadGuard es el cierre profesional de una trayectoria que comenzó con clasificación de imágenes, continuó con transfer learning y data augmentation, pasó por detección de objetos y llegó al análisis de robustez y sesgo. El nuevo proyecto no repite el experimento de Waterbirds ni presenta un detector descargado como si fuera un modelo propio. Formula un problema distinto y más cercano a producción:

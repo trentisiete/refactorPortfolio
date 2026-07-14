@@ -13,6 +13,30 @@
 
   Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip);
 
+  const valueLabels = {
+    id: 'bggValueLabels',
+    afterDatasetsDraw(chart: Chart<'bar'>) {
+      const dataset = chart.data.datasets[0];
+      const meta = chart.getDatasetMeta(0);
+      const styles = getComputedStyle(chart.canvas);
+      const context = chart.ctx;
+
+      context.save();
+      context.fillStyle = styles.getPropertyValue('--color-text').trim();
+      context.font = `600 11px ${styles.fontFamily}`;
+      context.textBaseline = 'middle';
+      context.textAlign = 'left';
+
+      meta.data.forEach((bar, index) => {
+        const value = Number(dataset?.data[index]);
+        if (Number.isFinite(value)) context.fillText(value.toFixed(4), bar.x + 8, bar.y);
+      });
+      context.restore();
+    },
+  };
+
+  Chart.register(valueLabels);
+
   type ChartRoot = HTMLElement & { dataset: { bggChart?: string } };
 
   const charts = new Map<ChartRoot, Chart>();
@@ -39,7 +63,7 @@
       values: [0.7309, 0.7254, 0.6871, 0.6346],
     },
     neural: {
-      labels: ['BERT', 'FastText + LSTM', 'FastText + FNN'],
+      labels: ['BERT', 'FastText LSTM', 'FastText FNN'],
       values: [0.8432, 0.7520, 0.6950],
     },
   } as const;
@@ -81,7 +105,7 @@
           x: {
             beginAtZero: true,
             min: 0,
-            max: 0.9,
+            max: 1,
             grid: { color: palette.border },
             border: { display: false },
             ticks: {
