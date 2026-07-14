@@ -11,16 +11,25 @@ const translations = {
     expand: 'Ampliar contenido',
     close: 'Cerrar vista ampliada',
     preview: 'Vista ampliada del contenido',
+    image: 'Imagen',
+    table: 'Tabla',
+    code: 'Código',
   },
   en: {
     expand: 'Expand content',
     close: 'Close expanded view',
     preview: 'Expanded content view',
+    image: 'Image',
+    table: 'Table',
+    code: 'Code',
   },
   de: {
     expand: 'Inhalt vergrößern',
     close: 'Vergrößerte Ansicht schließen',
     preview: 'Vergrößerte Inhaltsansicht',
+    image: 'Bild',
+    table: 'Tabelle',
+    code: 'Code',
   },
 } as const;
 const labels = translations[lang];
@@ -29,6 +38,9 @@ const labels = translations[lang];
 <div
   class="content-preview"
   data-content-preview-root
+  data-label-image={labels.image}
+  data-label-table={labels.table}
+  data-label-code={labels.code}
 >
   <button
     class="content-preview-trigger"
@@ -48,20 +60,28 @@ const labels = translations[lang];
   </button>
 
   <dialog class="content-preview-dialog" aria-label={labels.preview} data-content-preview-dialog>
-    <button
-      class="content-preview-dialog__close"
-      type="button"
-      aria-label={labels.close}
-      title={labels.close}
-      data-content-preview-close
-    >
-      <!-- Lucide: X -->
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M18 6 6 18"></path>
-        <path d="m6 6 12 12"></path>
-      </svg>
-    </button>
-    <div class="content-preview-dialog__body markdown-content" data-content-preview-body></div>
+    <div class="content-preview-dialog__panel">
+      <header class="content-preview-dialog__toolbar">
+        <span data-content-preview-kind></span>
+        <button
+          class="content-preview-dialog__close"
+          type="button"
+          aria-label={labels.close}
+          title={labels.close}
+          data-content-preview-close
+        >
+          <!-- Lucide: X -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      </header>
+      <div class="content-preview-dialog__viewport" data-content-preview-viewport tabindex="0">
+        <div class="content-preview-dialog__body markdown-content" data-content-preview-body></div>
+      </div>
+      <p class="content-preview-dialog__caption" data-content-preview-caption hidden></p>
+    </div>
   </dialog>
 </div>
 
@@ -75,9 +95,17 @@ const labels = translations[lang];
     const trigger = root.querySelector<HTMLButtonElement>('[data-content-preview-trigger]');
     const dialog = root.querySelector<HTMLDialogElement>('[data-content-preview-dialog]');
     const closeButton = root.querySelector<HTMLButtonElement>('[data-content-preview-close]');
+    const viewport = root.querySelector<HTMLElement>('[data-content-preview-viewport]');
     const previewBody = root.querySelector<HTMLElement>('[data-content-preview-body]');
+    const caption = root.querySelector<HTMLElement>('[data-content-preview-caption]');
+    const kindLabel = root.querySelector<HTMLElement>('[data-content-preview-kind]');
+    const kindLabels = {
+      image: root.dataset.labelImage ?? 'Image',
+      table: root.dataset.labelTable ?? 'Table',
+      code: root.dataset.labelCode ?? 'Code',
+    };
 
-    if (!content || !trigger || !dialog || !closeButton || !previewBody) return;
+    if (!content || !trigger || !dialog || !closeButton || !viewport || !previewBody || !caption || !kindLabel) return;
     const sources = Array.from(content.querySelectorAll<HTMLElement>('img, table, pre'));
     let activeSource: HTMLElement | null = null;
     let hideTimer: number | undefined;
@@ -86,6 +114,36 @@ const labels = translations[lang];
       if (source.tagName === 'IMG') return 'image';
       if (source.tagName === 'TABLE') return 'table';
       return 'code';
+    };
+
+    const getCaption = (source: HTMLElement) => {
+      const ownCaption = source.dataset.caption?.trim();
+      if (ownCaption) return ownCaption;
+
+      if (source.tagName === 'TABLE') {
+        const tableCaption = source.querySelector(':scope > caption')?.textContent?.trim();
+        if (tableCaption) return tableCaption;
+      }
+
+      const figureCaption = source.closest('figure')?.querySelector(':scope > figcaption')?.textContent?.trim();
+      if (figureCaption) return figureCaption;
+
+      if (source.tagName === 'IMG') {
+        const alt = source.getAttribute('alt')?.trim();
+        if (alt) return alt;
+      }
+
+      const ariaLabel = source.getAttribute('aria-label')?.trim();
+      if (ariaLabel) return ariaLabel;
+
+      if (source.tagName === 'TABLE') {
+        let sibling = source.previousElementSibling;
+        for (let distance = 0; sibling && distance < 6; distance += 1, sibling = sibling.previousElementSibling) {
+          if (sibling.matches('h2, h3, h4, h5, h6')) return sibling.textContent?.trim() ?? '';
+        }
+      }
+
+      return '';
     };
 
     const positionTrigger = () => {
@@ -133,14 +191,22 @@ const labels = translations[lang];
       activeSource = source;
       const kind = getKind(source);
       const clone = source.cloneNode(true) as HTMLElement;
+      const captionText = getCaption(source);
 
       clone.classList.remove('content-preview-source');
       clone.removeAttribute('tabindex');
       clone.removeAttribute('aria-keyshortcuts');
+      clone.removeAttribute('id');
+      if (kind === 'image') clone.removeAttribute('style');
+      if (kind === 'table') clone.querySelector(':scope > caption')?.remove();
       clone.querySelectorAll('[id]').forEach(element => element.removeAttribute('id'));
       previewBody.replaceChildren(clone);
+      caption.textContent = captionText;
+      caption.hidden = captionText.length === 0;
+      kindLabel.textContent = kindLabels[kind];
       dialog.dataset.previewKind = kind;
       document.documentElement.classList.add('content-preview-open');
+      viewport.scrollTo({ top: 0, left: 0 });
 
       if (typeof dialog.showModal === 'function') dialog.showModal();
       else dialog.setAttribute('open', '');
@@ -187,6 +253,9 @@ const labels = translations[lang];
     dialog.addEventListener('close', () => {
       document.documentElement.classList.remove('content-preview-open');
       previewBody.replaceChildren();
+      caption.replaceChildren();
+      caption.hidden = true;
+      kindLabel.replaceChildren();
       delete dialog.dataset.previewKind;
       activeSource?.focus({ preventScroll: true });
     });
