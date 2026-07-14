@@ -411,6 +411,7 @@
 .article__header {
     margin-bottom: var(--space-16);
     padding: var(--space-6) 0 var(--space-12);
+    text-align: center;
     border-bottom: 1px solid var(--color-border);
 }
 
@@ -420,7 +421,7 @@
     font-size: 0.72rem;
     font-weight: var(--font-semibold);
     letter-spacing: 0.15em;
-    color: var(--color-text-muted);
+    color: var(--color-text-secondary);
     text-transform: uppercase;
 }
 
@@ -431,7 +432,7 @@
     line-height: 1.02;
     letter-spacing: -0.04em;
     color: var(--color-text);
-    margin-bottom: var(--space-6);
+    margin: 0 auto var(--space-6);
     text-wrap: balance;
 }
 
@@ -440,7 +441,7 @@
     font-size: clamp(1.05rem, 1.8vw, 1.18rem);
     color: var(--color-text-secondary);
     line-height: var(--leading-relaxed);
-    margin-bottom: var(--space-6);
+    margin: 0 auto var(--space-6);
 }
 
 .article__meta {
