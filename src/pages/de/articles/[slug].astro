@@ -45,6 +45,7 @@ const backLabel = article.data.kind === 'blog' ? t.buttons.back_to_blog : t.butt
 
     <article class="article">
       <header class="article__header">
+        {article.data.topic && <p class="article__topic">{article.data.topic}</p>}
         <h1 class="article__title">{article.data.title}</h1>
         {article.data.excerpt && (
           <p class="article__subtitle">{article.data.excerpt}</p>

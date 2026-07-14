@@ -167,7 +167,7 @@ function translationRules(sourceLang, targetLang) {
 		'- NEVER translate or alter: code blocks, inline code, LaTeX/KaTeX math ($...$, $$...$$), URLs, link targets, footnote identifiers, HTML tags.',
 		'- Exception inside chart HTML blocks (class="graph-hbar" / "graph-flow"): translate the human-readable VALUES of the data-title, data-subtitle, data-note, data-label and data-step attributes; keep data-value, data-max, data-decimals, class names and the markup structure unchanged.',
 		'- Translate link display text, but not the destination.',
-		'- In YAML frontmatter: keep every key name untouched; translate only the VALUES of title, excerpt and tags; keep date, draft, readingTime and any other value unchanged, including commented-out lines (translate their values too, keeping the # prefix).',
+		'- In YAML frontmatter: keep every key name untouched; translate only the VALUES of title, topic, excerpt and tags; keep date, draft, readingTime and any other value unchanged, including commented-out lines (translate their values too, keeping the # prefix).',
 		'- Keep established technical terms in their conventional form (e.g. machine learning terms commonly left in English stay in English).',
 		'- Keep the author\'s tone: sober, personal, first person, reflective.',
 		'- Output ONLY the translated content. No commentary, no explanations, no code fences around the whole output.',

@@ -1,5 +1,6 @@
 ---
 title: "Modelos sustitutos para la búsqueda de entradas óptimas"
+topic: "Trabajo de Fin de Grado"
 date: 2026-07-10
 excerpt: "Procesos gaussianos, optimización bayesiana y Expected Improvement para priorizar nuevas evaluaciones cuando experimentar es costoso."
 # tags: ["modelos sustitutos", "procesos gaussianos", "optimización bayesiana"]

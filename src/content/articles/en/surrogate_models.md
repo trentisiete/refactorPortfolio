@@ -1,5 +1,6 @@
 ---
 title: "Surrogate models for finding optimal inputs"
+topic: "Bachelor Thesis"
 date: 2026-07-10
 excerpt: "Gaussian processes, Bayesian optimization, and Expected Improvement for prioritizing new evaluations when experimenting is costly."
 # tags: ["surrogate models", "gaussian processes", "bayesian optimization"]
@@ -8,7 +9,7 @@ kind: "article"
 readingTime: 125
 lang: "en"
 translated: true
-sourceHash: "2a5e5c27800a4c30"
+sourceHash: "d91308047d3212eb"
 ---
 
 This article compiles my Bachelor's Thesis in Data Science and Engineering. It studies how to use Gaussian processes as surrogate models to learn from few evaluations, quantify uncertainty, and decide which configurations are worth trying next.

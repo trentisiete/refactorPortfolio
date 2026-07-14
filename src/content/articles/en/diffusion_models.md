@@ -1,5 +1,6 @@
 ---
 title: "Image Generation through Stochastic Differential Equations and Diffusion Processes"
+topic: "Generative AI"
 date: 2025-05-27
 excerpt: "A comprehensive analysis of diffusion models and their application in image generation."
 # tags: ["python", "sklearn", "mlstudio", "gemini"]
@@ -8,7 +9,7 @@ kind: "article"
 # readingTime: 7
 lang: "en"
 translated: true
-sourceHash: "0003347d2502cc4d"
+sourceHash: "0f32d35523eef3b6"
 ---
 
 # From Noise to Image: A Mathematical Reading of Diffusion Models

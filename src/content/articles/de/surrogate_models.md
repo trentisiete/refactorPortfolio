@@ -1,5 +1,6 @@
 ---
 title: "Ersatzmodelle für die Suche nach optimalen Eingaben"
+topic: "Bachelorarbeit"
 date: 2026-07-10
 excerpt: "Gaußprozesse, Bayesianische Optimierung und Expected Improvement zur Priorisierung neuer Auswertungen, wenn Experimentieren teuer ist."
 # tags: ["Ersatzmodelle", "Gaußprozesse", "Bayesianische Optimierung"]
@@ -8,7 +9,7 @@ kind: "article"
 readingTime: 125
 lang: "de"
 translated: true
-sourceHash: "2a5e5c27800a4c30"
+sourceHash: "d91308047d3212eb"
 ---
 
 Este artículo recoge mi Trabajo de Fin de Grado en Ciencia e Ingeniería de Datos. Estudia cómo utilizar procesos gaussianos como modelos sustitutos para aprender con pocas evaluaciones, cuantificar la incertidumbre y decidir qué configuraciones conviene probar a continuación.

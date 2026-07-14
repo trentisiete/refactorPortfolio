@@ -27,6 +27,7 @@ const baseSlug = article.slug.split('/').pop();
       <time class="article-item__date">{dateStr}</time>
       <span class="article-item__reading">{readingTime} {t.articles_page.min_read}</span>
     </div>
+    {article.data.topic && <p class="article-item__topic">{article.data.topic}</p>}
     <h2 class="article-item__title">{article.data.title}</h2>
     {article.data.excerpt && <p class="article-item__excerpt">{article.data.excerpt}</p>}
     {tagsArray.length > 0 && (
@@ -85,6 +86,16 @@ const baseSlug = article.slug.split('/').pop();
     margin-bottom: var(--space-2);
     line-height: 1.4;
     transition: color 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .article-item__topic {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-ui);
+    font-size: 0.68rem;
+    font-weight: var(--font-semibold);
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
   }
 
   .article-item__link:hover .article-item__title {

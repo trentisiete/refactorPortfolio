@@ -1,5 +1,6 @@
 ---
 title: "BGG Review Intelligence: From Reviews to Structured Opinion Knowledge"
+topic: "Natural Language Processing"
 date: 2025-11-15
 excerpt: "BGG Review Intelligence explores how BoardGameGeek reviews can be transformed into reproducible sentiment predictions and structured opinion knowledge."
 kind: "article"

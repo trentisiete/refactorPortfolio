@@ -1,5 +1,6 @@
 ---
 title: "BGG Review Intelligence: Von Rezensionen zu strukturiertem Meinungswissen"
+topic: "Verarbeitung natürlicher Sprache"
 date: 2025-11-15
 excerpt: "BGG Review Intelligence untersucht, wie sich BoardGameGeek-Rezensionen in reproduzierbare Sentiment-Vorhersagen und strukturiertes Meinungswissen verwandeln lassen."
 kind: "article"
@@ -7,7 +8,7 @@ draft: false
 readingTime: 10
 lang: "de"
 translated: true
-sourceHash: "d173638160ec1cab"
+sourceHash: "579f2f3a3064d5cc"
 ---
 
 ## Eine mehrstufige Studie zu linguistischer Vorverarbeitung, Sentiment-Klassifikation, kontextuellem Lernen und aspektbasierter Analyse

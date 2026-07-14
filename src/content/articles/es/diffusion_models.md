@@ -1,5 +1,6 @@
 ---
 title: "Generación de Imágenes mediante Ecuaciones Diferenciales Estocásticas y Procesos de Difusión"
+topic: "Generative AI"
 date: 2025-05-27
 excerpt: "Un análisis exhaustivo de los modelos de difusión y su aplicación en la generación de imágenes."
 # tags: ["python", "sklearn", "mlstudio", "gemini"]

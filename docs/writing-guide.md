@@ -11,6 +11,7 @@ Cada artículo debe empezar con este bloque YAML:
 ```yaml
 ---
 title: "Título del artículo"
+topic: "Tema del artículo"
 excerpt: "Descripción breve del artículo."
 date: 2026-03-10
 lang: es          # es | en | de

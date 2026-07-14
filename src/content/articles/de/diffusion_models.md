@@ -1,5 +1,6 @@
 ---
 title: "Bilderzeugung mittels stochastischer Differentialgleichungen und Diffusionsprozessen"
+topic: "Generative AI"
 date: 2025-05-27
 excerpt: "Eine umfassende Analyse von Diffusionsmodellen und ihrer Anwendung bei der Bilderzeugung."
 # tags: ["python", "sklearn", "mlstudio", "gemini"]
@@ -8,7 +9,7 @@ kind: "article"
 # readingTime: 7
 lang: "de"
 translated: true
-sourceHash: "0003347d2502cc4d"
+sourceHash: "0f32d35523eef3b6"
 ---
 
 # Vom Rauschen zum Bild: eine mathematische Lektüre der Diffusionsmodelle

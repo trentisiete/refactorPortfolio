@@ -1,5 +1,6 @@
 ---
 title: "BGG Review Intelligence: De Reseñas a Conocimiento de Opinión Estructurado"
+topic: "Procesamiento del Lenguaje Natural"
 date: 2025-11-15
 excerpt: "BGG Review Intelligence explora cómo las reseñas de BoardGameGeek pueden transformarse en predicciones de sentimiento reproducibles y conocimiento de opinión estructurado."
 kind: "article"
@@ -7,7 +8,7 @@ draft: false
 readingTime: 10
 lang: "es"
 translated: true
-sourceHash: "d173638160ec1cab"
+sourceHash: "579f2f3a3064d5cc"
 ---
 
 ## Un estudio en varias etapas de preprocesamiento lingüístico, clasificación de sentimiento, aprendizaje contextual y análisis basado en aspectos

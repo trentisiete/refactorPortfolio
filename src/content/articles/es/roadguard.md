@@ -1,5 +1,6 @@
 ---
 title: "RoadGuard: detección fiable de daños viales"
+topic: "Visión artificial"
 date: 2026-02-06
 excerpt: "De un detector de grietas y baches a un sistema reproducible de apoyo a inspección: transferencia entre países, calibración, abstención y priorización explicable."
 kind: "article"
