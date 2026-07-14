@@ -4,8 +4,8 @@
 
 .markdown-content {
     font-family: var(--font-body);
-    /* 19px sobre 672px utiles mantiene la prosa cerca de 65-72 caracteres. */
-    font-size: var(--text-lg);
+    /* 17px mantiene la lectura compacta sin perder comodidad en textos largos. */
+    font-size: 1.0625rem;
     line-height: 1.7;
     color: var(--color-text);
     overflow-wrap: break-word;
@@ -20,19 +20,19 @@
 }
 
 .markdown-content h1 {
-    font-size: var(--text-3xl);
+    font-size: 1.75rem;
 }
 
 .markdown-content h2 {
-    font-size: var(--text-2xl);
+    font-size: 1.4rem;
 }
 
 .markdown-content h3 {
-    font-size: var(--text-xl);
+    font-size: 1.15rem;
 }
 
 .markdown-content h4 {
-    font-size: var(--text-lg);
+    font-size: 1.025rem;
 }
 
 .markdown-content p {
