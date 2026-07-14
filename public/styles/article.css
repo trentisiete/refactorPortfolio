@@ -17,10 +17,12 @@
 }
 
 .article-page .article__header {
-  width: 100%;
-  max-width: 1040px;
-  margin-left: auto;
-  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 1040px);
+  margin-inline: auto;
+  text-align: center;
 }
 
 .article-page .markdown-content {
