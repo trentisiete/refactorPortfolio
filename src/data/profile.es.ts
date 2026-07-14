@@ -201,6 +201,7 @@ export const profileProjectsEs: ProfileProject[] = [
     title: 'BGG Review Intelligence',
     excerpt: 'De reseñas de BoardGameGeek a conocimiento estructurado de opinión: preprocesado lingüístico, clasificación de sentimiento y análisis basado en aspectos.',
     year: '2025',
+    github: 'https://github.com/trentisiete/bgg-review-intelligence',
     articleHref: '/es/articles/bgg_review_intelligence/',
   },
   {

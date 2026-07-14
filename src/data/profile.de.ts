@@ -1,5 +1,5 @@
 // translated: true
-// sourceHash: fac4b5bb820e9112
+// sourceHash: 522ef89568df5cf6
 import type { ProfileData, ProfileProject } from './profile.es';
 
 export const profileDe: ProfileData = {
@@ -160,6 +160,7 @@ export const profileProjectsDe: ProfileProject[] = [
     title: 'BGG Review Intelligence',
     excerpt: 'Von BoardGameGeek-Rezensionen zu strukturiertem Meinungswissen: linguistische Vorverarbeitung, Sentiment-Klassifikation und aspektbasierte Analyse.',
     year: '2025',
+    github: 'https://github.com/trentisiete/bgg-review-intelligence',
     articleHref: '/de/articles/bgg_review_intelligence/',
   },
   {
