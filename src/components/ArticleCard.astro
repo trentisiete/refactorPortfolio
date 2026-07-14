@@ -1,6 +1,7 @@
 ---
 import type { Lang } from '../i18n/utils';
 import { useTranslations } from '../i18n/utils';
+import { estimateReadingTime } from '../utils/readingTime';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -14,7 +15,7 @@ const t = useTranslations(lang);
 const locale = lang === 'de' ? 'de-DE' : lang === 'en' ? 'en-US' : 'es-ES';
 const d = typeof article.data.date === 'string' ? new Date(article.data.date) : article.data.date;
 const dateStr = d.toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' });
-const readingTime = article.data.readingTime || 0;
+const readingTime = estimateReadingTime(article.body, lang);
 
 const tagsArray = article.data.tags || [];
 const baseSlug = article.slug.split('/').pop();
@@ -24,7 +25,7 @@ const baseSlug = article.slug.split('/').pop();
   <a href={`/${lang}/articles/${baseSlug}/`} class="article-item__link">
     <div class="article-item__meta">
       <time class="article-item__date">{dateStr}</time>
-      {readingTime > 0 && <span class="article-item__reading">{readingTime} {t.articles_page.min_read}</span>}
+      <span class="article-item__reading">{readingTime} {t.articles_page.min_read}</span>
     </div>
     <h2 class="article-item__title">{article.data.title}</h2>
     {article.data.excerpt && <p class="article-item__excerpt">{article.data.excerpt}</p>}

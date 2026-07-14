@@ -15,12 +15,13 @@ excerpt: "Descripción breve del artículo."
 date: 2026-03-10
 lang: es          # es | en | de
 tags: ["tag1", "tag2"]
-readingTime: 15   # minutos estimados
 draft: true       # true = no se publica
 ---
 ```
 
 > ⚠️ Si `draft: true`, el artículo NO aparecerá en la web.
+>
+> El tiempo de lectura se calcula automáticamente a partir del contenido; no se añade al frontmatter.
 
 ---
 

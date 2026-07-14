@@ -5,6 +5,7 @@ import RoadGuardCharts from '../../../components/RoadGuardCharts.astro';
 import BggReviewCharts from '../../../components/BggReviewCharts.astro';
 import { useTranslations } from '../../../i18n/utils';
 import type { Lang } from '../../../i18n/utils';
+import { estimateReadingTime } from '../../../utils/readingTime';
 import { getCollection, render } from 'astro:content';
 
 const lang: Lang = 'es';
@@ -35,7 +36,7 @@ const dateStr = article.data.date.toLocaleDateString('es-ES', {
   month: 'long',
   day: 'numeric',
 });
-const readingTime = article.data.readingTime || 0;
+const readingTime = estimateReadingTime(article.body, lang);
 const backTab = article.data.kind === 'blog' ? 'blog' : 'articles';
 const backLabel = article.data.kind === 'blog' ? t.buttons.back_to_blog : t.buttons.back_to_articles;
 ---
@@ -52,7 +53,7 @@ const backLabel = article.data.kind === 'blog' ? t.buttons.back_to_blog : t.butt
         )}
         <div class="article__meta">
           <time>{dateStr}</time>
-          {readingTime > 0 && <span> · {readingTime} {t.articles_page.min_read}</span>}
+          <span> · {readingTime} {t.articles_page.min_read}</span>
         </div>
         {article.data.tags && article.data.tags.length > 0 && (
           <div class="article__tags">
