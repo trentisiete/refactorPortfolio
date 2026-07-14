@@ -7,6 +7,7 @@ import remarkGfm from 'remark-gfm';
 
 // https://astro.build/config
 export default defineConfig({
+    site: 'https://josearbelaez.com',
     i18n: {
         defaultLocale: 'es',
         locales: ['es', 'en', 'de'],

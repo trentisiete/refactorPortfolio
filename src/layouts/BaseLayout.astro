@@ -2,7 +2,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import type { Lang } from '../i18n/utils';
-import { useTranslations } from '../i18n/utils';
+import { useTranslations, getLocalizedPath } from '../i18n/utils';
 
 interface Props {
   title?: string;
@@ -30,6 +30,12 @@ const t = useTranslations(lang);
 const pageTitle = title || t.meta.site_title;
 const pageDescription = description || t.meta.site_description;
 const containerClass = wide ? 'container container--wide' : 'container';
+
+// SEO multiidioma: canonical + alternates hreflang de las versiones que existen
+const path = Astro.url.pathname;
+const alternateLangs: Lang[] = availableLangs ?? ['es', 'en', 'de'];
+const absoluteUrl = (p: string) => Astro.site ? new URL(p, Astro.site).href : p;
+const canonicalUrl = absoluteUrl(path);
 ---
 
 <!DOCTYPE html>
@@ -45,6 +51,16 @@ const containerClass = wide ? 'container container--wide' : 'container';
   <meta property="og:title" content={pageTitle} />
   <meta property="og:description" content={pageDescription} />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalUrl} />
+
+  <!-- Idiomas para buscadores -->
+  <link rel="canonical" href={canonicalUrl} />
+  {alternateLangs.map(l => (
+    <link rel="alternate" hreflang={l} href={absoluteUrl(getLocalizedPath(path, l))} />
+  ))}
+  {alternateLangs.includes('en') && (
+    <link rel="alternate" hreflang="x-default" href={absoluteUrl(getLocalizedPath(path, 'en'))} />
+  )}
 
   <title>{pageTitle}</title>
 

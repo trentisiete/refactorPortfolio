@@ -1,15 +1,17 @@
 ---
-// Root redirect to default locale
+// Root: resolve to the visitor's language, defaulting to English
 ---
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Josemi</title>
-  <meta name="robots" content="noindex, follow">
-  <meta http-equiv="refresh" content="0;url=/es/">
+  <title>José Arbelaez</title>
+  <link rel="canonical" href="https://josearbelaez.com/en/">
+  <meta http-equiv="refresh" content="0;url=/en/">
   <script>
-    window.location.replace('/es/');
+    const lang = (navigator.language || 'en').toLowerCase();
+    const target = lang.startsWith('es') ? '/es/' : lang.startsWith('de') ? '/de/' : '/en/';
+    window.location.replace(target);
   </script>
 </head>
 <body>
