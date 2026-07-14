@@ -576,37 +576,53 @@ dialog.content-preview-dialog .content-preview-dialog__body.markdown-content > p
   }
 }
 
-/* ---- RoadGuard · Chart.js cards inspired by shadcn/ui ---- */
+/* ---- RoadGuard · Chart.js data cards ---- */
 .markdown-content figure.roadguard-chart {
-  --roadguard-chart-blue: #2563eb;
-  --roadguard-chart-teal: #0d9488;
-  --roadguard-chart-amber: #d97706;
-  --roadguard-chart-red: #dc2626;
+  --roadguard-chart-blue: #526b7b;
+  --roadguard-chart-teal: #46766f;
+  --roadguard-chart-amber: #a56f35;
+  --roadguard-chart-red: #9d514c;
   width: min(100%, 980px);
-  margin: 2.25rem auto;
-  padding: clamp(1rem, 2.5vw, 1.5rem);
+  margin: 2.5rem auto;
+  padding: clamp(1.1rem, 2.8vw, 1.75rem);
   text-align: left;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: 10px;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+  border-radius: var(--radius-md);
 }
 
 [data-theme="dark"] .markdown-content figure.roadguard-chart {
-  --roadguard-chart-blue: #60a5fa;
-  --roadguard-chart-teal: #2dd4bf;
-  --roadguard-chart-amber: #f59e0b;
-  --roadguard-chart-red: #f87171;
+  --roadguard-chart-blue: #8ba8b9;
+  --roadguard-chart-teal: #7db4aa;
+  --roadguard-chart-amber: #d2a15f;
+  --roadguard-chart-red: #d88a83;
 }
 
 .roadguard-chart__header {
-  margin-bottom: var(--space-5);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-5);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.roadguard-chart__eyebrow {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: var(--font-bold);
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
 }
 
 .roadguard-chart__header h4 {
   margin: 0;
   font-family: var(--font-body);
-  font-size: var(--text-lg);
+  font-size: clamp(var(--text-base), 2vw, var(--text-lg));
   color: var(--color-text);
 }
 
@@ -617,10 +633,38 @@ dialog.content-preview-dialog .content-preview-dialog__body.markdown-content > p
   color: var(--color-text-muted);
 }
 
+.roadguard-chart__metric {
+  flex: 0 0 auto;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.roadguard-chart__metric strong {
+  margin-left: var(--space-1);
+  font-family: var(--font-mono);
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
 .roadguard-chart__canvas {
   position: relative;
   width: 100%;
-  height: clamp(320px, 48vw, 440px);
+  height: clamp(330px, 46vw, 430px);
+}
+
+.roadguard-chart--policy .roadguard-chart__canvas {
+  height: clamp(370px, 48vw, 440px);
+}
+
+.roadguard-chart--stress .roadguard-chart__canvas {
+  height: clamp(300px, 40vw, 370px);
 }
 
 .markdown-content figure.roadguard-chart figcaption {
@@ -639,7 +683,245 @@ dialog.content-preview-dialog .content-preview-dialog__body.markdown-content > p
     padding: var(--space-4);
   }
 
+  .roadguard-chart__header {
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+  }
+
+  .roadguard-chart__metric {
+    white-space: normal;
+  }
+
   .roadguard-chart__canvas {
-    height: 340px;
+    height: 350px;
+  }
+
+  .roadguard-chart--policy .roadguard-chart__canvas {
+    height: 430px;
+  }
+
+  .roadguard-chart--stress .roadguard-chart__canvas {
+    height: 330px;
+  }
+}
+
+/* ---- BGG Review Intelligence · process and Chart.js cards ---- */
+.article-page .markdown-content > :is(.bgg-pipeline, .bgg-chart-grid) {
+  grid-column: 1 / -1;
+}
+
+.bgg-pipeline {
+  width: min(100%, 1080px);
+  margin: 2.5rem auto;
+  padding: clamp(1.1rem, 2.8vw, 1.75rem);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.bgg-pipeline__header {
+  max-width: 680px;
+  margin-bottom: var(--space-6);
+}
+
+.bgg-pipeline__header > span,
+.bgg-chart__header span {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: var(--font-bold);
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.bgg-pipeline__header h3,
+.bgg-chart__header h4 {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--color-text);
+}
+
+.bgg-pipeline__header h3 {
+  font-size: clamp(var(--text-lg), 2.4vw, var(--text-xl));
+}
+
+.bgg-pipeline__header p,
+.bgg-chart__header p {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.bgg-pipeline ol {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+
+.bgg-pipeline li {
+  position: relative;
+  min-width: 0;
+  padding: var(--space-5) var(--space-4) 0 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.bgg-pipeline li::before {
+  position: absolute;
+  top: -4px;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  content: '';
+  background: var(--color-text-secondary);
+  border-radius: 50%;
+}
+
+.bgg-pipeline li > span {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.bgg-pipeline strong {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+.bgg-pipeline li p {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-muted);
+}
+
+.bgg-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  width: min(100%, 1080px);
+  margin: 2.5rem auto;
+}
+
+.markdown-content figure.bgg-chart {
+  --bgg-chart-primary: #526b7b;
+  --bgg-chart-secondary: #46766f;
+  --bgg-chart-muted: #a9aaa5;
+  width: 100%;
+  margin: 0;
+  padding: clamp(1rem, 2.4vw, 1.5rem);
+  text-align: left;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+[data-theme="dark"] .markdown-content figure.bgg-chart {
+  --bgg-chart-primary: #8ba8b9;
+  --bgg-chart-secondary: #7db4aa;
+  --bgg-chart-muted: #555752;
+}
+
+.bgg-chart__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: 116px;
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.bgg-chart__header h4 {
+  font-size: var(--text-base);
+}
+
+.bgg-chart__header > strong {
+  flex: 0 0 auto;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text);
+  white-space: nowrap;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-variant-numeric: tabular-nums;
+}
+
+.bgg-chart__canvas {
+  position: relative;
+  width: 100%;
+  height: 290px;
+}
+
+.markdown-content figure.bgg-chart figcaption {
+  max-width: none;
+  min-height: 3em;
+  margin: var(--space-4) 0 0;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-style: normal;
+  color: var(--color-text-muted);
+  text-align: left;
+}
+
+@media (max-width: 900px) {
+  .bgg-pipeline ol {
+    grid-template-columns: 1fr;
+  }
+
+  .bgg-pipeline li {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: var(--space-3);
+    padding: var(--space-4) 0 var(--space-4) var(--space-4);
+    border-top: 0;
+    border-left: 1px solid var(--color-border);
+  }
+
+  .bgg-pipeline li::before {
+    top: var(--space-5);
+    left: -4px;
+  }
+
+  .bgg-pipeline li > span {
+    margin: 0;
+  }
+
+  .bgg-pipeline li p {
+    max-width: 42rem;
+  }
+
+  .bgg-chart-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bgg-chart__header,
+  .markdown-content figure.bgg-chart figcaption {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .bgg-chart__header {
+    flex-direction: column;
+  }
+
+  .bgg-chart__canvas {
+    height: 300px;
   }
 }

@@ -2,6 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ContentPreview from '../../../components/ContentPreview.astro';
 import RoadGuardCharts from '../../../components/RoadGuardCharts.astro';
+import BggReviewCharts from '../../../components/BggReviewCharts.astro';
 import { useTranslations } from '../../../i18n/utils';
 import type { Lang } from '../../../i18n/utils';
 import { getCollection, render } from 'astro:content';
@@ -66,5 +67,6 @@ const backLabel = article.data.kind === 'blog' ? t.buttons.back_to_blog : t.butt
     </article>
     <ContentPreview lang={lang} />
     {baseSlug === 'roadguard' && <RoadGuardCharts />}
+    {baseSlug === 'bgg_review_intelligence' && <BggReviewCharts />}
   </section>
 </BaseLayout>

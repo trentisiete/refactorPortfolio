@@ -1,0 +1,144 @@
+---
+---
+
+<script>
+  import {
+    BarController,
+    BarElement,
+    CategoryScale,
+    Chart,
+    LinearScale,
+    Tooltip,
+  } from 'chart.js';
+
+  Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip);
+
+  type ChartRoot = HTMLElement & { dataset: { bggChart?: string } };
+
+  const charts = new Map<ChartRoot, Chart>();
+  const cssValue = (styles: CSSStyleDeclaration, property: string) =>
+    styles.getPropertyValue(property).trim();
+
+  const getPalette = (root: HTMLElement) => {
+    const styles = getComputedStyle(root);
+    return {
+      primary: cssValue(styles, '--bgg-chart-primary'),
+      secondary: cssValue(styles, '--bgg-chart-secondary'),
+      mutedBar: cssValue(styles, '--bgg-chart-muted'),
+      text: cssValue(styles, '--color-text'),
+      muted: cssValue(styles, '--color-text-muted'),
+      border: cssValue(styles, '--color-border'),
+      surface: cssValue(styles, '--color-surface'),
+      font: styles.fontFamily,
+    };
+  };
+
+  const chartData = {
+    classic: {
+      labels: ['SVM lineal', 'Naive Bayes', 'XGBoost', 'Random forest'],
+      values: [0.7309, 0.7254, 0.6871, 0.6346],
+    },
+    neural: {
+      labels: ['BERT', 'FastText + LSTM', 'FastText + FNN'],
+      values: [0.8432, 0.7520, 0.6950],
+    },
+  } as const;
+
+  const renderChart = (root: ChartRoot) => {
+    const canvas = root.querySelector<HTMLCanvasElement>('canvas');
+    const kind = root.dataset.bggChart as keyof typeof chartData | undefined;
+    if (!canvas || !kind || !(kind in chartData)) return;
+
+    charts.get(root)?.destroy();
+    const palette = getPalette(root);
+    const data = chartData[kind];
+    const accent = kind === 'classic' ? palette.primary : palette.secondary;
+    const barColors = data.values.map((_value, index) => index === 0 ? accent : palette.mutedBar);
+
+    charts.set(root, new Chart(canvas, {
+      type: 'bar',
+      data: {
+        labels: [...data.labels],
+        datasets: [{
+          data: [...data.values],
+          backgroundColor: barColors,
+          borderRadius: 3,
+          borderSkipped: false,
+          barPercentage: 0.66,
+          categoryPercentage: 0.78,
+        }],
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+          duration: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 800,
+          easing: 'easeOutQuart',
+        },
+        interaction: { mode: 'nearest', axis: 'y', intersect: false },
+        scales: {
+          x: {
+            beginAtZero: true,
+            min: 0,
+            max: 0.9,
+            grid: { color: palette.border },
+            border: { display: false },
+            ticks: {
+              color: palette.muted,
+              stepSize: 0.1,
+              callback: value => Number(value).toFixed(1),
+              font: { family: palette.font, size: 11 },
+            },
+            title: {
+              display: true,
+              text: 'Macro-F1',
+              color: palette.muted,
+              font: { family: palette.font, size: 11, weight: 500 },
+            },
+          },
+          y: {
+            grid: { display: false },
+            border: { display: false },
+            ticks: { color: palette.muted, font: { family: palette.font, size: 11 } },
+          },
+        },
+        plugins: {
+          tooltip: {
+            backgroundColor: palette.text,
+            titleColor: palette.surface,
+            bodyColor: palette.surface,
+            displayColors: false,
+            padding: 11,
+            cornerRadius: 6,
+            titleFont: { family: palette.font, size: 12, weight: 600 },
+            bodyFont: { family: palette.font, size: 12 },
+            callbacks: {
+              label: context => `Macro-F1: ${context.parsed.x.toFixed(4)}`,
+            },
+          },
+        },
+      },
+    }));
+  };
+
+  const roots = Array.from(document.querySelectorAll<ChartRoot>('[data-bgg-chart]'));
+  if ('IntersectionObserver' in window) {
+    const visibilityObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        renderChart(entry.target as ChartRoot);
+        visibilityObserver.unobserve(entry.target);
+      });
+    }, { rootMargin: '80px 0px', threshold: 0.15 });
+    roots.forEach(root => visibilityObserver.observe(root));
+  } else {
+    roots.forEach(renderChart);
+  }
+
+  const themeObserver = new MutationObserver(mutations => {
+    if (!mutations.some(mutation => mutation.attributeName === 'data-theme')) return;
+    charts.forEach((_chart, root) => renderChart(root));
+  });
+  themeObserver.observe(document.documentElement, { attributes: true });
+</script>
