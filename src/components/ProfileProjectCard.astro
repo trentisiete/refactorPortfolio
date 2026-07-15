@@ -1,45 +1,162 @@
 ---
 import type { ProfileProject } from '../data/profile.es';
+import type { Lang } from '../i18n/utils';
+import { useTranslations } from '../i18n/utils';
 
 interface Props {
   project: ProfileProject;
+  lang: Lang;
 }
 
-const { project } = Astro.props;
-const mainHref = project.articleHref ?? project.github;
-const mainIsExternal = !project.articleHref && Boolean(project.github);
+const { project, lang } = Astro.props;
+const t = useTranslations(lang);
+const dialogId = `project-preview-${project.id}`;
+const titleId = `${dialogId}-title`;
+const galleryTitleId = `${dialogId}-gallery-title`;
 ---
 
-<article class="profile-project-card">
+<article class="profile-project-card" data-project-card>
+  <button
+    class="profile-project-card__main"
+    type="button"
+    aria-haspopup="dialog"
+    aria-controls={dialogId}
+    aria-label={`${t.profile.open_project}: ${project.title}`}
+    data-project-preview-open
+  ></button>
+
   {project.year && <span class="profile-project-card__year">{project.year}</span>}
 
-  <h3 class="profile-project-card__title">
-    {mainHref ? (
-      <a
-        class="profile-project-card__main"
-        href={mainHref}
-        target={mainIsExternal ? '_blank' : undefined}
-        rel={mainIsExternal ? 'noopener noreferrer' : undefined}
-      >{project.title}</a>
-    ) : (
-      project.title
-    )}
-  </h3>
+  <h3 class="profile-project-card__title">{project.title}</h3>
+  {project.excerpt && <p class="profile-project-card__excerpt">{project.excerpt}</p>}
 
-  {project.github && (
-    <div class="profile-project-card__links">
-      <a
-        class="profile-project-card__github"
-        href={project.github}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`GitHub: ${project.title}`}
-        title="GitHub"
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-        </svg>
-      </a>
+  <div class="profile-project-card__links" aria-hidden="true">
+    <span>{t.profile.open_project}</span>
+    <span>↗</span>
+  </div>
+
+  <dialog
+    class="project-preview"
+    id={dialogId}
+    aria-labelledby={titleId}
+    data-project-preview-dialog
+  >
+    <div class="project-preview__shell">
+      <header class="project-preview__topbar">
+        <span>{project.year ?? t.profile.projects_title}</span>
+        <button
+          class="project-preview__close"
+          type="button"
+          aria-label={t.profile.close_project}
+          title={t.profile.close_project}
+          data-project-preview-close
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      </header>
+
+      <div class="project-preview__layout">
+        <section class="project-preview__gallery" aria-labelledby={galleryTitleId}>
+          <header class="project-preview__gallery-header">
+            <h3 id={galleryTitleId}>{t.profile.gallery}</h3>
+            {project.gallery && project.gallery.length > 0 && <span>{project.gallery.length}</span>}
+          </header>
+
+          {project.gallery && project.gallery.length > 0 ? (
+            <div class="project-preview__feed">
+              {project.gallery.map((image, index) => (
+                <figure class="project-preview__image">
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                  />
+                  {image.caption && <figcaption>{image.caption}</figcaption>}
+                </figure>
+              ))}
+            </div>
+          ) : (
+            <div class="project-preview__gallery-empty">
+              <span aria-hidden="true">＋</span>
+              <p>{t.profile.gallery_empty}</p>
+            </div>
+          )}
+        </section>
+
+        <aside class="project-preview__story">
+          <div class="project-preview__article">
+            <p class="project-preview__eyebrow">{t.profile.article_preview}</p>
+            <h2 id={titleId}>{project.title}</h2>
+            {project.excerpt && <p class="project-preview__excerpt">{project.excerpt}</p>}
+
+            {project.articleHref ? (
+              <a class="project-preview__article-link" href={project.articleHref}>
+                {t.profile.read_article}<span aria-hidden="true">↗</span>
+              </a>
+            ) : (
+              <p class="project-preview__unavailable">{t.profile.article_unavailable}</p>
+            )}
+          </div>
+
+          {project.notes && project.notes.length > 0 && (
+            <section class="project-preview__notes" aria-label={t.profile.notes}>
+              <p class="project-preview__eyebrow">{t.profile.notes}</p>
+              <ul>
+                {project.notes.map(note => (
+                  <li class={`project-note project-note--${note.tone ?? 'neutral'}`}>{note.text}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {project.github && (
+            <footer class="project-preview__footer">
+              <a href={project.github} target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                </svg>
+                <span>{t.profile.view_code}</span>
+              </a>
+            </footer>
+          )}
+        </aside>
+      </div>
     </div>
-  )}
+  </dialog>
 </article>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-project-card]').forEach(card => {
+    if (card.dataset.projectReady === 'true') return;
+    card.dataset.projectReady = 'true';
+
+    const openButton = card.querySelector<HTMLButtonElement>('[data-project-preview-open]');
+    const dialog = card.querySelector<HTMLDialogElement>('[data-project-preview-dialog]');
+    const closeButton = card.querySelector<HTMLButtonElement>('[data-project-preview-close]');
+    if (!openButton || !dialog || !closeButton) return;
+
+    const close = () => {
+      if (dialog.open && typeof dialog.close === 'function') dialog.close();
+      else dialog.removeAttribute('open');
+    };
+
+    openButton.addEventListener('click', () => {
+      document.documentElement.classList.add('project-preview-open');
+      if (typeof dialog.showModal === 'function') dialog.showModal();
+      else dialog.setAttribute('open', '');
+    });
+
+    closeButton.addEventListener('click', close);
+    dialog.addEventListener('click', event => {
+      if (event.target === dialog) close();
+    });
+    dialog.addEventListener('close', () => {
+      document.documentElement.classList.remove('project-preview-open');
+      openButton.focus({ preventScroll: true });
+    });
+  });
+</script>

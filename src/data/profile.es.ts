@@ -29,11 +29,27 @@ export interface ProfileSection {
 }
 
 export interface ProfileProject {
+  id: string;
   title: string;
   excerpt?: string;
   year?: string;
   github?: string;
   articleHref?: string;
+  gallery?: ProfileProjectImage[];
+  notes?: ProfileProjectNote[];
+}
+
+export interface ProfileProjectImage {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+export type ProfileProjectNoteTone = 'yellow' | 'blue' | 'green' | 'violet' | 'neutral';
+
+export interface ProfileProjectNote {
+  text: string;
+  tone?: ProfileProjectNoteTone;
 }
 
 export interface ProfileData {
@@ -185,20 +201,60 @@ export const profileEs: ProfileData = {
 
 export const profileProjectsEs: ProfileProject[] = [
   {
+    id: 'surrogate-models',
     title: 'Modelos sustitutos para la búsqueda de entradas óptimas',
     excerpt: 'Procesos gaussianos, optimización bayesiana y Expected Improvement para buscar buenas configuraciones con un presupuesto limitado de evaluaciones.',
     year: '2026',
     github: 'https://github.com/trentisiete/surrogate_models',
     articleHref: '/es/articles/surrogate_models/',
+    notes: [
+      { text: 'Trabajo de Fin de Grado', tone: 'yellow' },
+    ],
+    gallery: [
+      {
+        src: '/assets/articles/surrogate_models/app_forrester_gp_evolution_no_noise.png',
+        alt: 'Evolución de un proceso gaussiano durante la optimización de Forrester',
+        caption: 'Cómo evoluciona el proceso gaussiano al incorporar nuevas evaluaciones.',
+      },
+      {
+        src: '/assets/articles/surrogate_models/fig_05_uncertainty_vs_error.png',
+        alt: 'Relación entre incertidumbre predictiva y error del modelo sustituto',
+        caption: 'Diagnóstico de la relación entre incertidumbre y error predictivo.',
+      },
+      {
+        src: '/assets/articles/surrogate_models/fig_08_ei_candidate_landscape.png',
+        alt: 'Paisaje de candidatos según Expected Improvement',
+        caption: 'Priorización de nuevos candidatos mediante Expected Improvement.',
+      },
+    ],
   },
   {
+    id: 'roadguard',
     title: 'RoadGuard',
     excerpt: 'Detección fiable de daños viales: transferencia entre países, calibración de confianza, política de abstención y priorización explicable del mantenimiento.',
     year: '2026',
     github: 'https://github.com/trentisiete/RoadGuard',
     articleHref: '/es/articles/roadguard/',
+    gallery: [
+      {
+        src: '/assets/articles/roadguard/example_1_China_MotorBike.jpg',
+        alt: 'Detección de daños viales en una imagen de China',
+        caption: 'Ejemplo de inferencia sobre daños viales en el dominio de China.',
+      },
+      {
+        src: '/assets/articles/roadguard/example_4_United_States.jpg',
+        alt: 'Detección de daños viales en una imagen de Estados Unidos',
+        caption: 'Transferencia del sistema al dominio de Estados Unidos.',
+      },
+      {
+        src: '/assets/articles/roadguard/stress_robustness.png',
+        alt: 'Resultados de robustez de RoadGuard ante degradaciones visuales',
+        caption: 'Prueba de estrés ante oscuridad y desenfoque.',
+      },
+    ],
   },
   {
+    id: 'bgg-review-intelligence',
     title: 'BGG Review Intelligence',
     excerpt: 'De reseñas de BoardGameGeek a conocimiento estructurado de opinión: preprocesado lingüístico, clasificación de sentimiento y análisis basado en aspectos.',
     year: '2025',
@@ -206,10 +262,28 @@ export const profileProjectsEs: ProfileProject[] = [
     articleHref: '/es/articles/bgg_review_intelligence/',
   },
   {
+    id: 'diffusion-models',
     title: 'Generación de imágenes con modelos de difusión',
     excerpt: 'Implementación del marco de SDEs de Song et al.: entrenamiento por denoising score matching, samplers, generación condicional e imputación sobre CIFAR-10.',
     year: '2025',
     github: 'https://github.com/trentisiete/DiffusionImaGen',
     articleHref: '/es/articles/diffusion_models/',
+    gallery: [
+      {
+        src: '/assets/articles/difussion_models/evolucion_muestras_vp_lineal.png',
+        alt: 'Evolución desde ruido hasta imágenes generadas por un modelo de difusión',
+        caption: 'Del ruido inicial a la muestra final mediante VP-SDE.',
+      },
+      {
+        src: '/assets/articles/difussion_models/comparativa_samplers_vp_lineal.png',
+        alt: 'Comparación visual de distintos samplers de difusión',
+        caption: 'Comparación de resultados entre cuatro estrategias de muestreo.',
+      },
+      {
+        src: '/assets/articles/difussion_models/imputacion_cifar_mnist_3etapas.png',
+        alt: 'Imputación de regiones en imágenes CIFAR-10',
+        caption: 'Reconstrucción de regiones enmascaradas mediante difusión.',
+      },
+    ],
   },
 ];

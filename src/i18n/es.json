@@ -51,6 +51,15 @@
   },
   "profile": {
     "projects_title": "Proyectos",
-    "projects_empty": "Próximamente"
+    "projects_empty": "Próximamente",
+    "open_project": "Abrir proyecto",
+    "close_project": "Cerrar proyecto",
+    "article_preview": "Artículo",
+    "read_article": "Leer artículo completo",
+    "article_unavailable": "Artículo próximamente",
+    "gallery": "Galería de resultados",
+    "gallery_empty": "Galería en preparación",
+    "notes": "Notas",
+    "view_code": "Ver código en GitHub"
   }
 }

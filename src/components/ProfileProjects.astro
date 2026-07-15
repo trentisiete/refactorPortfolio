@@ -18,7 +18,7 @@ const t = useTranslations(lang);
 
   <div class="profile-projects__grid">
     {projects.length > 0 ? (
-      projects.map(project => <ProfileProjectCard project={project} />)
+      projects.map(project => <ProfileProjectCard project={project} lang={lang} />)
     ) : (
       <article class="profile-project-card profile-project-card--placeholder">
         <p>{t.profile.projects_empty}</p>

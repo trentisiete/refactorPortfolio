@@ -1,5 +1,5 @@
 // translated: true
-// sourceHash: 522ef89568df5cf6
+// sourceHash: 2b4cceee7dc4591d
 import type { ProfileData, ProfileProject } from './profile.es';
 
 export const profileDe: ProfileData = {
@@ -144,19 +144,59 @@ export const profileDe: ProfileData = {
 
 export const profileProjectsDe: ProfileProject[] = [
   {
+    id: 'surrogate-models',
     title: 'Ersatzmodelle zur Suche nach optimalen Eingaben',
     excerpt: 'Gaußsche Prozesse, Bayes-Optimierung und Expected Improvement zur Suche nach guten Konfigurationen bei begrenztem Auswertungsbudget.',
     year: '2026',
     github: 'https://github.com/trentisiete/surrogate_models',
     articleHref: '/de/articles/surrogate_models/',
+    notes: [
+      { text: 'Bachelorarbeit', tone: 'yellow' },
+    ],
+    gallery: [
+      {
+        src: '/assets/articles/surrogate_models/app_forrester_gp_evolution_no_noise.png',
+        alt: 'Entwicklung eines Gauß-Prozesses während der Forrester-Optimierung',
+        caption: 'Wie sich der Gauß-Prozess mit jeder neuen Auswertung entwickelt.',
+      },
+      {
+        src: '/assets/articles/surrogate_models/fig_05_uncertainty_vs_error.png',
+        alt: 'Zusammenhang zwischen Vorhersageunsicherheit und Fehler des Ersatzmodells',
+        caption: 'Diagnose des Zusammenhangs zwischen Unsicherheit und Vorhersagefehler.',
+      },
+      {
+        src: '/assets/articles/surrogate_models/fig_08_ei_candidate_landscape.png',
+        alt: 'Kandidatenlandschaft nach Expected Improvement',
+        caption: 'Priorisierung neuer Kandidaten mittels Expected Improvement.',
+      },
+    ],
   },
   {
+    id: 'roadguard',
     title: 'RoadGuard',
     excerpt: 'Zuverlässige Erkennung von Straßenschäden: länderübergreifender Transfer, Konfidenzkalibrierung, Abstentionsstrategie und erklärbare Priorisierung der Instandhaltung.',
     year: '2026',
     github: 'https://github.com/trentisiete/RoadGuard',
+    gallery: [
+      {
+        src: '/assets/articles/roadguard/example_1_China_MotorBike.jpg',
+        alt: 'Erkennung von Straßenschäden in einem Bild aus China',
+        caption: 'Inferenzbeispiel für Straßenschäden im China-Domain.',
+      },
+      {
+        src: '/assets/articles/roadguard/example_4_United_States.jpg',
+        alt: 'Erkennung von Straßenschäden in einem Bild aus den Vereinigten Staaten',
+        caption: 'Übertragung des Systems auf den US-Domain.',
+      },
+      {
+        src: '/assets/articles/roadguard/stress_robustness.png',
+        alt: 'RoadGuard-Robustheitsergebnisse bei visueller Beeinträchtigung',
+        caption: 'Stresstest bei Dunkelheit und Unschärfe.',
+      },
+    ],
   },
   {
+    id: 'bgg-review-intelligence',
     title: 'BGG Review Intelligence',
     excerpt: 'Von BoardGameGeek-Rezensionen zu strukturiertem Meinungswissen: linguistische Vorverarbeitung, Sentiment-Klassifikation und aspektbasierte Analyse.',
     year: '2025',
@@ -164,10 +204,28 @@ export const profileProjectsDe: ProfileProject[] = [
     articleHref: '/de/articles/bgg_review_intelligence/',
   },
   {
+    id: 'diffusion-models',
     title: 'Bilderzeugung mit Diffusionsmodellen',
     excerpt: 'Implementierung des SDE-Frameworks von Song et al.: Training per Denoising Score Matching, Sampler, bedingte Generierung und Imputation auf CIFAR-10.',
     year: '2025',
     github: 'https://github.com/trentisiete/DiffusionImaGen',
     articleHref: '/de/articles/diffusion_models/',
+    gallery: [
+      {
+        src: '/assets/articles/difussion_models/evolucion_muestras_vp_lineal.png',
+        alt: 'Entwicklung von Rauschen zu durch ein Diffusionsmodell erzeugten Bildern',
+        caption: 'Vom anfänglichen Rauschen zur finalen Stichprobe mit einer VP-SDE.',
+      },
+      {
+        src: '/assets/articles/difussion_models/comparativa_samplers_vp_lineal.png',
+        alt: 'Visueller Vergleich verschiedener Diffusions-Sampler',
+        caption: 'Vergleich der Ergebnisse von vier Sampling-Strategien.',
+      },
+      {
+        src: '/assets/articles/difussion_models/imputacion_cifar_mnist_3etapas.png',
+        alt: 'Imputation von Bereichen in CIFAR-10-Bildern',
+        caption: 'Rekonstruktion maskierter Bereiche mittels Diffusion.',
+      },
+    ],
   },
 ];
