@@ -1,7 +1,7 @@
 ---
 title: "Image Generation through Stochastic Differential Equations and Diffusion Processes"
 topic: "Generative AI"
-date: 2025-05-27
+date: 2025-05-26
 excerpt: "A comprehensive analysis of diffusion models and their application in image generation."
 # tags: ["python", "sklearn", "mlstudio", "gemini"]
 draft: false
