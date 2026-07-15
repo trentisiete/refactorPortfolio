@@ -1,3 +1,5 @@
+import { createProjectGallery } from './projectMedia';
+
 export type ProfileSectionId = 'experience' | 'education' | 'awards';
 
 export interface ProfileLink {
@@ -210,23 +212,11 @@ export const profileProjectsEs: ProfileProject[] = [
     notes: [
       { text: 'Trabajo de Fin de Grado', tone: 'yellow' },
     ],
-    gallery: [
-      {
-        src: '/assets/articles/surrogate_models/app_forrester_gp_evolution_no_noise.png',
-        alt: 'Evolución de un proceso gaussiano durante la optimización de Forrester',
-        caption: 'Cómo evoluciona el proceso gaussiano al incorporar nuevas evaluaciones.',
-      },
-      {
-        src: '/assets/articles/surrogate_models/fig_05_uncertainty_vs_error.png',
-        alt: 'Relación entre incertidumbre predictiva y error del modelo sustituto',
-        caption: 'Diagnóstico de la relación entre incertidumbre y error predictivo.',
-      },
-      {
-        src: '/assets/articles/surrogate_models/fig_08_ei_candidate_landscape.png',
-        alt: 'Paisaje de candidatos según Expected Improvement',
-        caption: 'Priorización de nuevos candidatos mediante Expected Improvement.',
-      },
-    ],
+    gallery: createProjectGallery('surrogate-models', 'Resultado visual de modelos sustitutos', {
+      'app_forrester_gp_evolution_no_noise.png': 'Cómo evoluciona el proceso gaussiano al incorporar nuevas evaluaciones.',
+      'fig_05_uncertainty_vs_error.png': 'Diagnóstico de la relación entre incertidumbre y error predictivo.',
+      'fig_08_ei_candidate_landscape.png': 'Priorización de nuevos candidatos mediante Expected Improvement.',
+    }),
   },
   {
     id: 'roadguard',
@@ -235,23 +225,11 @@ export const profileProjectsEs: ProfileProject[] = [
     year: '2026',
     github: 'https://github.com/trentisiete/RoadGuard',
     articleHref: '/es/articles/roadguard/',
-    gallery: [
-      {
-        src: '/assets/articles/roadguard/example_1_China_MotorBike.jpg',
-        alt: 'Detección de daños viales en una imagen de China',
-        caption: 'Ejemplo de inferencia sobre daños viales en el dominio de China.',
-      },
-      {
-        src: '/assets/articles/roadguard/example_4_United_States.jpg',
-        alt: 'Detección de daños viales en una imagen de Estados Unidos',
-        caption: 'Transferencia del sistema al dominio de Estados Unidos.',
-      },
-      {
-        src: '/assets/articles/roadguard/stress_robustness.png',
-        alt: 'Resultados de robustez de RoadGuard ante degradaciones visuales',
-        caption: 'Prueba de estrés ante oscuridad y desenfoque.',
-      },
-    ],
+    gallery: createProjectGallery('roadguard', 'Resultado visual de RoadGuard', {
+      'example_1_China_MotorBike.jpg': 'Ejemplo de inferencia sobre daños viales en el dominio de China.',
+      'example_4_United_States.jpg': 'Transferencia del sistema al dominio de Estados Unidos.',
+      'stress_robustness.png': 'Prueba de estrés ante oscuridad y desenfoque.',
+    }),
   },
   {
     id: 'bgg-review-intelligence',
@@ -260,6 +238,7 @@ export const profileProjectsEs: ProfileProject[] = [
     year: '2025',
     github: 'https://github.com/trentisiete/bgg-review-intelligence',
     articleHref: '/es/articles/bgg_review_intelligence/',
+    gallery: createProjectGallery('bgg-review-intelligence', 'Resultado visual de BGG Review Intelligence'),
   },
   {
     id: 'diffusion-models',
@@ -268,22 +247,10 @@ export const profileProjectsEs: ProfileProject[] = [
     year: '2025',
     github: 'https://github.com/trentisiete/DiffusionImaGen',
     articleHref: '/es/articles/diffusion_models/',
-    gallery: [
-      {
-        src: '/assets/articles/difussion_models/evolucion_muestras_vp_lineal.png',
-        alt: 'Evolución desde ruido hasta imágenes generadas por un modelo de difusión',
-        caption: 'Del ruido inicial a la muestra final mediante VP-SDE.',
-      },
-      {
-        src: '/assets/articles/difussion_models/comparativa_samplers_vp_lineal.png',
-        alt: 'Comparación visual de distintos samplers de difusión',
-        caption: 'Comparación de resultados entre cuatro estrategias de muestreo.',
-      },
-      {
-        src: '/assets/articles/difussion_models/imputacion_cifar_mnist_3etapas.png',
-        alt: 'Imputación de regiones en imágenes CIFAR-10',
-        caption: 'Reconstrucción de regiones enmascaradas mediante difusión.',
-      },
-    ],
+    gallery: createProjectGallery('diffusion-models', 'Resultado visual de modelos de difusión', {
+      'evolucion_muestras_vp_lineal.png': 'Del ruido inicial a la muestra final mediante VP-SDE.',
+      'comparativa_samplers_vp_lineal.png': 'Comparación de resultados entre cuatro estrategias de muestreo.',
+      'imputacion_cifar_mnist_3etapas.png': 'Reconstrucción de regiones enmascaradas mediante difusión.',
+    }),
   },
 ];

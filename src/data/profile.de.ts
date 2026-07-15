@@ -1,6 +1,7 @@
 // translated: true
-// sourceHash: 2b4cceee7dc4591d
+// sourceHash: e5a5c4069da94317
 import type { ProfileData, ProfileProject } from './profile.es';
+import { createProjectGallery } from './projectMedia';
 
 export const profileDe: ProfileData = {
   title: 'Werdegang',
@@ -153,23 +154,11 @@ export const profileProjectsDe: ProfileProject[] = [
     notes: [
       { text: 'Bachelorarbeit', tone: 'yellow' },
     ],
-    gallery: [
-      {
-        src: '/assets/articles/surrogate_models/app_forrester_gp_evolution_no_noise.png',
-        alt: 'Entwicklung eines Gauß-Prozesses während der Forrester-Optimierung',
-        caption: 'Wie sich der Gauß-Prozess mit jeder neuen Auswertung entwickelt.',
-      },
-      {
-        src: '/assets/articles/surrogate_models/fig_05_uncertainty_vs_error.png',
-        alt: 'Zusammenhang zwischen Vorhersageunsicherheit und Fehler des Ersatzmodells',
-        caption: 'Diagnose des Zusammenhangs zwischen Unsicherheit und Vorhersagefehler.',
-      },
-      {
-        src: '/assets/articles/surrogate_models/fig_08_ei_candidate_landscape.png',
-        alt: 'Kandidatenlandschaft nach Expected Improvement',
-        caption: 'Priorisierung neuer Kandidaten mittels Expected Improvement.',
-      },
-    ],
+    gallery: createProjectGallery('surrogate-models', 'Visuelles Ergebnis der Ersatzmodelle', {
+      'app_forrester_gp_evolution_no_noise.png': 'Wie sich der Gauß-Prozess mit jeder neuen Auswertung entwickelt.',
+      'fig_05_uncertainty_vs_error.png': 'Diagnose des Zusammenhangs zwischen Unsicherheit und Vorhersagefehler.',
+      'fig_08_ei_candidate_landscape.png': 'Priorisierung neuer Kandidaten mittels Expected Improvement.',
+    }),
   },
   {
     id: 'roadguard',
@@ -177,23 +166,11 @@ export const profileProjectsDe: ProfileProject[] = [
     excerpt: 'Zuverlässige Erkennung von Straßenschäden: länderübergreifender Transfer, Konfidenzkalibrierung, Abstentionsstrategie und erklärbare Priorisierung der Instandhaltung.',
     year: '2026',
     github: 'https://github.com/trentisiete/RoadGuard',
-    gallery: [
-      {
-        src: '/assets/articles/roadguard/example_1_China_MotorBike.jpg',
-        alt: 'Erkennung von Straßenschäden in einem Bild aus China',
-        caption: 'Inferenzbeispiel für Straßenschäden im China-Domain.',
-      },
-      {
-        src: '/assets/articles/roadguard/example_4_United_States.jpg',
-        alt: 'Erkennung von Straßenschäden in einem Bild aus den Vereinigten Staaten',
-        caption: 'Übertragung des Systems auf den US-Domain.',
-      },
-      {
-        src: '/assets/articles/roadguard/stress_robustness.png',
-        alt: 'RoadGuard-Robustheitsergebnisse bei visueller Beeinträchtigung',
-        caption: 'Stresstest bei Dunkelheit und Unschärfe.',
-      },
-    ],
+    gallery: createProjectGallery('roadguard', 'Visuelles Ergebnis von RoadGuard', {
+      'example_1_China_MotorBike.jpg': 'Inferenzbeispiel für Straßenschäden im China-Domain.',
+      'example_4_United_States.jpg': 'Übertragung des Systems auf den US-Domain.',
+      'stress_robustness.png': 'Stresstest bei Dunkelheit und Unschärfe.',
+    }),
   },
   {
     id: 'bgg-review-intelligence',
@@ -202,6 +179,7 @@ export const profileProjectsDe: ProfileProject[] = [
     year: '2025',
     github: 'https://github.com/trentisiete/bgg-review-intelligence',
     articleHref: '/de/articles/bgg_review_intelligence/',
+    gallery: createProjectGallery('bgg-review-intelligence', 'Visuelles Ergebnis von BGG Review Intelligence'),
   },
   {
     id: 'diffusion-models',
@@ -210,22 +188,10 @@ export const profileProjectsDe: ProfileProject[] = [
     year: '2025',
     github: 'https://github.com/trentisiete/DiffusionImaGen',
     articleHref: '/de/articles/diffusion_models/',
-    gallery: [
-      {
-        src: '/assets/articles/difussion_models/evolucion_muestras_vp_lineal.png',
-        alt: 'Entwicklung von Rauschen zu durch ein Diffusionsmodell erzeugten Bildern',
-        caption: 'Vom anfänglichen Rauschen zur finalen Stichprobe mit einer VP-SDE.',
-      },
-      {
-        src: '/assets/articles/difussion_models/comparativa_samplers_vp_lineal.png',
-        alt: 'Visueller Vergleich verschiedener Diffusions-Sampler',
-        caption: 'Vergleich der Ergebnisse von vier Sampling-Strategien.',
-      },
-      {
-        src: '/assets/articles/difussion_models/imputacion_cifar_mnist_3etapas.png',
-        alt: 'Imputation von Bereichen in CIFAR-10-Bildern',
-        caption: 'Rekonstruktion maskierter Bereiche mittels Diffusion.',
-      },
-    ],
+    gallery: createProjectGallery('diffusion-models', 'Visuelles Ergebnis der Diffusionsmodelle', {
+      'evolucion_muestras_vp_lineal.png': 'Vom anfänglichen Rauschen zur finalen Stichprobe mit einer VP-SDE.',
+      'comparativa_samplers_vp_lineal.png': 'Vergleich der Ergebnisse von vier Sampling-Strategien.',
+      'imputacion_cifar_mnist_3etapas.png': 'Rekonstruktion maskierter Bereiche mittels Diffusion.',
+    }),
   },
 ];

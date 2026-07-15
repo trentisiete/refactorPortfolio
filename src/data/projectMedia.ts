@@ -1,0 +1,68 @@
+const projectMedia = {
+  'surrogate-models': [
+    'app_forrester_ei_decision_synthesis_step5.png',
+    'app_forrester_gp_evolution_no_noise.png',
+    'app_real_best_gp_parity_by_target.png',
+    'app_real_dataset_targets_by_diet.png',
+    'evolution_incumbent_best_model_by_benchmark.png',
+    'evolution_relative_mae_best_model_by_benchmark.png',
+    'factor_effects_paired_for_tfg.png',
+    'fig_01_lodo_generalization_vs_dummy.png',
+    'fig_02_error_by_left_out_diet.png',
+    'fig_04_kernel_family_mae.png',
+    'fig_05_uncertainty_vs_error.png',
+    'fig_06_prediction_intervals_by_diet.png',
+    'fig_08_ei_candidate_landscape.png',
+    'fig_gp_prior_posterior.png',
+    'mae_vs_probabilistic_diagnostics_by_step.png',
+  ],
+  roadguard: [
+    'calibration_reliability.png',
+    'example_1_China_MotorBike.jpg',
+    'example_3_China_MotorBike.jpg',
+    'example_4_United_States.jpg',
+    'example_5_United_States.jpg',
+    'policy_comparison.png',
+    'stress_robustness.png',
+  ],
+  'bgg-review-intelligence': [],
+  'diffusion-models': [
+    'bpd.jpeg',
+    'classifier_architecture_image.png',
+    'comparativa_samplers_vp_lineal.png',
+    'evolucion_muestras_vp_lineal.png',
+    'fid.jpeg',
+    'final_conditional_comparison.png',
+    'image_dcfe22.png',
+    'imputacion_cifar_mnist_3etapas.png',
+    'is_media.jpeg',
+    'is_std.jpeg',
+    'loss_average_barplot_all_sdes.png',
+    'loss_curves_all_sdes.png',
+    'loss_final_barplot_all_sdes.png',
+    'loss_violin_plot_all_sdes.png',
+    'mi_diagrama_gantt.jpeg',
+    'mi_diagrama_gantt2.jpeg',
+  ],
+} as const;
+
+export type ProjectMediaId = keyof typeof projectMedia;
+
+const projectFolders: Record<ProjectMediaId, string> = {
+  'surrogate-models': 'surrogate_models',
+  roadguard: 'roadguard',
+  'bgg-review-intelligence': 'bgg_review_intelligence',
+  'diffusion-models': 'difussion_models',
+};
+
+export function createProjectGallery(
+  id: ProjectMediaId,
+  altPrefix: string,
+  captions: Partial<Record<string, string>> = {},
+) {
+  return projectMedia[id].map((file, index) => ({
+    src: `/assets/articles/${projectFolders[id]}/${file}`,
+    alt: `${altPrefix} ${index + 1}`,
+    ...(captions[file] ? { caption: captions[file] } : {}),
+  }));
+}

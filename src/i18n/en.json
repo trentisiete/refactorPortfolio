@@ -59,6 +59,10 @@
     "article_unavailable": "Article coming soon",
     "gallery": "Results gallery",
     "gallery_empty": "Gallery in preparation",
+    "open_image": "Open image",
+    "previous_image": "Previous image",
+    "next_image": "Next image",
+    "close_gallery": "Close gallery",
     "notes": "Notes",
     "view_code": "View code on GitHub"
   }

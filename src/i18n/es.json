@@ -59,6 +59,10 @@
     "article_unavailable": "Artículo próximamente",
     "gallery": "Galería de resultados",
     "gallery_empty": "Galería en preparación",
+    "open_image": "Abrir imagen",
+    "previous_image": "Imagen anterior",
+    "next_image": "Imagen siguiente",
+    "close_gallery": "Cerrar galería",
     "notes": "Notas",
     "view_code": "Ver código en GitHub"
   }
