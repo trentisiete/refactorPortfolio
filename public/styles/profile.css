@@ -473,14 +473,13 @@ html.project-preview-open {
 
 .project-preview__layout {
     display: grid;
-    grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.75fr);
+    grid-template-columns: minmax(0, 1.2fr) minmax(380px, 0.9fr);
     min-width: 0;
     min-height: 0;
 }
 
 .project-preview__gallery {
-    display: grid;
-    grid-template-rows: auto minmax(0, 1fr);
+    display: block;
     min-width: 0;
     min-height: 0;
     background: var(--color-bg-alt);
@@ -744,6 +743,7 @@ html.project-preview-open {
     gap: 4px;
     min-width: 0;
     min-height: 0;
+    height: 100%;
     padding: 4px;
     overflow: auto;
     background: var(--color-border);
@@ -813,9 +813,18 @@ html.project-preview-open {
     padding: clamp(1.15rem, 2.1vw, 1.75rem);
 }
 
+.project-preview__article {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+}
+
 .project-preview__article-frame {
     position: relative;
-    height: clamp(310px, 46vh, 420px);
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 380px;
     overflow: hidden;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -825,7 +834,7 @@ html.project-preview-open {
 .project-preview__article-frame iframe {
     display: block;
     width: 277.7778%;
-    height: 1120px;
+    height: 1800px;
     pointer-events: none;
     background: var(--color-background);
     border: 0;
@@ -1065,6 +1074,7 @@ html.project-preview-open {
     .project-preview__collage {
         grid-auto-rows: 120px;
         min-height: 500px;
+        height: auto;
         overflow: visible;
     }
 
@@ -1210,6 +1220,7 @@ html.project-preview-open {
 
     .project-preview__article-frame {
         height: 360px;
+        min-height: 360px;
     }
 
     .project-carousel__topbar {

@@ -12,7 +12,6 @@ const { project, lang } = Astro.props;
 const t = useTranslations(lang);
 const dialogId = `project-preview-${project.id}`;
 const titleId = `${dialogId}-title`;
-const galleryTitleId = `${dialogId}-gallery-title`;
 const carouselTitleId = `${dialogId}-carousel-title`;
 ---
 
@@ -67,12 +66,7 @@ const carouselTitleId = `${dialogId}-carousel-title`;
         </header>
 
         <div class="project-preview__layout">
-          <section class="project-preview__gallery" aria-labelledby={galleryTitleId}>
-            <header class="project-preview__gallery-header">
-              <h3 id={galleryTitleId}>{t.profile.gallery}</h3>
-              {project.gallery && project.gallery.length > 0 && <span>{project.gallery.length}</span>}
-            </header>
-
+          <section class="project-preview__gallery" aria-label={t.profile.gallery}>
             {project.gallery && project.gallery.length > 0 ? (
               <div class="project-preview__collage">
                 {project.gallery.map((image, index) => (
@@ -101,8 +95,6 @@ const carouselTitleId = `${dialogId}-carousel-title`;
 
           <aside class="project-preview__story">
             <section class="project-preview__article" aria-label={t.profile.article_preview}>
-              <p class="project-preview__eyebrow">{t.profile.article_preview}</p>
-
               {project.articleHref ? (
                 <div class="project-preview__article-frame">
                   <iframe
