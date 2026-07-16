@@ -166,6 +166,7 @@ export const profileProjectsDe: ProfileProject[] = [
     excerpt: 'Zuverlässige Erkennung von Straßenschäden: länderübergreifender Transfer, Konfidenzkalibrierung, Abstentionsstrategie und erklärbare Priorisierung der Instandhaltung.',
     year: '2026',
     github: 'https://github.com/trentisiete/RoadGuard',
+    articleHref: '/de/articles/roadguard/',
     gallery: createProjectGallery('roadguard', 'Visuelles Ergebnis von RoadGuard', {
       'example_1_China_MotorBike.jpg': 'Inferenzbeispiel für Straßenschäden im China-Domain.',
       'example_4_United_States.jpg': 'Übertragung des Systems auf den US-Domain.',

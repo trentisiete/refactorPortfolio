@@ -191,7 +191,8 @@ ol {
    ---------------------------------------- */
 .container {
     width: 100%;
-    max-width: 720px;
+    /* Mismo ancho que la vista de articulo (container--wide) en todo el sitio */
+    max-width: 1024px;
     margin-left: auto;
     margin-right: auto;
     padding-left: var(--space-6);

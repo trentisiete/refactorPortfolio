@@ -166,6 +166,7 @@ export const profileProjectsEn: ProfileProject[] = [
     excerpt: 'Reliable road damage detection: cross-country transfer, confidence calibration, abstention policy and explainable maintenance prioritization.',
     year: '2026',
     github: 'https://github.com/trentisiete/RoadGuard',
+    articleHref: '/en/articles/roadguard/',
     gallery: createProjectGallery('roadguard', 'RoadGuard visual result', {
       'example_1_China_MotorBike.jpg': 'Inference example for road damage in the China domain.',
       'example_4_United_States.jpg': 'Transfer of the system to the United States domain.',

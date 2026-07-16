@@ -247,7 +247,7 @@ async function translateProfileFile(apiKey, raw, sourceLang, targetLang, previou
 
 	let user = `Translate this TypeScript data file:\n\n${tsStripMarker(raw)}`;
 	if (previous) {
-		user += `\n\nFor reference, this was the previous translation of an older version of the same file. Reuse its terminology and phrasing for entries that have not changed:\n\n${tsStripMarker(previous)}`;
+		user += `\n\nFor reference only, this was the previous translation of an OLDER version of the file. Reuse its terminology and phrasing for entries that have not changed, but the NEW source above is the single source of truth for structure: every entry, property and link present in the new source must appear in your output (and nothing that is no longer there), even if the reference lacks it:\n\n${tsStripMarker(previous)}`;
 	}
 
 	const out = await callClaude(apiKey, system, user);
