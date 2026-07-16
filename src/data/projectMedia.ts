@@ -71,7 +71,7 @@ export function createProjectGallery(
 ) {
   return projectMedia[id].map((file, index) => ({
     src: `/assets/articles/${projectFolders[id]}/${file}`,
-    alt: `${altPrefix} ${index + 1}`,
+    alt: captions[file] ?? `${altPrefix} ${index + 1}`,
     ...(captions[file] ? { caption: captions[file] } : {}),
   }));
 }

@@ -1,5 +1,5 @@
 // translated: true
-// sourceHash: e5a5c4069da94317
+// sourceHash: de2335aa41712de3
 import type { ProfileData, ProfileProject } from './profile.es';
 import { createProjectGallery } from './projectMedia';
 
@@ -155,9 +155,26 @@ export const profileProjectsEn: ProfileProject[] = [
       { text: 'Bachelor Thesis', tone: 'yellow' },
     ],
     gallery: createProjectGallery('surrogate-models', 'Surrogate-model visual result', {
+      'app_forrester_ei_decision_synthesis_step5.png': 'Synthesis of an Expected Improvement decision in Forrester: GP posterior, acquisition criterion and effect on the incumbent.',
       'app_forrester_gp_evolution_no_noise.png': 'How the Gaussian process evolves as new evaluations are incorporated.',
+      'app_real_best_gp_parity_by_target.png': 'Observed versus predicted in LODO validation for the best GP of each target in the real case.',
+      'app_real_dataset_targets_by_diet.png': 'Mean observed values per diet for the three targets: the descriptive check prior to modeling.',
+      'app_real_observed_equal_weight_ranking.png': 'Exploratory ranking of the observed diets with an equal-weight score.',
+      'evolution_incumbent_best_model_by_benchmark.png': 'Evolution of the improvement in the found minimum during infill for the best model of each benchmark.',
+      'evolution_relative_mae_best_model_by_benchmark.png': 'Evolution of the relative MAE during infill for the best model of each benchmark.',
+      'factor_effects_paired_for_tfg.png': 'Paired effects of the experimental conditions: sampler, ARD and noise on the incumbent and the MAE.',
+      'fig_01_lodo_generalization_vs_dummy.png': 'Relative performance versus the Dummy baseline in LODO validation; below 1, the model generalizes better.',
+      'fig_02_error_by_left_out_diet.png': 'Generalization difficulty by held-out diet: normalized error and MAE in the original units.',
+      'fig_04_kernel_family_mae.png': 'Comparison of kernel families by macro MAE in the Hermetia real case.',
       'fig_05_uncertainty_vs_error.png': 'Diagnostic relationship between uncertainty and predictive error.',
+      'fig_06_prediction_intervals_by_diet.png': 'GP prediction intervals by held-out diet in LODO validation.',
       'fig_08_ei_candidate_landscape.png': 'Prioritization of new candidates using Expected Improvement.',
+      'fig_ei_demo.png': 'The infill cycle with Expected Improvement in Forrester: two steps of posterior and acquisition.',
+      'fig_gp_prior_posterior.png': 'Prior samples of a Gaussian process with an RBF kernel and posterior after two observations.',
+      'fig_kernel_matern52.png': 'Prior and posterior with a Matérn 5/2 kernel: rougher trajectories than with RBF.',
+      'final_relative_improvement_mae_by_benchmark.png': 'Final predictive improvement of the MAE by benchmark and kernel, with confidence intervals.',
+      'final_relative_incumbent_improvement_by_benchmark.png': 'Final improvement of the found minimum by benchmark and kernel at the end of infill.',
+      'mae_vs_probabilistic_diagnostics_by_step.png': 'Improvement in pointwise error versus probabilistic quality during infill; color measures coverage calibration.',
     }),
   },
   {
@@ -168,8 +185,16 @@ export const profileProjectsEn: ProfileProject[] = [
     github: 'https://github.com/trentisiete/RoadGuard',
     articleHref: '/en/articles/roadguard/',
     gallery: createProjectGallery('roadguard', 'RoadGuard visual result', {
+      'bootstrap_f1_ci.png': 'F1 per country with 95% bootstrap intervals: calibration does not improve F1 uniformly.',
+      'calibration_reliability.png': 'Reliability diagram before and after calibration: ECE drops from 0.089 to 0.029.',
+      'confidence_shift_by_correctness.png': 'Isotonic calibration separates correct from incorrect predictions: failures fall at low confidence, where the system can abstain.',
       'example_1_China_MotorBike.jpg': 'Inference example for road damage in the China domain.',
+      'example_3_China_MotorBike.jpg': 'Detection of a transverse crack in the China domain.',
       'example_4_United_States.jpg': 'Transfer of the system to the United States domain.',
+      'example_5_United_States.jpg': 'Alligator and longitudinal cracks detected in the United States.',
+      'per_class_ap_by_country.png': 'AP50 per class and country with the corrected ontology: Pothole strong in China and weaker upon transfer.',
+      'policy_comparison.png': 'Precision, recall and F1 per domain: base policy versus calibrated policy.',
+      'risk_coverage_curve.png': 'Risk-coverage frontier of selective prediction with the operating point of each policy.',
       'stress_robustness.png': 'Stress test under darkness and blur.',
     }),
   },
@@ -190,9 +215,22 @@ export const profileProjectsEn: ProfileProject[] = [
     github: 'https://github.com/trentisiete/DiffusionImaGen',
     articleHref: '/en/articles/diffusion_models/',
     gallery: createProjectGallery('diffusion-models', 'Diffusion-model visual result', {
-      'evolucion_muestras_vp_lineal.png': 'From initial noise to the final sample using a VP-SDE.',
+      'bpd.jpeg': 'Distribution of BPD (bits per dimension) across SDE configurations.',
+      'classifier_architecture_image.png': 'Architecture of the time-dependent classifier guiding conditional generation.',
       'comparativa_samplers_vp_lineal.png': 'Comparison of results across four sampling strategies.',
+      'evolucion_muestras_vp_lineal.png': 'From initial noise to the final sample using a VP-SDE.',
+      'fid.jpeg': 'Distribution of FID across the different SDE configurations.',
+      'final_conditional_comparison.png': 'Comparison of conditional generation across configurations.',
+      'image_dcfe22.png': 'Step-by-step denoising trajectory: from pure noise to the image after a thousand steps.',
       'imputacion_cifar_mnist_3etapas.png': 'Reconstruction of masked regions using diffusion.',
+      'is_media.jpeg': 'Mean Inception Score per SDE configuration.',
+      'is_std.jpeg': 'Internal standard deviation of the Inception Score per configuration.',
+      'loss_average_barplot_all_sdes.png': 'Average loss of the initial training per SDE configuration.',
+      'loss_curves_all_sdes.png': 'Loss curves during the first 50 epochs for each SDE.',
+      'loss_final_barplot_all_sdes.png': 'Final loss after 50 epochs per SDE configuration.',
+      'loss_violin_plot_all_sdes.png': 'Distribution of loss per configuration during the initial training.',
+      'mi_diagrama_gantt.jpeg': 'Project timeline planning: first phase of the Gantt chart.',
+      'mi_diagrama_gantt2.jpeg': 'Project timeline planning: second phase of the Gantt chart.',
     }),
   },
 ];

@@ -83,6 +83,7 @@ const carouselTitleId = `${dialogId}-carousel-title`;
                       loading={index < 6 ? 'eager' : 'lazy'}
                       decoding="async"
                     />
+                    {image.caption && <span class="project-collage__caption">{image.caption}</span>}
                   </button>
                 ))}
               </div>

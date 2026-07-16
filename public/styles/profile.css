@@ -855,6 +855,38 @@ html.project-preview-open {
     outline-offset: -3px;
 }
 
+/* Leyenda de cada pieza del collage, visible al pasar el raton */
+.project-collage__caption {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 1;
+    padding: var(--space-5) var(--space-3) var(--space-2);
+    font-family: var(--font-ui);
+    font-size: 0.7rem;
+    line-height: 1.4;
+    text-align: left;
+    color: #f2efe9;
+    background: linear-gradient(to top, rgb(10 9 7 / 0.82), rgb(10 9 7 / 0.4) 60%, transparent);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 160ms ease, transform 200ms ease;
+    pointer-events: none;
+}
+
+.project-collage__item:hover .project-collage__caption,
+.project-collage__item:focus-visible .project-collage__caption {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .project-collage__caption {
+        transform: none;
+        transition: none;
+    }
+}
+
 .project-preview__story {
     gap: var(--space-4);
     padding: 4px;
