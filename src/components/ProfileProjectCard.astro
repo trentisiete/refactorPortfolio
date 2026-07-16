@@ -124,7 +124,13 @@ const carouselTitleId = `${dialogId}-carousel-title`;
                 <p class="project-preview__eyebrow">{t.profile.notes}</p>
                 <ul>
                   {project.notes.map(note => (
-                    <li class={`project-note project-note--${note.tone ?? 'neutral'}`}>{note.text}</li>
+                    <li class={`project-comment project-comment--${note.tone ?? 'neutral'}`}>
+                      <span class="project-comment__avatar" aria-hidden="true">JA</span>
+                      <div class="project-comment__body">
+                        <span class="project-comment__author">José Arbeláez</span>
+                        <p>{note.text}</p>
+                      </div>
+                    </li>
                   ))}
                 </ul>
               </section>
