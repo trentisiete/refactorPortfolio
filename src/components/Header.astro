@@ -1,6 +1,6 @@
 ---
 import type { Lang } from '../i18n/utils';
-import { useTranslations } from '../i18n/utils';
+import { getProfilePath, useTranslations } from '../i18n/utils';
 import LanguageSwitcher from './LanguageSwitcher.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import JoseLogo from './JoseLogo.astro';
@@ -14,9 +14,14 @@ interface Props {
 const { lang, availableLangs, view = 'reading' } = Astro.props;
 const t = useTranslations(lang);
 const basePath = `/${lang}`;
-const profilePath = `/${lang}/trayectoria/`;
+const readingPath = lang === 'en' ? '/en/articles/' : `${basePath}/`;
+const profilePath = getProfilePath(lang);
 const languagePaths = view === 'profile'
-  ? { es: '/es/trayectoria/', en: '/en/trayectoria/', de: '/de/trayectoria/' }
+  ? {
+      es: getProfilePath('es'),
+      en: getProfilePath('en'),
+      de: getProfilePath('de'),
+    }
   : undefined;
 ---
 
@@ -31,7 +36,7 @@ const languagePaths = view === 'profile'
         <LanguageSwitcher lang={lang} availableLangs={availableLangs} paths={languagePaths} />
         <nav class="site-view-switcher" aria-label={t.views.label}>
           <a
-            href={`${basePath}/`}
+            href={readingPath}
             class:list={["site-view-switcher__link", { "site-view-switcher__link--active": view === 'reading' }]}
             aria-label={t.views.reading}
             aria-current={view === 'reading' ? 'page' : undefined}

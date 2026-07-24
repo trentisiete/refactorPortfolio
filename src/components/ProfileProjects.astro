@@ -13,7 +13,7 @@ const { projects, lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<section class="profile-projects" aria-labelledby="profile-projects-title">
+<section class="profile-projects" id="projects" aria-labelledby="profile-projects-title">
   <h2 id="profile-projects-title">{t.profile.projects_title}</h2>
 
   <div class="profile-projects__grid">

@@ -31,3 +31,7 @@ export function getLocalizedPath(path: string, lang: Lang): string {
     const cleanPath = path.replace(/^\/(es|en|de)/, '');
     return `/${lang}${cleanPath || '/'}`;
 }
+
+export function getProfilePath(lang: Lang): string {
+    return lang === 'en' ? '/en/' : `/${lang}/trayectoria/`;
+}

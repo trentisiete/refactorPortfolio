@@ -5,7 +5,7 @@ import JoseLogo from '../components/JoseLogo.astro';
 import SiteTraffic from '../components/SiteTraffic.astro';
 import TrafficStats from '../components/TrafficStats.astro';
 import type { Lang } from '../i18n/utils';
-import { useTranslations, getLocalizedPath } from '../i18n/utils';
+import { useTranslations, getLocalizedPath, getProfilePath } from '../i18n/utils';
 
 interface Props {
   title?: string;
@@ -41,6 +41,10 @@ const path = Astro.url.pathname;
 const alternateLangs: Lang[] = availableLangs ?? ['es', 'en', 'de'];
 const absoluteUrl = (p: string) => Astro.site ? new URL(p, Astro.site).href : p;
 const canonicalUrl = absoluteUrl(path);
+const alternatePath = (alternateLang: Lang) =>
+  view === 'profile'
+    ? getProfilePath(alternateLang)
+    : getLocalizedPath(path, alternateLang);
 ---
 
 <!DOCTYPE html>
@@ -61,10 +65,10 @@ const canonicalUrl = absoluteUrl(path);
   <!-- Idiomas para buscadores -->
   <link rel="canonical" href={canonicalUrl} />
   {alternateLangs.map(l => (
-    <link rel="alternate" hreflang={l} href={absoluteUrl(getLocalizedPath(path, l))} />
+    <link rel="alternate" hreflang={l} href={absoluteUrl(alternatePath(l))} />
   ))}
   {alternateLangs.includes('en') && (
-    <link rel="alternate" hreflang="x-default" href={absoluteUrl(getLocalizedPath(path, 'en'))} />
+    <link rel="alternate" hreflang="x-default" href={absoluteUrl(alternatePath('en'))} />
   )}
 
   <title>{pageTitle}</title>

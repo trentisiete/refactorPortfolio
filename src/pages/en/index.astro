@@ -1,45 +1,25 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ArticleCard from '../../components/ArticleCard.astro';
-import ContentTabs from '../../components/ContentTabs.astro';
-import { useTranslations } from '../../i18n/utils';
-import type { Lang } from '../../i18n/utils';
-import { getCollection } from 'astro:content';
-
-const lang: Lang = 'en';
-const t = useTranslations(lang);
-
-const allArticles = await getCollection('articles');
-const publishedContent = allArticles
-  .filter(a => a.data.lang === lang && !a.data.draft)
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
-
-const articles = publishedContent.filter(item => item.data.kind === 'article');
-const blogPosts = publishedContent.filter(item => item.data.kind === 'blog');
+import ProfileTabs from '../../components/ProfileTabs.astro';
+import ProfileProjects from '../../components/ProfileProjects.astro';
+import { profileEn, profileProjectsEn } from '../../data/profile.en';
 ---
 
-<BaseLayout lang={lang} showTrafficStats>
-  <section class="section fade-in fade-in-1">
-    <div class="intro">
-      <p class="lead">{t.intro.p1}</p>
-      <p>{t.intro.p2}</p>
-    </div>
-  </section>
+<BaseLayout
+  lang="en"
+  view="profile"
+  title={`Journey | José Arbelaez`}
+  description="Experience, projects, education and awards of José Arbelaez."
+  extraStyles={["/styles/profile.css"]}
+  showTrafficStats
+>
+  <section class="profile-page section fade-in fade-in-1">
+    <header class="profile-intro">
+      <h1>{profileEn.title}</h1>
+      <p>{profileEn.intro}</p>
+    </header>
 
-  <section class="section fade-in fade-in-2" id="content">
-    <ContentTabs lang={lang}>
-      <div slot="articles" class="articles-list">
-        {articles.length > 0
-          ? articles.map(article => <ArticleCard article={article} lang={lang} />)
-          : <p class="text-muted">{t.articles_page.no_articles}</p>
-        }
-      </div>
-      <div slot="blog" class="articles-list">
-        {blogPosts.length > 0
-          ? blogPosts.map(post => <ArticleCard article={post} lang={lang} />)
-          : <p class="text-muted">{t.blog_page.no_posts}</p>
-        }
-      </div>
-    </ContentTabs>
+    <ProfileTabs sections={profileEn.sections} label={profileEn.tabsLabel} />
+    <ProfileProjects projects={profileProjectsEn} lang="en" />
   </section>
 </BaseLayout>
