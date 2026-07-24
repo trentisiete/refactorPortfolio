@@ -1,0 +1,45 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="500"
+  height="500"
+  viewBox="0 0 500 500"
+  fill="none"
+  color="#1a1a1a"
+  role="img"
+  aria-labelledby="logo-title logo-description"
+>
+  <title id="logo-title">Logo floral de Jose</title>
+  <desc id="logo-description">
+    Flor geométrica de ocho pétalos nacida de la curva de una letra J.
+  </desc>
+
+  <defs>
+    <path
+      id="jose-final-petal"
+      d="M 0 -160
+         C 18 -155 29 -135 26 -100
+         C 22 -55 4 -18 0 0
+         C -4 -18 -22 -55 -26 -100
+         C -29 -135 -18 -155 0 -160
+         C 0 -160 0 -160 0 -160
+         C 0 -160 0 -160 0 -160"
+    />
+  </defs>
+
+  <g
+    transform="translate(250 250)"
+    stroke="currentColor"
+    stroke-width="8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <use href="#jose-final-petal" />
+    <use href="#jose-final-petal" transform="rotate(45)" />
+    <use href="#jose-final-petal" transform="rotate(90)" />
+    <use href="#jose-final-petal" transform="rotate(135)" />
+    <use href="#jose-final-petal" transform="rotate(180)" />
+    <use href="#jose-final-petal" transform="rotate(225)" />
+    <use href="#jose-final-petal" transform="rotate(270)" />
+    <use href="#jose-final-petal" transform="rotate(315)" />
+  </g>
+</svg>

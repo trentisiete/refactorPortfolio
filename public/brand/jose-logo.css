@@ -1,0 +1,144 @@
+:root {
+  color-scheme: light dark;
+  --logo-demo-background: #f0ece4;
+  --logo-demo-surface: #f8f6f1;
+  --logo-demo-text: #1a1a1a;
+  --logo-demo-muted: #6f6b64;
+  --logo-demo-border: #d5d1c9;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body.logo-demo {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--logo-demo-text);
+  background: var(--logo-demo-background);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.logo-demo__content {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem 1rem;
+}
+
+.logo-demo__stage {
+  width: min(100%, 680px);
+  padding: clamp(1.5rem, 5vw, 3rem);
+  text-align: center;
+  background: var(--logo-demo-surface);
+  border: 1px solid var(--logo-demo-border);
+  border-radius: 1.25rem;
+}
+
+.logo-demo__eyebrow {
+  margin: 0 0 0.5rem;
+  color: var(--logo-demo-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.logo-demo h1 {
+  margin: 0 0 1.25rem;
+  font-family: Merriweather, Georgia, serif;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  line-height: 1.15;
+}
+
+.jose-logo {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  margin: 0 auto;
+  overflow: visible;
+  color: #1a1a1a;
+}
+
+.jose-logo__stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.jose-logo__copy {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.logo-demo__controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+}
+
+.logo-demo__controls button {
+  min-height: 2.5rem;
+  padding: 0.55rem 0.9rem;
+  color: var(--logo-demo-text);
+  background: transparent;
+  border: 1px solid var(--logo-demo-border);
+  border-radius: 0.55rem;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.logo-demo__controls button:hover {
+  border-color: currentColor;
+}
+
+.logo-demo__controls button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.logo-demo__hint {
+  max-width: 34rem;
+  margin: 1rem auto 0;
+  color: var(--logo-demo-muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+/* Integración con el modo oscuro manual que ya utiliza la web. */
+[data-theme="dark"] .jose-logo {
+  color: #f0ece4;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --logo-demo-background: #1a1a1a;
+    --logo-demo-surface: #242424;
+    --logo-demo-text: #f0ece4;
+    --logo-demo-muted: #aaa69e;
+    --logo-demo-border: #3a3a3a;
+  }
+
+  .jose-logo {
+    color: #f0ece4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jose-logo *,
+  .logo-demo__controls button {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Animación del logo de Jose</title>
+    <link rel="stylesheet" href="/brand/jose-logo.css" />
+    <script src="/brand/jose-logo.js" defer></script>
+  </head>
+
+  <body class="logo-demo">
+    <main class="logo-demo__content">
+      <section class="logo-demo__stage" aria-labelledby="demo-title">
+        <p class="logo-demo__eyebrow">Construcción de marca</p>
+        <h1 id="demo-title">De la J a la flor</h1>
+
+        <svg
+          class="jose-logo"
+          data-jose-logo
+          viewBox="0 0 500 500"
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+          aria-labelledby="jose-logo-title jose-logo-description"
+        >
+          <title id="jose-logo-title">Logo animado de Jose</title>
+          <desc id="jose-logo-description">
+            Una letra J se dibuja, se curva hasta formar un pétalo y se replica para construir una flor de ocho pétalos.
+          </desc>
+
+          <defs>
+            <!--
+              JavaScript interpola este path entre cuatro estados compatibles:
+              J abierta, dos estados intermedios y pétalo final.
+            -->
+            <path
+              id="jose-petal-master"
+              data-logo-master
+              d="M 18 -155
+                 C 18 -130 18 -100 18 -70
+                 C 18 -40 18 -10 15 10
+                 C 12 32 -2 45 -23 45
+                 C -42 45 -55 34 -58 18
+                 C -60 10 -60 3 -60 -4
+                 C -60 -4 -60 -4 -60 -4
+                 C -60 -4 -60 -4 -60 -4"
+            />
+          </defs>
+
+          <g transform="translate(250 250)">
+            <use
+              class="jose-logo__stroke jose-logo__original"
+              data-logo-original
+              href="#jose-petal-master"
+            />
+
+            <g data-logo-copies>
+              <!-- Primera expansión: flor provisional de cuatro pétalos. -->
+              <g class="jose-logo__copy" data-angle="90" opacity="0">
+                <use class="jose-logo__stroke" href="#jose-petal-master" />
+              </g>
+              <g class="jose-logo__copy" data-angle="180" opacity="0">
+                <use class="jose-logo__stroke" href="#jose-petal-master" />
+              </g>
+              <g class="jose-logo__copy" data-angle="270" opacity="0">
+                <use class="jose-logo__stroke" href="#jose-petal-master" />
+              </g>
+
+              <!-- Segunda expansión: pétalos intermedios. -->
+              <g class="jose-logo__copy" data-angle="45" opacity="0">
+                <use class="jose-logo__stroke" href="#jose-petal-master" />
+              </g>
+              <g class="jose-logo__copy" data-angle="135" opacity="0">
+                <use class="jose-logo__stroke" href="#jose-petal-master" />
+              </g>
+              <g class="jose-logo__copy" data-angle="225" opacity="0">
+                <use class="jose-logo__stroke" href="#jose-petal-master" />
+              </g>
+              <g class="jose-logo__copy" data-angle="315" opacity="0">
+                <use class="jose-logo__stroke" href="#jose-petal-master" />
+              </g>
+            </g>
+          </g>
+        </svg>
+
+        <div class="logo-demo__controls" aria-label="Controles de la animación">
+          <button type="button" data-logo-action="play">Reproducir</button>
+          <button type="button" data-logo-action="reset">Reiniciar</button>
+          <button type="button" data-logo-action="final">Ver flor final</button>
+        </div>
+
+        <p class="logo-demo__hint">
+          La animación se reproduce una sola vez y respeta la preferencia de movimiento reducido.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

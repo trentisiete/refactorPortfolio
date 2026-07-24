@@ -1,0 +1,77 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="60 60 380 380"
+  fill="none"
+>
+  <title>José Arbelaez</title>
+
+  <style>
+    :root {
+      --favicon-j: #1a1a1a;
+      --favicon-petal: #737373;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --favicon-j: #f0ece4;
+        --favicon-petal: #888681;
+      }
+    }
+  </style>
+
+  <defs>
+    <path
+      id="favicon-j"
+      d="M 0 0
+         V 107
+         C 0 149 -24 171 -61 171
+         C -90 171 -108 155 -112 131"
+    />
+
+    <path
+      id="favicon-closing-curve"
+      d="M -112 131
+         C -125 115 -55 55 0 0"
+    />
+
+    <path
+      id="favicon-petal"
+      d="M 0 0
+         V 107
+         C 0 149 -24 171 -61 171
+         C -90 171 -108 155 -112 131
+         C -125 115 -55 55 0 0"
+    />
+  </defs>
+
+  <g
+    transform="translate(250 250)"
+    stroke="var(--favicon-petal)"
+    stroke-width="22"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <use href="#favicon-closing-curve" />
+    <use
+      href="#favicon-petal"
+      transform="rotate(45) rotate(112.5) scale(1 -1) rotate(-112.5)"
+    />
+    <use href="#favicon-petal" transform="rotate(90)" />
+    <use
+      href="#favicon-petal"
+      transform="rotate(135) rotate(112.5) scale(1 -1) rotate(-112.5)"
+    />
+    <use href="#favicon-petal" transform="rotate(180)" />
+    <use
+      href="#favicon-petal"
+      transform="rotate(225) rotate(112.5) scale(1 -1) rotate(-112.5)"
+    />
+    <use href="#favicon-petal" transform="rotate(270)" />
+    <use
+      href="#favicon-petal"
+      transform="rotate(315) rotate(112.5) scale(1 -1) rotate(-112.5)"
+    />
+
+    <use href="#favicon-j" stroke="var(--favicon-j)" />
+  </g>
+</svg>

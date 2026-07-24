@@ -1,0 +1,159 @@
+---
+interface Props {
+  instance: string;
+  class?: string;
+  animated?: boolean;
+  decorative?: boolean;
+}
+
+const {
+  instance,
+  class: className,
+  animated = true,
+  decorative = false,
+} = Astro.props;
+
+const safeInstance = instance.replace(/[^a-zA-Z0-9_-]/g, '-');
+const titleId = `jose-logo-${safeInstance}-title`;
+const descriptionId = `jose-logo-${safeInstance}-description`;
+const jId = `jose-logo-${safeInstance}-j`;
+const closingCurveId = `jose-logo-${safeInstance}-closing-curve`;
+const completedPetalId = `jose-logo-${safeInstance}-completed-petal`;
+
+const petals = [
+  {
+    transform: 'rotate(45) rotate(112.5) scale(1 -1) rotate(-112.5)',
+    begin: '2.35s',
+  },
+  { transform: 'rotate(90)', begin: '3.6s' },
+  {
+    transform: 'rotate(135) rotate(112.5) scale(1 -1) rotate(-112.5)',
+    begin: '4.85s',
+  },
+  { transform: 'rotate(180)', begin: '6.1s' },
+  {
+    transform: 'rotate(225) rotate(112.5) scale(1 -1) rotate(-112.5)',
+    begin: '7.35s',
+  },
+  { transform: 'rotate(270)', begin: '8.6s' },
+  {
+    transform: 'rotate(315) rotate(112.5) scale(1 -1) rotate(-112.5)',
+    begin: '9.85s',
+  },
+];
+---
+
+<svg
+  class:list={['jose-logo-mark', className]}
+  viewBox="0 0 500 500"
+  fill="none"
+  role={decorative ? undefined : 'img'}
+  aria-labelledby={decorative ? undefined : `${titleId} ${descriptionId}`}
+  aria-hidden={decorative ? 'true' : undefined}
+  focusable="false"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  {!decorative && <title id={titleId}>Logo de José Arbelaez</title>}
+  {!decorative && (
+    <desc id={descriptionId}>
+      Una letra J se transforma en una flor de ocho pétalos.
+    </desc>
+  )}
+
+  <defs>
+    <path
+      id={jId}
+      pathLength="1"
+      d="M 0 0
+         V 107
+         C 0 149 -24 171 -61 171
+         C -90 171 -108 155 -112 131"
+    />
+
+    <path
+      id={closingCurveId}
+      pathLength="1"
+      d="M -112 131
+         C -125 115 -55 55 0 0"
+    />
+
+    <path
+      id={completedPetalId}
+      pathLength="1"
+      d="M 0 0
+         V 107
+         C 0 149 -24 171 -61 171
+         C -90 171 -108 155 -112 131
+         C -125 115 -55 55 0 0"
+    />
+  </defs>
+
+  <g
+    transform="translate(250 250)"
+    stroke="var(--jose-logo-petal-color)"
+    stroke-width="var(--jose-logo-stroke-width, 8)"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <use
+      href={`#${closingCurveId}`}
+      stroke-dasharray={animated ? '1' : undefined}
+      stroke-dashoffset={animated ? '1' : undefined}
+    >
+      {animated && (
+        <animate
+          attributeName="stroke-dashoffset"
+          values="1;0"
+          keyTimes="0;1"
+          keySplines="0.4 0 0.2 1"
+          calcMode="spline"
+          begin="1.25s"
+          dur="0.75s"
+          fill="freeze"
+        />
+      )}
+    </use>
+
+    {petals.map(petal => (
+      <g transform={petal.transform}>
+        <use
+          href={`#${completedPetalId}`}
+          stroke-dasharray={animated ? '1' : undefined}
+          stroke-dashoffset={animated ? '1' : undefined}
+        >
+          {animated && (
+            <animate
+              attributeName="stroke-dashoffset"
+              values="1;0"
+              keyTimes="0;1"
+              keySplines="0.4 0 0.2 1"
+              calcMode="spline"
+              begin={petal.begin}
+              dur="1.15s"
+              fill="freeze"
+            />
+          )}
+        </use>
+      </g>
+    ))}
+
+    <use
+      href={`#${jId}`}
+      stroke="var(--jose-logo-j-color)"
+      stroke-dasharray={animated ? '1' : undefined}
+      stroke-dashoffset={animated ? '1' : undefined}
+    >
+      {animated && (
+        <animate
+          attributeName="stroke-dashoffset"
+          values="1;0"
+          keyTimes="0;1"
+          keySplines="0.4 0 0.2 1"
+          calcMode="spline"
+          dur="1s"
+          fill="freeze"
+        />
+      )}
+    </use>
+  </g>
+</svg>

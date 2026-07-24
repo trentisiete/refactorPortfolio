@@ -3,6 +3,7 @@ import type { Lang } from '../i18n/utils';
 import { useTranslations } from '../i18n/utils';
 import LanguageSwitcher from './LanguageSwitcher.astro';
 import ThemeToggle from './ThemeToggle.astro';
+import JoseLogo from './JoseLogo.astro';
 
 interface Props {
   lang: Lang;
@@ -22,7 +23,10 @@ const languagePaths = view === 'profile'
 <header class="site-header">
   <div class="container">
     <div class="site-header__inner">
-      <a href={`${basePath}/`} class="site-header__name">José Arbelaez</a>
+      <a href={`${basePath}/`} class="site-header__brand" aria-label="José Arbelaez">
+        <JoseLogo instance="header" class="site-header__logo" decorative />
+        <span class="site-header__name">José Arbelaez</span>
+      </a>
       <div class="site-header__controls">
         <LanguageSwitcher lang={lang} availableLangs={availableLangs} paths={languagePaths} />
         <nav class="site-view-switcher" aria-label={t.views.label}>

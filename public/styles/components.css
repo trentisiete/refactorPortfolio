@@ -20,6 +20,30 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: var(--space-4);
+}
+
+.site-header__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+    color: var(--color-text);
+    text-decoration: none;
+}
+
+.jose-logo-mark {
+    --jose-logo-j-color: var(--color-primary);
+    --jose-logo-petal-color: var(--color-text-muted);
+    display: block;
+    overflow: visible;
+}
+
+.site-header__logo {
+    --jose-logo-stroke-width: 16;
+    flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
 }
 
 .site-header__name {
@@ -32,13 +56,14 @@
     transition: color var(--transition-fast);
 }
 
-.site-header__name:hover {
+.site-header__brand:hover .site-header__name {
     color: var(--color-primary);
 }
 
 .site-header__controls {
     display: flex;
     align-items: center;
+    flex: 0 0 auto;
     gap: var(--space-4);
 }
 
@@ -164,6 +189,20 @@
 /* ----------------------------------------
    Footer
    ---------------------------------------- */
+.site-end-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: clamp(var(--space-16), 10vw, var(--space-24));
+}
+
+.site-end-mark__logo {
+    --jose-logo-stroke-width: 11;
+    width: clamp(104px, 15vw, 144px);
+    height: auto;
+    opacity: 0.9;
+}
+
 .footer {
     position: fixed;
     bottom: 0;
@@ -325,6 +364,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+    .jose-logo-mark [stroke-dasharray] {
+        stroke-dashoffset: 0 !important;
+    }
+
+    .jose-logo-mark animate {
+        display: none;
+    }
+
     .footer {
         transition: none;
     }
@@ -505,6 +552,15 @@
    Responsive
    ---------------------------------------- */
 @media (max-width: 640px) {
+    .site-header__brand {
+        gap: 6px;
+    }
+
+    .site-header__logo {
+        width: 34px;
+        height: 34px;
+    }
+
     .site-header__name {
         font-size: var(--text-base);
     }
@@ -555,6 +611,16 @@
     .focus-view-exit {
         top: var(--space-2);
         right: var(--space-2);
+    }
+
+    .site-end-mark__logo {
+        width: 96px;
+    }
+}
+
+@media (max-width: 420px) {
+    .site-header__name {
+        display: none;
     }
 }
 

@@ -1,0 +1,38 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="500"
+  height="500"
+  viewBox="0 0 240 240"
+  fill="none"
+  color="#1a1a1a"
+  role="img"
+  aria-labelledby="title description"
+>
+  <title id="title">J de Jose</title>
+  <desc id="description">Una letra J abierta dibujada con un único trazo.</desc>
+
+  <path
+    d="M 145 35
+       V 142
+       C 145 184 121 206 84 206
+       C 55 206 37 190 33 166"
+    pathLength="1"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="10"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-dasharray="1"
+    stroke-dashoffset="1"
+  >
+    <animate
+      attributeName="stroke-dashoffset"
+      values="1;0"
+      keyTimes="0;1"
+      keySplines="0.42 0 0.58 1"
+      calcMode="spline"
+      dur="0.9s"
+      fill="freeze"
+    />
+  </path>
+</svg>

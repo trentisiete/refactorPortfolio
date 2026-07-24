@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import JoseLogo from '../components/JoseLogo.astro';
 import type { Lang } from '../i18n/utils';
 import { useTranslations, getLocalizedPath } from '../i18n/utils';
 
@@ -66,6 +67,7 @@ const canonicalUrl = absoluteUrl(path);
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/img_astro_web.png" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -104,6 +106,9 @@ const canonicalUrl = absoluteUrl(path);
 
   <main class={containerClass}>
     <slot />
+    <div class="site-end-mark" aria-hidden="true">
+      <JoseLogo instance="page-end" class="site-end-mark__logo" animated={false} decorative />
+    </div>
     {readingPage && <span class="reading-end-sentinel" data-reading-end-sentinel aria-hidden="true"></span>}
   </main>
 

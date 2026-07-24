@@ -1,0 +1,211 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="500"
+  height="500"
+  viewBox="0 0 500 500"
+  fill="none"
+  class="jose-logo"
+  role="img"
+  aria-labelledby="title description"
+>
+  <title id="title">De la J a una flor de pétalos finos</title>
+  <desc id="description">
+    Se dibuja una J, se cierra un pétalo fino y después se trazan siete pétalos sin superposición.
+  </desc>
+
+  <style>
+    .jose-logo {
+      --jose-logo-j-color: var(--color-primary, #1a1a1a);
+      --jose-logo-petal-color: var(--color-text-muted, #737373);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .jose-logo {
+        --jose-logo-j-color: var(--color-primary, #f0ece4);
+        --jose-logo-petal-color: var(--color-text-muted, #888681);
+      }
+    }
+  </style>
+
+  <defs>
+    <path
+      id="j-line"
+      pathLength="1"
+      d="M 0 0
+         V 107
+         C 0 149 -24 171 -61 171
+         C -90 171 -108 155 -112 131"
+    />
+
+    <path
+      id="closing-curve"
+      pathLength="1"
+      d="M -112 131
+         C -125 115 -55 55 0 0"
+    />
+
+    <!-- Pétalo completo en un único trazo continuo. -->
+    <path
+      id="completed-petal"
+      pathLength="1"
+      d="M 0 0
+         V 107
+         C 0 149 -24 171 -61 171
+         C -90 171 -108 155 -112 131
+         C -125 115 -55 55 0 0"
+    />
+  </defs>
+
+  <g
+    transform="translate(250 250)"
+    stroke="var(--jose-logo-petal-color)"
+    stroke-width="8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <!-- Paso 2: se cierra el primer pétalo con una curva más estrecha. -->
+    <use
+      href="#closing-curve"
+      stroke-dasharray="1"
+      stroke-dashoffset="1"
+    >
+      <animate
+        attributeName="stroke-dashoffset"
+        values="1;0"
+        keyTimes="0;1"
+        keySplines="0.4 0 0.2 1"
+        calcMode="spline"
+        begin="1.25s"
+        dur="0.75s"
+        fill="freeze"
+      />
+    </use>
+
+    <!-- Paso 3: cada pétalo nuevo se dibuja progresivamente por la izquierda. -->
+    <g transform="rotate(45) rotate(112.5) scale(1 -1) rotate(-112.5)">
+      <use href="#completed-petal" stroke-dasharray="1" stroke-dashoffset="1">
+        <animate
+          attributeName="stroke-dashoffset"
+          values="1;0"
+          keyTimes="0;1"
+          keySplines="0.4 0 0.2 1"
+          calcMode="spline"
+          begin="2.35s"
+          dur="1.15s"
+          fill="freeze"
+        />
+      </use>
+    </g>
+
+    <g transform="rotate(90)">
+      <use href="#completed-petal" stroke-dasharray="1" stroke-dashoffset="1">
+        <animate
+          attributeName="stroke-dashoffset"
+          values="1;0"
+          keyTimes="0;1"
+          keySplines="0.4 0 0.2 1"
+          calcMode="spline"
+          begin="3.6s"
+          dur="1.15s"
+          fill="freeze"
+        />
+      </use>
+    </g>
+
+    <g transform="rotate(135) rotate(112.5) scale(1 -1) rotate(-112.5)">
+      <use href="#completed-petal" stroke-dasharray="1" stroke-dashoffset="1">
+        <animate
+          attributeName="stroke-dashoffset"
+          values="1;0"
+          keyTimes="0;1"
+          keySplines="0.4 0 0.2 1"
+          calcMode="spline"
+          begin="4.85s"
+          dur="1.15s"
+          fill="freeze"
+        />
+      </use>
+    </g>
+
+    <g transform="rotate(180)">
+      <use href="#completed-petal" stroke-dasharray="1" stroke-dashoffset="1">
+        <animate
+          attributeName="stroke-dashoffset"
+          values="1;0"
+          keyTimes="0;1"
+          keySplines="0.4 0 0.2 1"
+          calcMode="spline"
+          begin="6.1s"
+          dur="1.15s"
+          fill="freeze"
+        />
+      </use>
+    </g>
+
+    <g transform="rotate(225) rotate(112.5) scale(1 -1) rotate(-112.5)">
+      <use href="#completed-petal" stroke-dasharray="1" stroke-dashoffset="1">
+        <animate
+          attributeName="stroke-dashoffset"
+          values="1;0"
+          keyTimes="0;1"
+          keySplines="0.4 0 0.2 1"
+          calcMode="spline"
+          begin="7.35s"
+          dur="1.15s"
+          fill="freeze"
+        />
+      </use>
+    </g>
+
+    <g transform="rotate(270)">
+      <use href="#completed-petal" stroke-dasharray="1" stroke-dashoffset="1">
+        <animate
+          attributeName="stroke-dashoffset"
+          values="1;0"
+          keyTimes="0;1"
+          keySplines="0.4 0 0.2 1"
+          calcMode="spline"
+          begin="8.6s"
+          dur="1.15s"
+          fill="freeze"
+        />
+      </use>
+    </g>
+
+    <g transform="rotate(315) rotate(112.5) scale(1 -1) rotate(-112.5)">
+      <use href="#completed-petal" stroke-dasharray="1" stroke-dashoffset="1">
+        <animate
+          attributeName="stroke-dashoffset"
+          values="1;0"
+          keyTimes="0;1"
+          keySplines="0.4 0 0.2 1"
+          calcMode="spline"
+          begin="9.85s"
+          dur="1.15s"
+          fill="freeze"
+        />
+      </use>
+    </g>
+
+    <!--
+      Paso 1 se pinta al final de la pila visual, aunque se anima desde el
+      segundo cero. Así ningún pétalo posterior puede cubrir la J original.
+    -->
+    <use
+      href="#j-line"
+      stroke="var(--jose-logo-j-color)"
+      stroke-dasharray="1"
+      stroke-dashoffset="1"
+    >
+      <animate
+        attributeName="stroke-dashoffset"
+        values="1;0"
+        keyTimes="0;1"
+        keySplines="0.4 0 0.2 1"
+        calcMode="spline"
+        dur="1s"
+        fill="freeze"
+      />
+    </use>
+  </g>
+</svg>
