@@ -2,6 +2,8 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import JoseLogo from '../components/JoseLogo.astro';
+import SiteTraffic from '../components/SiteTraffic.astro';
+import TrafficStats from '../components/TrafficStats.astro';
 import type { Lang } from '../i18n/utils';
 import { useTranslations, getLocalizedPath } from '../i18n/utils';
 
@@ -14,6 +16,7 @@ interface Props {
   availableLangs?: Lang[];
   view?: 'reading' | 'profile';
   readingPage?: boolean;
+  showTrafficStats?: boolean;
 }
 
 const {
@@ -25,6 +28,7 @@ const {
   availableLangs,
   view = 'reading',
   readingPage = false,
+  showTrafficStats = false,
 } = Astro.props;
 
 const t = useTranslations(lang);
@@ -106,6 +110,7 @@ const canonicalUrl = absoluteUrl(path);
 
   <main class={containerClass}>
     <slot />
+    {showTrafficStats && <TrafficStats lang={lang} />}
     <div class="site-end-mark" aria-hidden="true">
       <JoseLogo instance="page-end" class="site-end-mark__logo" animated={false} decorative />
     </div>
@@ -113,6 +118,7 @@ const canonicalUrl = absoluteUrl(path);
   </main>
 
   <Footer lang={lang} reader={readingPage} />
+  <SiteTraffic />
 
   <slot name="scripts" />
 </body>

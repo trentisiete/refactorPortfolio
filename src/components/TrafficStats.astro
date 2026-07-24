@@ -1,0 +1,45 @@
+---
+import type { Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const labels: Record<Lang, { total: string; online: string }> = {
+  es: {
+    total: 'visitas totales',
+    online: 'en línea',
+  },
+  en: {
+    total: 'total views',
+    online: 'online',
+  },
+  de: {
+    total: 'Aufrufe insgesamt',
+    online: 'online',
+  },
+};
+
+const label = labels[lang];
+---
+
+<div
+  class="site-traffic-summary"
+  data-site-traffic-summary
+  aria-live="polite"
+  aria-busy="true"
+  hidden
+>
+  <p class="site-traffic-summary__line">
+    <span data-site-total-views data-icount="total">—</span>
+    <span>{label.total}</span>
+    <span class="site-traffic-summary__separator" aria-hidden="true">·</span>
+    <span class="site-traffic-summary__online">
+      <span class="site-traffic-summary__dot" aria-hidden="true"></span>
+      <span data-site-online data-icount="realtime">—</span>
+      <span>{label.online}</span>
+    </span>
+  </p>
+</div>

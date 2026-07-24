@@ -18,7 +18,7 @@ const articles = publishedContent.filter(item => item.data.kind === 'article');
 const blogPosts = publishedContent.filter(item => item.data.kind === 'blog');
 ---
 
-<BaseLayout lang={lang}>
+<BaseLayout lang={lang} showTrafficStats>
   <section class="section fade-in fade-in-1">
     <div class="intro">
       <p class="lead">{t.intro.p1}</p>

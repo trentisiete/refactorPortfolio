@@ -1,0 +1,41 @@
+---
+const siteId = 'www.josearbelaez.com';
+---
+
+<script is:inline define:vars={{ siteId }}>
+  (() => {
+    const productionHosts = new Set([
+      'josearbelaez.com',
+      'www.josearbelaez.com',
+    ]);
+
+    if (!productionHosts.has(window.location.hostname)) return;
+
+    const summaries = Array.from(
+      document.querySelectorAll('[data-site-traffic-summary]'),
+    );
+    if (summaries.length === 0) return;
+
+    const scriptHost =
+      summaries[0].querySelector('.site-traffic-summary__line') || summaries[0];
+    const tracker = document.createElement('script');
+    const trackedUrl = `${window.location.origin}${window.location.pathname}`;
+    const params = new URLSearchParams({
+      id: siteId,
+      url: trackedUrl,
+      ref: document.referrer,
+      t: String(Date.now()),
+    });
+
+    tracker.async = true;
+    tracker.src = `https://icount.kr/count.php?${params.toString()}`;
+    tracker.addEventListener('load', () => {
+      summaries.forEach((summary) => {
+        summary.hidden = false;
+        summary.setAttribute('aria-busy', 'false');
+      });
+    });
+
+    scriptHost.appendChild(tracker);
+  })();
+</script>
