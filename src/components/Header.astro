@@ -14,7 +14,7 @@ interface Props {
 const { lang, availableLangs, view = 'reading' } = Astro.props;
 const t = useTranslations(lang);
 const basePath = `/${lang}`;
-const readingPath = lang === 'en' ? '/en/articles/' : `${basePath}/`;
+const readingPath = `${basePath}/articles/`;
 const profilePath = getProfilePath(lang);
 const languagePaths = view === 'profile'
   ? {

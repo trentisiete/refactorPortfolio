@@ -33,5 +33,5 @@ export function getLocalizedPath(path: string, lang: Lang): string {
 }
 
 export function getProfilePath(lang: Lang): string {
-    return lang === 'en' ? '/en/' : `/${lang}/trayectoria/`;
+    return `/${lang}/`;
 }

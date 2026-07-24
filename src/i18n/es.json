@@ -33,8 +33,8 @@
   },
   "buttons": {
     "view_all_articles": "Ver todos los artículos →",
-    "back_to_articles": "← Volver a mis artículos",
-    "back_to_blog": "← Volver al blog"
+    "back_to_articles": "← Volver a proyectos",
+    "back_to_blog": "← Volver al inicio"
   },
   "footer": {
     "copyright": "© 2026 José Arbelaez",
