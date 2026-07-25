@@ -36,7 +36,7 @@ const dateStr = article.data.date.toLocaleDateString('en-US', {
 });
 const readingTime = estimateReadingTime(article.body, lang);
 const backLabel = article.data.kind === 'blog' ? t.buttons.back_to_blog : t.buttons.back_to_articles;
-const backHref = article.data.kind === 'blog' ? '/en/' : '/en/#projects';
+const backHref = article.data.kind === 'blog' ? '/en/about/writing/' : '/en/#projects';
 ---
 
 <BaseLayout lang={lang} title={`${article.data.title} | ${t.meta.site_title}`} extraStyles={["/styles/markdown.css", "/styles/article.css"]} availableLangs={availableLangs} wide readingPage>

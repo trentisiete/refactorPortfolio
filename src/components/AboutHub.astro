@@ -1,0 +1,130 @@
+---
+import { getCollection, render } from 'astro:content';
+
+const thoughtEntries = (await getCollection('thoughts'))
+  .filter(thought => thought.data.lang === 'en' && !thought.data.draft)
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+
+const thoughts = await Promise.all(
+  thoughtEntries.map(async entry => {
+    const { Content } = await render(entry);
+    const dateLabel = new Intl.DateTimeFormat('en-GB', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      timeZone: 'Europe/Madrid',
+    }).format(entry.data.publishedAt);
+    const timeLabel = new Intl.DateTimeFormat('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZoneName: 'short',
+      timeZone: 'Europe/Madrid',
+    }).format(entry.data.publishedAt);
+
+    return { entry, Content, dateLabel, timeLabel };
+  })
+);
+---
+
+<section class="about-world about-home section">
+  <div class="about-world__wash" aria-hidden="true">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <header class="about-hero">
+    <div class="about-hero__copy">
+      <p class="about-kicker">a less serious corner of the site</p>
+      <h1>
+        about me,
+        <em>off the clock.</em>
+      </h1>
+      <p class="about-hero__intro">
+        Loose thoughts, things I write, and music I want to keep close.
+        No résumé voice required.
+      </p>
+    </div>
+
+    <aside class="about-hero__note" aria-label="A small note">
+      <span>currently into</span>
+      <strong>green, good links<br />& unfinished ideas</strong>
+      <i aria-hidden="true">↘</i>
+    </aside>
+  </header>
+
+  <section class="thoughts-section" id="thoughts" aria-labelledby="thoughts-title">
+    <div class="thoughts-section__heading">
+      <div>
+        <p class="about-section-label">small things, timestamped</p>
+        <h2 id="thoughts-title">current thoughts</h2>
+      </div>
+      <p>Short things that do not need to become a whole post.</p>
+    </div>
+
+    <div class="thought-window">
+      <header class="thought-window__bar">
+        <span class="thought-window__status">
+          <i aria-hidden="true"></i>
+          current thoughts
+        </span>
+        <span>{thoughts.length.toString().padStart(2, '0')} entries</span>
+      </header>
+
+      <div
+        class="thought-window__feed"
+        tabindex={thoughts.length > 2 ? 0 : undefined}
+        aria-label="Thoughts ordered from newest to oldest"
+      >
+        {thoughts.length > 0 ? (
+          thoughts.map(({ entry, Content, dateLabel, timeLabel }) => (
+            <article class="thought-entry">
+              <header>
+                <time datetime={entry.data.publishedAt.toISOString()}>
+                  <span>{dateLabel}</span>
+                  <b>{timeLabel}</b>
+                </time>
+              </header>
+              <div class="thought-entry__body">
+                <Content />
+              </div>
+            </article>
+          ))
+        ) : (
+          <div class="thought-window__empty">
+            <div aria-hidden="true">
+              <span>DAY</span>
+              <span>DATE</span>
+              <span>TIME</span>
+            </div>
+            <p>
+              Nothing here yet. The next thought will arrive with its day,
+              date and time.
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <section class="about-gateways" aria-label="More personal pages">
+    <a class="about-gateway about-gateway--writing" href="/en/about/writing/">
+      <span class="about-gateway__index">01 / longer things live here</span>
+      <div>
+        <h2>Writing</h2>
+        <p>Essays, notes and ideas that were too large for the thought box.</p>
+      </div>
+      <strong>open the blog <i aria-hidden="true">↗</i></strong>
+    </a>
+
+    <a class="about-gateway about-gateway--music" href="/en/about/music/">
+      <span class="about-gateway__index">02 / things on repeat</span>
+      <div>
+        <h2>Music</h2>
+        <p>A small place for playlists and the music I like.</p>
+      </div>
+      <strong>go to music <i aria-hidden="true">↗</i></strong>
+    </a>
+  </section>
+</section>

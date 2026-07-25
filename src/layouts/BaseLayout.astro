@@ -14,7 +14,7 @@ interface Props {
   extraStyles?: string[];
   wide?: boolean;
   availableLangs?: Lang[];
-  view?: 'reading' | 'profile';
+  view?: 'reading' | 'profile' | 'about';
   readingPage?: boolean;
   showTrafficStats?: boolean;
 }
@@ -109,7 +109,7 @@ const alternatePath = (alternateLang: Lang) =>
   <slot name="head" />
 </head>
 
-<body class:list={{ 'reading-page': readingPage }}>
+<body class:list={['site-body', `page-view-${view}`, { 'reading-page': readingPage }]}>
   <Header lang={lang} availableLangs={availableLangs} view={view} />
 
   <main class={containerClass}>

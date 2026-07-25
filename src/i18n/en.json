@@ -64,6 +64,27 @@
     "next_image": "Next image",
     "close_gallery": "Close gallery",
     "notes": "Comments",
-    "view_code": "View code on GitHub"
+    "view_code": "View code on GitHub",
+    "more_projects_title": "More projects on GitHub",
+    "more_projects_intro": "Smaller experiments, works in progress and technical deep dives.",
+    "more_projects_cta": "Visit GitHub",
+    "more_projects_items": [
+      {
+        "title": "Preference optimization & RLHF benchmarking",
+        "description": "DPO, PPO and related alignment methods."
+      },
+      {
+        "title": "Model-agnostic agentic systems",
+        "description": "Traceable dynamic LangChain workflows, multi-agent coordination, dynamic tool and agent creation, A2A and Redis."
+      },
+      {
+        "title": "Clustering methods exploration",
+        "description": "A practical comparison of strategies, assumptions and behaviour."
+      },
+      {
+        "title": "How I finished first among 240 participants",
+        "description": "Five months of data science and real-time analytics on a large fund data lake to select the strongest portfolio."
+      }
+    ]
   }
 }

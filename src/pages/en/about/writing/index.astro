@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import AboutWriting from '../../../../components/AboutWriting.astro';
+---
+
+<BaseLayout
+  lang="en"
+  view="about"
+  title="Writing | José Arbelaez"
+  description="Essays, notes and longer-form writing from José Arbelaez."
+  availableLangs={['en']}
+  extraStyles={["/styles/about.css"]}
+>
+  <AboutWriting />
+</BaseLayout>

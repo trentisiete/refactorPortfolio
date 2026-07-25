@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import AboutHub from '../../../components/AboutHub.astro';
+---
+
+<BaseLayout
+  lang="en"
+  view="about"
+  title="About me | José Arbelaez"
+  description="Loose thoughts, writing and music from José Arbelaez."
+  availableLangs={['en']}
+  extraStyles={["/styles/about.css"]}
+>
+  <AboutHub />
+</BaseLayout>

@@ -36,6 +36,6 @@ export function getProfilePath(lang: Lang): string {
     return `/${lang}/`;
 }
 
-export function getAboutPath(lang: Lang): string {
-    return `/${lang}/about/`;
+export function getAboutPath(): string {
+    return '/en/about/';
 }

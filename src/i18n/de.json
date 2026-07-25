@@ -64,6 +64,27 @@
     "next_image": "Nächstes Bild",
     "close_gallery": "Galerie schließen",
     "notes": "Kommentare",
-    "view_code": "Code auf GitHub ansehen"
+    "view_code": "Code auf GitHub ansehen",
+    "more_projects_title": "Weitere Projekte auf GitHub",
+    "more_projects_intro": "Kleinere Experimente, laufende Arbeiten und technische Vertiefungen.",
+    "more_projects_cta": "GitHub öffnen",
+    "more_projects_items": [
+      {
+        "title": "Benchmarking für Preference Optimization und RLHF",
+        "description": "DPO, PPO und verwandte Alignment-Verfahren."
+      },
+      {
+        "title": "Modellunabhängige agentische Systeme",
+        "description": "Dynamische, nachvollziehbare LangChain-Workflows, Multi-Agenten-Koordination, dynamische Erstellung von Tools und Agenten, A2A und Redis."
+      },
+      {
+        "title": "Exploration von Clustering-Methoden",
+        "description": "Ein praktischer Vergleich von Strategien, Annahmen und Verhalten."
+      },
+      {
+        "title": "Wie ich unter 240 Teilnehmenden den ersten Platz belegte",
+        "description": "Fünf Monate Data Science und Echtzeitanalysen auf einem großen Fonds-Data-Lake zur Auswahl des besten Portfolios."
+      }
+    ]
   }
 }

@@ -1,0 +1,79 @@
+---
+import { getCollection } from 'astro:content';
+import { estimateReadingTime } from '../utils/readingTime';
+
+const posts = (await getCollection('articles'))
+  .filter(
+    post =>
+      post.data.lang === 'en' &&
+      post.data.kind === 'blog' &&
+      !post.data.draft
+  )
+  .sort((a, b) => {
+    const dateA = typeof a.data.date === 'string' ? new Date(a.data.date) : a.data.date;
+    const dateB = typeof b.data.date === 'string' ? new Date(b.data.date) : b.data.date;
+    return dateB.getTime() - dateA.getTime();
+  });
+
+const formatDate = (date: Date | string) =>
+  new Intl.DateTimeFormat('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  }).format(typeof date === 'string' ? new Date(date) : date);
+---
+
+<section class="about-world about-subpage about-writing section">
+  <a class="about-back-link" href="/en/about/">← back to about me</a>
+
+  <header class="writing-masthead">
+    <p class="about-kicker">some things need more room</p>
+    <h1>Writing<span aria-hidden="true">!</span></h1>
+    <p>
+      Longer notes, essays and whatever else survives the draft folder.
+    </p>
+  </header>
+
+  <div class="writing-board" aria-labelledby="writing-archive-title">
+    <header>
+      <h2 id="writing-archive-title">the archive</h2>
+      <span>{posts.length.toString().padStart(2, '0')} texts</span>
+    </header>
+
+    <div class="writing-list">
+      {posts.length > 0 ? (
+        posts.map((post, index) => {
+          const slug = post.slug.split('/').pop();
+          const readingTime = estimateReadingTime(post.body, 'en');
+
+          return (
+            <a class="writing-row" href={`/en/articles/${slug}/`}>
+              <span class="writing-row__number">{String(index + 1).padStart(2, '0')}</span>
+              <div class="writing-row__copy">
+                <h3>{post.data.title}</h3>
+                {post.data.excerpt && <p>{post.data.excerpt}</p>}
+              </div>
+              <div class="writing-row__meta">
+                <time>{formatDate(post.data.date)}</time>
+                <span>{readingTime} min</span>
+              </div>
+              <i aria-hidden="true">↗</i>
+            </a>
+          );
+        })
+      ) : (
+        <div class="writing-empty">
+          <span aria-hidden="true">✎</span>
+          <div>
+            <h3>The first text is still cooking.</h3>
+            <p>When it is ready, it will appear here with its date.</p>
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <p class="writing-footnote">
+    no posting schedule · no content strategy · just things worth keeping
+  </p>
+</section>

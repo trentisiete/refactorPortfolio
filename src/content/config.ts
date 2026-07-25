@@ -11,9 +11,19 @@ const articles = defineCollection({
     lang: z.enum(['es', 'en', 'de']).default('es'),
     kind: z.enum(['article', 'blog']).default('article'),
     draft: z.boolean().optional().default(false),
+    translate: z.boolean().optional().default(true),
     translated: z.boolean().optional().default(false),
     sourceHash: z.string().optional(),
   }),
 });
 
-export const collections = { articles };
+const thoughts = defineCollection({
+  type: 'content',
+  schema: z.object({
+    publishedAt: z.coerce.date(),
+    lang: z.literal('en').default('en'),
+    draft: z.boolean().optional().default(false),
+  }),
+});
+
+export const collections = { articles, thoughts };

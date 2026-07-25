@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import AboutMusic from '../../../../components/AboutMusic.astro';
+---
+
+<BaseLayout
+  lang="en"
+  view="about"
+  title="Music | José Arbelaez"
+  description="Playlists and music José Arbelaez wants to keep close."
+  availableLangs={['en']}
+  extraStyles={["/styles/about.css"]}
+>
+  <AboutMusic />
+</BaseLayout>

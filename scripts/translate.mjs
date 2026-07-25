@@ -12,7 +12,8 @@
  *     en las primeras líneas.
  *
  * Reglas comunes:
- *   - Solo se traducen fuentes con `draft: false` (o sin draft, en artículos).
+ *   - Solo se traducen fuentes con `draft: false` (o sin draft, en artículos)
+ *     y que no tengan `translate: false`.
  *   - Nunca se sobreescribe un archivo no marcado como generado (manual).
  *   - Si `sourceHash` coincide con el hash actual de la fuente, no se retraduce.
  *
@@ -74,6 +75,11 @@ function splitFrontmatter(md) {
 
 function fmFlag(frontmatter, key) {
 	const re = new RegExp(`^${key}\\s*:\\s*true\\s*$`, 'm');
+	return re.test(frontmatter);
+}
+
+function fmDisabled(frontmatter, key) {
+	const re = new RegExp(`^${key}\\s*:\\s*false\\s*$`, 'm');
 	return re.test(frontmatter);
 }
 
@@ -281,7 +287,8 @@ function collectPending() {
 
 			const isGenerated = fmFlag(parts.frontmatter, 'translated');
 			const isDraft = fmFlag(parts.frontmatter, 'draft');
-			if (isGenerated || isDraft) continue;
+			const translationDisabled = fmDisabled(parts.frontmatter, 'translate');
+			if (isGenerated || isDraft || translationDisabled) continue;
 
 			const hash = hashOf(raw);
 			for (const target of LANGS.filter(l => l !== lang)) {

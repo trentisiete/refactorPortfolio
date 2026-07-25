@@ -17,6 +17,7 @@ date: 2026-03-10
 lang: es          # es | en | de
 tags: ["tag1", "tag2"]
 draft: true       # true = no se publica
+translate: true   # false = no crear copias en otros idiomas
 ---
 ```
 
@@ -350,6 +351,10 @@ Los borradores (`draft: true`) no se traducen. Los archivos generados llevan
 regeneran en el siguiente commit; si no, no se vuelve a llamar a la API.
 Si algún día retocas una traducción a mano, quita su `translated: true` y el
 sistema no la volverá a tocar.
+
+Para contenido que deba existir en un solo idioma, añade `translate: false`.
+Los blogs personales del área About usan esta opción porque esa sección solo
+existe en inglés.
 
 ### Requisitos
 

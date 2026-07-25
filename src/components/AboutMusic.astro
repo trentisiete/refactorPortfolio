@@ -1,0 +1,93 @@
+---
+import { aboutPlaylists, type AboutPlaylist } from '../data/aboutPlaylists';
+
+const platformDetails = {
+  youtube: {
+    label: 'YouTube',
+    allow:
+      'accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share',
+  },
+  spotify: {
+    label: 'Spotify',
+    allow:
+      'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture',
+  },
+} as const;
+
+const embedUrlFor = (item: AboutPlaylist) =>
+  item.platform === 'youtube'
+    ? `https://www.youtube-nocookie.com/embed/videoseries?list=${item.id}`
+    : `https://open.spotify.com/embed/${item.kind}/${item.id}?utm_source=generator&theme=0`;
+
+const externalUrlFor = (item: AboutPlaylist) =>
+  item.platform === 'youtube'
+    ? `https://youtube.com/playlist?list=${item.id}`
+    : `https://open.spotify.com/${item.kind}/${item.id}`;
+---
+
+<section class="about-world about-subpage about-music section">
+  <a class="about-back-link" href="/en/about/">← back to about me</a>
+
+  <header class="music-masthead">
+    <div>
+      <p class="about-kicker">things I want to hear again</p>
+      <h1>Music</h1>
+      <p>
+        I will add music I like here: playlists, albums and whatever I want to keep close.
+      </p>
+    </div>
+
+    <div class="music-disc" aria-hidden="true">
+      <span></span>
+      <i></i>
+    </div>
+  </header>
+
+  <section class="playlist-shelf" aria-label="Music shelf">
+    <header>
+      <span>music shelf</span>
+      <b>{aboutPlaylists.length.toString().padStart(2, '0')} selections</b>
+    </header>
+
+    <div class="playlist-grid">
+      {aboutPlaylists.map((item, index) => {
+        const platform = platformDetails[item.platform];
+        const kindLabel = item.kind === 'album' ? 'album' : 'playlist';
+
+        return (
+          <article class:list={['playlist-card', `playlist-card--${item.platform}`, `playlist-card--${item.kind}`]}>
+            <header class="playlist-card__heading">
+              <span>{String(index + 1).padStart(3, '0')}</span>
+              <strong>{platform.label} · {kindLabel}</strong>
+            </header>
+
+            <div class="playlist-card__copy">
+              <h2>{item.title}</h2>
+              <p>{item.description}</p>
+            </div>
+
+            <div class:list={['playlist-embed', `playlist-embed--${item.platform}`]}>
+              <iframe
+                src={embedUrlFor(item)}
+                title={`${item.title} — ${platform.label} ${kindLabel} selected by José Arbelaez`}
+                loading="lazy"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allow={platform.allow}
+                allowfullscreen
+              ></iframe>
+            </div>
+
+            <a
+              class="playlist-card__link"
+              href={externalUrlFor(item)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              open {kindLabel} on {platform.label} <span aria-hidden="true">↗</span>
+            </a>
+          </article>
+        );
+      })}
+    </div>
+  </section>
+</section>

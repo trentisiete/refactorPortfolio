@@ -21,8 +21,9 @@ const pathsFor = (pathForLang: (language: Lang) => string) => ({
 const languagePaths = view === 'profile'
   ? pathsFor(getProfilePath)
   : view === 'about'
-    ? pathsFor(getAboutPath)
+    ? pathsFor(() => getAboutPath())
     : undefined;
+const aboutPath = getAboutPath();
 const navigationLabels: Record<Lang, string> = {
   es: 'Navegación principal',
   en: 'Main navigation',
@@ -47,7 +48,7 @@ const navigationLabels: Record<Lang, string> = {
           <span>Journey</span>
         </a>
         <a
-          href={getAboutPath(lang)}
+          href={aboutPath}
           class:list={["site-header__nav-link", { "site-header__nav-link--active": view === 'about' }]}
           aria-current={view === 'about' ? 'page' : undefined}
         >
