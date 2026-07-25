@@ -35,3 +35,7 @@ export function getLocalizedPath(path: string, lang: Lang): string {
 export function getProfilePath(lang: Lang): string {
     return `/${lang}/`;
 }
+
+export function getAboutPath(lang: Lang): string {
+    return `/${lang}/about/`;
+}
