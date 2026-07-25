@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ProfileTabs from '../../components/ProfileTabs.astro';
+import JourneyTimeline from '../../components/JourneyTimeline.astro';
 import ProfileProjects from '../../components/ProfileProjects.astro';
 import { profileEs, profileProjectsEs } from '../../data/profile.es';
 ---
@@ -10,16 +10,15 @@ import { profileEs, profileProjectsEs } from '../../data/profile.es';
   view="profile"
   title={`Trayectoria | José Arbelaez`}
   description="Experiencia, proyectos, educación y reconocimientos de José Arbelaez."
-  extraStyles={["/styles/profile.css"]}
+  extraStyles={["/styles/profile.css", "/styles/journey-draft.css"]}
   showTrafficStats
 >
   <section class="profile-page section fade-in fade-in-1">
-    <header class="profile-intro">
+    <header class="profile-intro profile-intro--journey">
       <h1>{profileEs.title}</h1>
-      <p>{profileEs.intro}</p>
     </header>
 
-    <ProfileTabs sections={profileEs.sections} label={profileEs.tabsLabel} />
+    <JourneyTimeline lang="es" />
     <ProfileProjects projects={profileProjectsEs} lang="es" />
   </section>
 </BaseLayout>

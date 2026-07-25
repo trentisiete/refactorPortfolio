@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import JourneyTimeline from '../../components/JourneyTimeline.astro';
+---
+
+<BaseLayout
+  lang="es"
+  view="profile"
+  title="Journey motion draft | José Arbelaez"
+  description="Prototipo privado del movimiento de la nueva línea temporal."
+  extraStyles={["/styles/journey-draft.css"]}
+>
+  <Fragment slot="head">
+    <meta name="robots" content="noindex, nofollow" />
+  </Fragment>
+
+  <section class="section">
+    <header class="journey-draft-intro fade-in fade-in-1">
+      <p class="journey-draft-intro__eyebrow">Journey lab · paso 01</p>
+      <h1>Prueba de movimiento</h1>
+      <p>
+        Haz scroll por la página. Las tarjetas se descubren de forma continua al
+        bajar y el movimiento se invierte al volver a subir.
+      </p>
+    </header>
+
+    <JourneyTimeline lang="es" />
+  </section>
+</BaseLayout>

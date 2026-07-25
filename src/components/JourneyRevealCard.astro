@@ -1,0 +1,64 @@
+---
+export interface JourneyMilestone {
+  title: string;
+  offset?: number;
+  text: string;
+}
+
+interface Props {
+  title: string;
+  place: string;
+  description: string;
+  size?: 'compact' | 'medium' | 'tall';
+  duration?: boolean;
+  sticky?: boolean;
+  hidePlace?: boolean;
+  milestones?: JourneyMilestone[];
+}
+
+const {
+  title,
+  place,
+  description,
+  size = 'medium',
+  duration = false,
+  sticky = false,
+  hidePlace = false,
+  milestones = [],
+} = Astro.props;
+---
+
+<article
+  class:list={[
+    'journey-reveal-card',
+    `journey-reveal-card--${size}`,
+    {
+      'journey-reveal-card--duration': duration,
+      'journey-reveal-card--sticky': sticky,
+    },
+  ]}
+  data-journey-reveal-card
+>
+  <div class="journey-reveal-card__content">
+    <div class="journey-reveal-card__identity">
+      <h2>{title}</h2>
+      {!hidePlace && (
+        <p class="journey-reveal-card__place">{place}</p>
+      )}
+    </div>
+    <p class="journey-reveal-card__description">{description}</p>
+  </div>
+
+  {milestones.length > 0 && (
+    <ol class="journey-reveal-card__milestones">
+      {milestones.map(milestone => (
+        <li data-offset={milestone.offset ?? 0}>
+          <div class="journey-reveal-card__milestone-content">
+            <h4>{milestone.title}</h4>
+            <p>{milestone.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  )}
+</article>

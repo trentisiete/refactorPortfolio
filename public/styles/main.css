@@ -29,6 +29,8 @@
     /* Colores semánticos */
     --color-primary: #1a1a1a;
     --color-primary-hover: #4a4a4a;
+    --color-accent: #456b45;
+    --color-accent-hover: #345337;
     --color-text: #1a1a1a;
     --color-text-secondary: #4a4a4a;
     --color-text-muted: #737373;
@@ -110,6 +112,8 @@
     --color-bg-alt: #2d2d2d;
     --color-primary: #f0ece4;
     --color-primary-hover: #b3b1ab;
+    --color-accent: #9fbd95;
+    --color-accent-hover: #bed3b7;
 }
 
 /* ----------------------------------------

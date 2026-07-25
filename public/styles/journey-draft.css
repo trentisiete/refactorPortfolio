@@ -1,0 +1,501 @@
+/* Progressive Journey timeline. */
+
+.journey-timeline {
+    width: min(1420px, calc(100vw - 48px));
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.journey-draft-intro {
+    width: min(100%, 1024px);
+    max-width: 680px;
+    margin: 0 auto var(--space-10);
+}
+
+.journey-draft-intro__eyebrow {
+    margin-bottom: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: var(--font-medium);
+    letter-spacing: 0.1em;
+    color: var(--color-accent);
+    text-transform: uppercase;
+}
+
+.journey-draft-intro h1 {
+    margin-bottom: var(--space-4);
+    font-size: clamp(2.6rem, 6vw, 4.8rem);
+    letter-spacing: -0.05em;
+}
+
+.journey-draft-intro > p:last-child {
+    max-width: 620px;
+    color: var(--color-text-secondary);
+}
+
+.journey-motion-demo {
+    --journey-columns:
+        68px
+        minmax(0, 0.72fr)
+        minmax(0, 0.72fr)
+        minmax(0, 0.82fr)
+        minmax(0, 0.82fr)
+        minmax(0, 0.82fr)
+        minmax(250px, 0.72fr);
+    --journey-column-gap: 14px;
+    --year-step: clamp(270px, 34vh, 320px);
+    --year-step-2025: clamp(440px, 52vh, 480px);
+    --timeline-tail: 270px;
+    --year-2020-size: var(--year-step);
+    --year-2021-size: var(--year-step);
+    --year-2022-size: var(--year-step);
+    --year-2023-size: var(--year-step);
+    --year-2024-size: var(--year-step);
+    --year-2025-size: var(--year-step-2025);
+    --year-2026-size: var(--timeline-tail);
+    --journey-experience-color: #a85843;
+    --journey-education-color: #586d91;
+    --journey-awards-color: #916a24;
+    --journey-card-tint: 8%;
+    position: relative;
+    width: 100%;
+    color: var(--color-text);
+}
+
+[data-theme="dark"] .journey-motion-demo {
+    --journey-experience-color: #d58d75;
+    --journey-education-color: #9daed0;
+    --journey-awards-color: #d3b269;
+    --journey-card-tint: 12%;
+}
+
+.journey-motion-demo [data-lane="experience"] {
+    --journey-lane-color: var(--journey-experience-color);
+}
+
+.journey-motion-demo [data-lane="education"] {
+    --journey-lane-color: var(--journey-education-color);
+}
+
+.journey-motion-demo [data-lane="awards"] {
+    --journey-lane-color: var(--journey-awards-color);
+}
+
+.journey-motion-demo__track {
+    position: relative;
+    padding-bottom: var(--space-16);
+}
+
+.journey-motion-demo__lanes {
+    position: sticky;
+    top: 67px;
+    z-index: 20;
+    display: grid;
+    grid-template-columns: var(--journey-columns);
+    column-gap: var(--journey-column-gap);
+    padding: var(--space-4) 0 var(--space-3);
+    background: var(--color-background);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.journey-motion-demo__lanes span {
+    justify-self: stretch;
+    font-family: var(--font-body);
+    font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+    font-weight: var(--font-bold);
+    text-align: center;
+    color: var(--color-text);
+}
+
+.journey-motion-demo__lanes span[data-lane] {
+    color: var(--journey-lane-color);
+}
+
+.journey-motion-demo__canvas {
+    position: relative;
+    display: grid;
+    margin-top: var(--space-10);
+    grid-template-columns: var(--journey-columns);
+    grid-template-rows:
+        var(--year-2020-size)
+        var(--year-2021-size)
+        var(--year-2022-size)
+        var(--year-2023-size)
+        var(--year-2024-size)
+        var(--year-2025-size)
+        var(--year-2026-size);
+    column-gap: var(--journey-column-gap);
+}
+
+.journey-motion-demo__year {
+    z-index: 0;
+    grid-column: 1 / -1;
+    align-self: start;
+    display: grid;
+    grid-template-columns: 68px minmax(0, 1fr);
+    gap: var(--journey-column-gap);
+    align-items: center;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.journey-motion-demo__year span {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: clamp(1.2rem, 1.75vw, 1.5rem);
+    font-weight: 400;
+    font-style: normal;
+    font-variant-numeric: oldstyle-nums proportional-nums;
+    font-feature-settings: 'onum' 1, 'pnum' 1;
+    line-height: 1;
+    letter-spacing: -0.035em;
+    color: var(--color-text-secondary);
+}
+
+.journey-motion-demo__year i {
+    display: block;
+    height: 1px;
+    background-image: repeating-linear-gradient(
+        to right,
+        var(--color-text-muted) 0 22px,
+        transparent 22px 36px
+    );
+    opacity: 0.55;
+}
+
+.journey-motion-demo__item {
+    z-index: 2;
+    align-self: start;
+    min-width: 0;
+    margin: var(--space-6) 4px 0;
+}
+
+.journey-motion-demo__item--duration {
+    align-self: stretch;
+    margin: 20px 4px;
+}
+
+.journey-motion-demo__stack {
+    z-index: 2;
+    align-self: stretch;
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: var(--space-6);
+    margin: 20px 4px;
+}
+
+.journey-motion-demo__stack .journey-reveal-card {
+    min-height: 0;
+    padding: var(--space-4);
+}
+
+.journey-motion-demo__stack .journey-reveal-card h2 {
+    font-size: clamp(1.05rem, 1.3vw, 1.3rem);
+}
+
+.journey-motion-demo__stack .journey-reveal-card__place {
+    margin-bottom: var(--space-3);
+}
+
+.journey-motion-demo__stack .journey-reveal-card__description {
+    font-size: clamp(0.76rem, 0.9vw, 0.86rem);
+}
+
+[data-measuring-years="true"] .journey-motion-demo__item--duration,
+[data-measuring-years="true"] .journey-motion-demo__stack {
+    align-self: start;
+}
+
+[data-measuring-years="true"] .journey-reveal-card--duration {
+    height: auto;
+}
+
+.journey-reveal-card[data-height-guided="true"] {
+    min-height: var(--journey-guided-height);
+}
+
+.journey-reveal-card {
+    --journey-reveal: 1;
+    --journey-intensity: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: var(--space-5);
+    color: var(--color-text);
+    background: var(--color-background);
+    border: 1.5px solid var(--color-text);
+    border-radius: 18px;
+    box-shadow: 0 18px 44px rgb(31 38 28 / 0.08);
+    transform-origin: top center;
+}
+
+.journey-motion-demo__item[data-lane] .journey-reveal-card,
+.journey-motion-demo__stack[data-lane] .journey-reveal-card {
+    --journey-card-background:
+        color-mix(
+            in srgb,
+            var(--journey-lane-color) var(--journey-card-tint),
+            var(--color-background)
+        );
+    background: var(--journey-card-background);
+    border-color: color-mix(
+        in srgb,
+        var(--journey-lane-color) 82%,
+        var(--color-text)
+    );
+    box-shadow:
+        0 18px 44px
+        color-mix(in srgb, var(--journey-lane-color) 12%, transparent);
+}
+
+[data-motion-ready="true"] .journey-reveal-card {
+    opacity: calc(0.08 + var(--journey-intensity) * 0.92);
+    clip-path: inset(
+        0
+        0
+        calc((1 - var(--journey-reveal)) * 100%)
+        0
+        round 18px
+    );
+    transform:
+        translateY(calc((1 - var(--journey-reveal)) * 28px))
+        scale(calc(0.985 + var(--journey-reveal) * 0.015));
+}
+
+.journey-reveal-card--duration {
+    height: 100%;
+    min-height: 0;
+    overflow: clip;
+    background:
+        var(
+            --journey-card-background,
+            color-mix(in srgb, var(--color-background) 94%, transparent)
+        );
+    box-shadow: none;
+}
+
+[data-motion-ready="true"] .journey-reveal-card--duration {
+    transform: none;
+}
+
+.journey-reveal-card--compact {
+    min-height: 155px;
+}
+
+.journey-reveal-card--medium {
+    min-height: 215px;
+}
+
+.journey-reveal-card--tall {
+    min-height: 270px;
+}
+
+.journey-reveal-card__content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.journey-reveal-card--sticky {
+    --journey-sticky-top: 136px;
+    --journey-sticky-gap: var(--space-3);
+}
+
+.journey-reveal-card--sticky .journey-reveal-card__identity {
+    position: sticky;
+    top: var(--journey-sticky-top);
+    z-index: 3;
+    margin: calc(var(--space-5) * -1) calc(var(--space-5) * -1) 0;
+    padding: var(--space-5);
+    background: var(--journey-card-background, var(--color-background));
+    border-radius: 16px 16px 0 0;
+}
+
+.journey-reveal-card h2 {
+    margin-bottom: var(--space-2);
+    font-size: clamp(1.05rem, 1.6vw, 1.55rem);
+    letter-spacing: -0.025em;
+    color: var(--journey-lane-color, var(--color-text));
+    overflow-wrap: anywhere;
+}
+
+.journey-reveal-card__place {
+    margin-bottom: var(--space-5);
+    font-family: var(--font-ui);
+    font-size: clamp(0.64rem, 0.78vw, 0.74rem);
+    font-weight: var(--font-medium);
+    line-height: 1.25;
+    color: var(--color-text-secondary);
+    overflow-wrap: anywhere;
+}
+
+.journey-reveal-card__description {
+    max-width: 34ch;
+    margin: auto 0 0;
+    font-size: clamp(0.75rem, 1vw, var(--text-sm));
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-muted);
+}
+
+.journey-reveal-card--duration .journey-reveal-card__description {
+    margin-top: var(--space-4);
+}
+
+.journey-reveal-card__milestones {
+    position: absolute;
+    inset: 0 var(--space-4);
+    z-index: 1;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.journey-reveal-card__milestones li {
+    position: absolute;
+    right: 0;
+    left: 0;
+    border-top: 1px dashed
+        color-mix(
+            in srgb,
+            var(--journey-lane-color, var(--color-border)) 34%,
+            var(--color-border)
+        );
+}
+
+.journey-reveal-card__milestones li[data-offset="1"] {
+    top: calc(var(--year-2022-size) - 20px);
+    height: var(--year-2023-size);
+}
+
+.journey-reveal-card__milestones li[data-offset="2"] {
+    top: calc(var(--year-2022-size) + var(--year-2023-size) - 20px);
+    height: var(--year-2024-size);
+}
+
+.journey-reveal-card__milestones li[data-offset="3"] {
+    top: calc(
+        var(--year-2022-size) +
+        var(--year-2023-size) +
+        var(--year-2024-size) -
+        20px
+    );
+    height: var(--year-2025-size);
+}
+
+.journey-reveal-card__milestones li[data-offset="4"] {
+    top: calc(
+        var(--year-2022-size) +
+        var(--year-2023-size) +
+        var(--year-2024-size) +
+        var(--year-2025-size) -
+        20px
+    );
+    height: calc(var(--year-2026-size) - 20px);
+}
+
+.journey-reveal-card__milestone-content {
+    position: sticky;
+    top: calc(
+        var(--journey-sticky-top) +
+        var(--journey-identity-height, 112px) +
+        var(--journey-sticky-gap)
+    );
+    z-index: 2;
+    padding: var(--space-4) 0;
+    background: var(--journey-card-background, var(--color-background));
+}
+
+.journey-reveal-card__milestones h4 {
+    margin: 0 0 var(--space-2);
+    font-size: clamp(0.95rem, 1.25vw, 1.16rem);
+    line-height: var(--leading-tight);
+    color: var(--journey-lane-color, var(--color-text));
+}
+
+.journey-reveal-card__milestones p {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: clamp(0.82rem, 1vw, 0.94rem);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-secondary);
+}
+
+.journey-motion-demo__end {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30vh;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+    color: var(--color-accent);
+    text-transform: uppercase;
+}
+
+@media (max-width: 1180px) {
+    .journey-motion-demo__track {
+        min-width: 1120px;
+    }
+
+    .journey-motion-demo {
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scrollbar-color: var(--color-text-muted) transparent;
+        scrollbar-width: thin;
+    }
+}
+
+@media (max-width: 900px) {
+    .journey-timeline {
+        width: calc(100vw - 32px);
+    }
+
+    .journey-motion-demo {
+        --journey-columns:
+            64px
+            minmax(0, 0.72fr)
+            minmax(0, 0.72fr)
+            minmax(0, 0.82fr)
+            minmax(0, 0.82fr)
+            minmax(0, 0.82fr)
+            minmax(240px, 0.72fr);
+        --journey-column-gap: 10px;
+    }
+
+    .journey-motion-demo__year {
+        grid-template-columns: 64px minmax(0, 1fr);
+    }
+
+    .journey-motion-demo__year span {
+        font-size: clamp(1.15rem, 3.2vw, 1.4rem);
+    }
+
+    .journey-reveal-card {
+        padding: var(--space-4);
+        border-radius: 14px;
+    }
+
+    .journey-reveal-card--sticky .journey-reveal-card__identity {
+        margin: calc(var(--space-4) * -1) calc(var(--space-4) * -1) 0;
+        padding: var(--space-4);
+        border-radius: 12px 12px 0 0;
+    }
+
+}
+
+@media (max-width: 680px) {
+    .journey-motion-demo__track {
+        min-width: 1080px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .journey-reveal-card {
+        opacity: 1;
+        clip-path: none;
+        transform: none;
+    }
+}

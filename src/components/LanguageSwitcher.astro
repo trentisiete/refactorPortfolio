@@ -10,6 +10,16 @@ interface Props {
 
 const { lang, availableLangs, paths } = Astro.props;
 const currentPath = Astro.url.pathname;
+const menuLabels: Record<Lang, string> = {
+  es: 'Seleccionar idioma',
+  en: 'Choose language',
+  de: 'Sprache auswählen',
+};
+const flagPaths: Record<Lang, string> = {
+  es: '/flags/es.png',
+  en: '/flags/gb.png',
+  de: '/flags/de.png',
+};
 
 // If availableLangs is provided, only show those languages; otherwise show all
 const langsToShow = availableLangs
@@ -17,14 +27,55 @@ const langsToShow = availableLangs
   : Object.entries(languages);
 ---
 
-<div class="lang-switcher">
-  {langsToShow.map(([code, label]) => (
-    <a
-      href={paths?.[code as Lang] ?? getLocalizedPath(currentPath, code as Lang)}
-      class:list={["lang-switcher__link", { "lang-switcher__link--active": code === lang }]}
-      aria-label={label}
-    >
-      {code.toUpperCase()}
-    </a>
-  ))}
-</div>
+<details class="lang-switcher" data-language-menu>
+  <summary
+    class="lang-switcher__trigger"
+    aria-label={menuLabels[lang]}
+    title={menuLabels[lang]}
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10"></circle>
+      <path d="M2 12h20"></path>
+      <path d="M12 2a15.3 15.3 0 0 1 0 20"></path>
+      <path d="M12 2a15.3 15.3 0 0 0 0 20"></path>
+    </svg>
+  </summary>
+
+  <nav class="lang-switcher__menu" aria-label={menuLabels[lang]}>
+    <ul>
+      {langsToShow.map(([code, label]) => (
+        <li>
+          <a
+            href={paths?.[code as Lang] ?? getLocalizedPath(currentPath, code as Lang)}
+            class:list={["lang-switcher__link", { "lang-switcher__link--active": code === lang }]}
+            aria-label={label}
+            aria-current={code === lang ? 'page' : undefined}
+            hreflang={code}
+          >
+            <img src={flagPaths[code as Lang]} alt="" width="24" height="18" />
+            <span>{code.toUpperCase()}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</details>
+
+<script>
+  document.querySelectorAll<HTMLDetailsElement>('[data-language-menu]').forEach(menu => {
+    if (menu.dataset.languageMenuReady === 'true') return;
+    menu.dataset.languageMenuReady = 'true';
+
+    document.addEventListener('pointerdown', event => {
+      if (event.target instanceof Node && !menu.contains(event.target)) {
+        menu.removeAttribute('open');
+      }
+    });
+
+    menu.addEventListener('keydown', event => {
+      if (event.key !== 'Escape') return;
+      menu.removeAttribute('open');
+      menu.querySelector<HTMLElement>('summary')?.focus();
+    });
+  });
+</script>

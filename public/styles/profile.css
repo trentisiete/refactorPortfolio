@@ -12,6 +12,15 @@
     font-size: var(--text-3xl);
 }
 
+.profile-intro--journey {
+    max-width: none;
+    text-align: center;
+}
+
+.profile-intro--journey h1 {
+    margin-bottom: 0;
+}
+
 .profile-intro > p:last-child {
     margin-bottom: 0;
     font-size: var(--text-lg);

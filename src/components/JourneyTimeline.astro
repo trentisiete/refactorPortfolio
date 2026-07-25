@@ -1,0 +1,633 @@
+---
+import JourneyRevealCard from './JourneyRevealCard.astro';
+import type { JourneyMilestone } from './JourneyRevealCard.astro';
+import type { Lang } from '../i18n/utils';
+import {
+  getJourneyTimelineData,
+  type JourneyLaneId,
+  type JourneyTimelineItem,
+  type JourneyTrack,
+} from '../data/journey';
+
+interface Props {
+  lang: Lang;
+}
+
+interface JourneyStackGroup {
+  id: string;
+  lane: JourneyLaneId;
+  track: JourneyTrack;
+  start: number;
+  end: number;
+  items: JourneyTimelineItem[];
+}
+
+const { lang } = Astro.props;
+const journey = getJourneyTimelineData(lang);
+const journeyYears = journey.years;
+const journeyLanes: { id: JourneyLaneId; label: string; columns: string }[] = [
+  { id: 'experience', label: journey.lanes.experience, columns: '2 / 4' },
+  { id: 'education', label: journey.lanes.education, columns: '4 / 7' },
+  { id: 'awards', label: journey.lanes.awards, columns: '7' },
+];
+
+const journeyYearRow = (year: number) => journeyYears.indexOf(year) + 1;
+const journeyItemEndYear = (item: JourneyTimelineItem) =>
+  item.throughCurrent
+    ? journeyYears[journeyYears.length - 1] + 1
+    : (item.end ?? item.start + 1);
+const journeyItemRow = (item: JourneyTimelineItem) => {
+  if (item.throughCurrent) {
+    return `${journeyYearRow(item.start)} / ${journeyYears.length + 1}`;
+  }
+
+  return item.end
+    ? `${journeyYearRow(item.start)} / ${journeyYearRow(item.end)}`
+    : String(journeyYearRow(item.start));
+};
+const journeyItemColumn = (item: Pick<JourneyTimelineItem, 'lane' | 'track'>) => {
+  if (item.lane === 'experience') return String(item.track + 1);
+  if (item.lane === 'education') return String(item.track + 3);
+  return '7';
+};
+const journeyStandaloneItems = journey.items.filter(item => !item.stack);
+const journeyStackGroups: JourneyStackGroup[] = Array.from(
+  new Set(journey.items.flatMap(item => item.stack ? [item.stack] : []))
+).map(id => {
+  const items = journey.items.filter(item => item.stack === id);
+  const firstItem = items[0];
+
+  return {
+    id,
+    lane: firstItem.lane,
+    track: firstItem.track,
+    start: Math.min(...items.map(item => item.start)),
+    end: Math.max(...items.map(journeyItemEndYear)),
+    items,
+  };
+});
+
+type LaneId = 'experience' | 'education' | 'awards';
+type CardSize = 'compact' | 'medium' | 'tall';
+
+interface TimelineItem {
+  id: string;
+  lane: LaneId;
+  track: 1 | 2;
+  start: number;
+  end?: number;
+  title: string;
+  place: string;
+  description: string;
+  size: CardSize;
+  sticky?: boolean;
+  hidePlace?: boolean;
+  fullLane?: boolean;
+  throughCurrent?: boolean;
+  awardStack?: 'top' | 'bottom';
+  milestones?: JourneyMilestone[];
+}
+
+const years = [2021, 2022, 2023, 2024, 2025, 2026];
+
+const lanes: { id: LaneId; label: string; columns: string }[] = [
+  { id: 'experience', label: 'Experience', columns: '2 / 4' },
+  { id: 'education', label: 'Education', columns: '4 / 6' },
+  { id: 'awards', label: 'Awards', columns: '6' },
+];
+
+const items: TimelineItem[] = [
+  {
+    id: 'dripinlocker',
+    lane: 'experience',
+    track: 1,
+    start: 2021,
+    end: 2024,
+    title: 'Independent Entrepreneur',
+    place: 'DripInLocker',
+    description: 'Aquí irá una reflexión personal breve sobre lo que significó esta etapa.',
+    size: 'medium',
+    sticky: true,
+  },
+  {
+    id: 'saona',
+    lane: 'experience',
+    track: 2,
+    start: 2022,
+    title: 'Waiter',
+    place: 'Saona',
+    description: 'Una nota breve contará qué aprendí al compaginar esta etapa con mis estudios.',
+    size: 'compact',
+  },
+  {
+    id: 'seif',
+    lane: 'experience',
+    track: 2,
+    start: 2023,
+    end: 2024,
+    title: 'Board Member',
+    place: 'Computer Security Club · SEIF UAM',
+    description: 'Una reflexión breve explicará mi participación en el club y lo que aprendí.',
+    size: 'medium',
+  },
+  {
+    id: 'webmaster',
+    lane: 'experience',
+    track: 2,
+    start: 2024,
+    end: 2025,
+    title: 'Webmaster',
+    place: 'AUTOCENTER — VULCASAN SL',
+    description: 'Este espacio contará de forma breve qué hice y por qué esta experiencia fue importante.',
+    size: 'medium',
+  },
+  {
+    id: 'gdg',
+    lane: 'experience',
+    track: 1,
+    start: 2025,
+    end: 2026,
+    title: 'President & Founder',
+    place: 'Google Developer Group on Campus UAM',
+    description: 'Una reflexión corta resumirá el reto de construir y liderar esta comunidad.',
+    size: 'medium',
+    fullLane: true,
+  },
+  {
+    id: 'naudit',
+    lane: 'experience',
+    track: 2,
+    start: 2026,
+    title: 'Data Scientist Intern',
+    place: 'Naudit HPCN',
+    description: 'La etapa más reciente cerrará por ahora la cronología con una reflexión breve.',
+    size: 'compact',
+  },
+  {
+    id: 'data-science-degree',
+    lane: 'education',
+    track: 1,
+    start: 2022,
+    end: 2026,
+    title: 'Grado en Ciencia e Ingeniería de Datos',
+    place: 'Universidad Autónoma de Madrid',
+    description: 'Una etapa continua que irá incorporando lo más importante de cada curso.',
+    size: 'tall',
+    sticky: true,
+    hidePlace: true,
+    throughCurrent: true,
+    milestones: [
+      {
+        offset: 1,
+        title: 'Primer curso completo',
+        text: 'Aquí irá una observación personal sobre el primer tramo del grado.',
+      },
+      {
+        offset: 2,
+        title: 'Proyectos y práctica',
+        text: 'Este espacio podrá recoger un proyecto, un cambio de enfoque o un aprendizaje.',
+      },
+      {
+        offset: 3,
+        title: 'Especialización',
+        text: 'Una nueva nota se integra sin convertir la etapa en varias tarjetas separadas.',
+      },
+      {
+        offset: 4,
+        title: 'TFG y cierre',
+        text: 'Cierre del grado y espacio para comentar el trabajo de fin de grado.',
+      },
+    ],
+  },
+  {
+    id: 'data-analytics',
+    lane: 'education',
+    track: 2,
+    start: 2024,
+    title: 'Data Analytics',
+    place: 'Google',
+    description: 'Una breve lectura personal acompañará la información esencial de esta formación.',
+    size: 'compact',
+  },
+  {
+    id: 'cloud-engineering',
+    lane: 'education',
+    track: 2,
+    start: 2025,
+    end: 2026,
+    title: 'Cloud Engineering Training',
+    place: 'Google Cloud',
+    description: 'La descripción personal ocupará una o dos líneas y no competirá con el título.',
+    size: 'medium',
+  },
+  {
+    id: 'academic-scholarship',
+    lane: 'awards',
+    track: 1,
+    start: 2024,
+    title: 'Academic Excellence Scholarship',
+    place: 'Comunidad de Madrid',
+    description: 'Reconocimiento al rendimiento académico.',
+    size: 'compact',
+  },
+  {
+    id: 'investors-league',
+    lane: 'awards',
+    track: 1,
+    start: 2025,
+    title: '1st Place — Investors League',
+    place: 'UAM + IronIA Fintech',
+    description: 'Primer puesto en la competición de estrategia de inversión.',
+    size: 'compact',
+    awardStack: 'top',
+  },
+  {
+    id: 'academic-scholarship-2025-2026',
+    lane: 'awards',
+    track: 1,
+    start: 2025,
+    title: 'Academic Excellence Scholarship',
+    place: 'Comunidad de Madrid',
+    description: 'Segundo reconocimiento al rendimiento académico.',
+    size: 'compact',
+    awardStack: 'bottom',
+  },
+];
+
+const yearRow = (year: number) => years.indexOf(year) + 1;
+const itemRow = (item: TimelineItem) => {
+  if (item.throughCurrent) return `${yearRow(item.start)} / ${years.length + 1}`;
+  return item.end ? `${yearRow(item.start)} / ${yearRow(item.end)}` : String(yearRow(item.start));
+};
+const itemEndYear = (item: TimelineItem) =>
+  item.throughCurrent ? years[years.length - 1] + 1 : (item.end ?? item.start + 1);
+const itemColumn = (item: TimelineItem) => {
+  if (item.fullLane && item.lane === 'experience') return '2 / 4';
+  if (item.fullLane && item.lane === 'education') return '4 / 6';
+  if (item.lane === 'experience') return String(item.track + 1);
+  if (item.lane === 'education') return String(item.track + 3);
+  return '6';
+};
+const standaloneItems = items.filter(item => !item.awardStack);
+const awardStackItems = items.filter(item => item.awardStack);
+---
+
+<div class="journey-timeline">
+    <div
+      class="journey-motion-demo fade-in fade-in-2"
+      data-journey-reveal-root
+      aria-label={journey.timelineLabel}
+    >
+      <div class="journey-motion-demo__track">
+        <div class="journey-motion-demo__lanes" aria-label={journey.lanesLabel}>
+          {journeyLanes.map(lane => (
+            <span data-lane={lane.id} style={`grid-column: ${lane.columns}`}>
+              {lane.label}
+            </span>
+          ))}
+        </div>
+
+        <div class="journey-motion-demo__canvas">
+          {journeyYears.map((year, index) => (
+            <div
+              class="journey-motion-demo__year"
+              style={`grid-row: ${index + 1}`}
+              data-timeline-year={year}
+              aria-label={`${journey.yearLabel} ${year}`}
+            >
+              <span>{year}</span>
+              <i aria-hidden="true"></i>
+            </div>
+          ))}
+
+          {journeyStandaloneItems.map(item => (
+            <div
+              class:list={[
+                'journey-motion-demo__item',
+                {
+                  'journey-motion-demo__item--duration':
+                    Boolean(item.end) || item.throughCurrent,
+                },
+              ]}
+              style={`grid-row: ${journeyItemRow(item)}; grid-column: ${journeyItemColumn(item)}`}
+              data-lane={item.lane}
+              data-track={item.track}
+              data-timeline-start={item.start}
+              data-timeline-end={journeyItemEndYear(item)}
+            >
+              <JourneyRevealCard
+                title={item.title}
+                place={item.place}
+                description={item.description}
+                size={item.size}
+                duration={Boolean(item.end) || item.throughCurrent}
+                sticky={item.sticky}
+                hidePlace={item.hidePlace}
+                milestones={item.milestones}
+              />
+            </div>
+          ))}
+
+          {journeyStackGroups.map(group => (
+            <div
+              class="journey-motion-demo__stack"
+              style={`grid-row: ${journeyYearRow(group.start)} / ${journeyYearRow(group.end)}; grid-column: ${journeyItemColumn(group)}`}
+              data-lane={group.lane}
+              data-track={group.track}
+              data-timeline-start={group.start}
+              data-timeline-end={group.end}
+            >
+              {group.items.map(item => (
+                <JourneyRevealCard
+                  title={item.title}
+                  place={item.place}
+                  description={item.description}
+                  size={item.size}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+
+        <div class="journey-motion-demo__end" aria-hidden="true">
+          <span>{journey.today}</span>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script>
+  interface RevealState {
+    element: HTMLElement;
+    current: number;
+    target: number;
+    intensityCurrent: number;
+    intensityTarget: number;
+  }
+
+  const clamp = (value: number) => Math.min(1, Math.max(0, value));
+
+  const setupJourneyReveal = () => {
+    document.querySelectorAll<HTMLElement>('[data-journey-reveal-root]').forEach(root => {
+      if (root.dataset.journeyRevealReady === 'true') return;
+      root.dataset.journeyRevealReady = 'true';
+
+      const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-journey-reveal-card]'));
+      if (!cards.length) return;
+
+      const yearMarkers = Array.from(
+        root.querySelectorAll<HTMLElement>('[data-timeline-year]')
+      );
+      const timelineYears = yearMarkers
+        .map(marker => Number(marker.dataset.timelineYear))
+        .filter(Number.isFinite);
+      const timelineItems = Array.from(
+        root.querySelectorAll<HTMLElement>('[data-timeline-start][data-timeline-end]')
+      );
+
+      const syncYearHeights = () => {
+        if (!timelineYears.length || !timelineItems.length) return;
+
+        cards.forEach(card => {
+          card.style.removeProperty('--journey-guided-height');
+          delete card.dataset.heightGuided;
+        });
+
+        const minimumYearHeight = Math.min(
+          320,
+          Math.max(270, window.innerHeight * 0.34)
+        );
+        const yearHeights = timelineYears.map(() => minimumYearHeight);
+
+        timelineYears.forEach(year => {
+          root.style.setProperty(`--year-${year}-size`, `${minimumYearHeight}px`);
+        });
+
+        root.dataset.measuringYears = 'true';
+        void root.offsetHeight;
+
+        const heightCandidates = timelineItems.flatMap(element => {
+          const itemCards = Array.from(
+            element.querySelectorAll<HTMLElement>(':scope > [data-journey-reveal-card]')
+          );
+          const startYear = Number(element.dataset.timelineStart);
+          const isStack = element.classList.contains('journey-motion-demo__stack');
+
+          return itemCards.map((card, index) => ({
+            card,
+            startYear,
+            naturalHeight: card.getBoundingClientRect().height,
+            canReceiveGuide:
+              !card.classList.contains('journey-reveal-card--duration') &&
+              (!isStack || index === itemCards.length - 1),
+          }));
+        });
+
+        timelineYears.forEach(year => {
+          const candidates = heightCandidates.filter(candidate => candidate.startYear === year);
+          const naturalHeights = [...new Set(
+            candidates
+              .map(candidate => Math.ceil(candidate.naturalHeight))
+              .sort((a, b) => a - b)
+          )];
+
+          candidates.forEach(candidate => {
+            if (!candidate.canReceiveGuide) return;
+
+            const currentHeight = Math.ceil(candidate.naturalHeight);
+            const nextHeight = naturalHeights.find(height => height > currentHeight + 1);
+            if (!nextHeight) return;
+
+            const gap = nextHeight - currentHeight;
+            const allowedGap = Math.min(72, Math.max(36, currentHeight * 0.42));
+            if (gap > allowedGap) return;
+
+            candidate.card.style.setProperty(
+              '--journey-guided-height',
+              `${nextHeight}px`
+            );
+            candidate.card.dataset.heightGuided = 'true';
+          });
+        });
+
+        void root.offsetHeight;
+
+        const requirements = timelineItems
+          .map(element => {
+            const startYear = Number(element.dataset.timelineStart);
+            const endYear = Number(element.dataset.timelineEnd);
+            const startIndex = timelineYears.indexOf(startYear);
+            const endIndexCandidate = timelineYears.findIndex(year => year >= endYear);
+            const endIndex =
+              endIndexCandidate === -1 ? timelineYears.length : endIndexCandidate;
+
+            if (startIndex === -1 || endIndex <= startIndex) return null;
+
+            const styles = window.getComputedStyle(element);
+            const marginTop = Number.parseFloat(styles.marginTop) || 0;
+            const marginBottom = Math.max(
+              Number.parseFloat(styles.marginBottom) || 0,
+              20
+            );
+            const naturalHeight = element.getBoundingClientRect().height;
+
+            return {
+              startIndex,
+              endIndex,
+              span: endIndex - startIndex,
+              requiredHeight: Math.ceil(
+                naturalHeight + marginTop + marginBottom + 12
+              ),
+            };
+          })
+          .filter(
+            (
+              requirement
+            ): requirement is {
+              startIndex: number;
+              endIndex: number;
+              span: number;
+              requiredHeight: number;
+            } => requirement !== null
+          )
+          .sort((a, b) => a.span - b.span);
+
+        root.removeAttribute('data-measuring-years');
+
+        requirements.forEach(requirement => {
+          const availableHeight = yearHeights
+            .slice(requirement.startIndex, requirement.endIndex)
+            .reduce((total, height) => total + height, 0);
+          const missingHeight = requirement.requiredHeight - availableHeight;
+
+          if (missingHeight <= 0) return;
+
+          const extraPerYear = missingHeight / requirement.span;
+          for (
+            let index = requirement.startIndex;
+            index < requirement.endIndex;
+            index += 1
+          ) {
+            yearHeights[index] += extraPerYear;
+          }
+        });
+
+        timelineYears.forEach((year, index) => {
+          root.style.setProperty(`--year-${year}-size`, `${Math.ceil(yearHeights[index])}px`);
+        });
+      };
+
+      const stickyCards = cards.filter(card =>
+        card.classList.contains('journey-reveal-card--sticky')
+      );
+      const syncStickyOffsets = () => {
+        stickyCards.forEach(card => {
+          const identity = card.querySelector<HTMLElement>('.journey-reveal-card__identity');
+          if (!identity) return;
+
+          card.style.setProperty('--journey-identity-height', `${identity.offsetHeight}px`);
+        });
+      };
+
+      let refreshReveal: (() => void) | undefined;
+      const refreshLayout = () => {
+        syncYearHeights();
+        syncStickyOffsets();
+        refreshReveal?.();
+      };
+
+      refreshLayout();
+      const stickyResizeObserver = new ResizeObserver(syncStickyOffsets);
+      stickyCards.forEach(card => stickyResizeObserver.observe(card));
+
+      window.addEventListener('resize', refreshLayout, { passive: true });
+      document.fonts.ready.then(refreshLayout);
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      root.dataset.motionReady = 'true';
+
+      const states: RevealState[] = cards.map(element => ({
+        element,
+        current: 1,
+        target: 1,
+        intensityCurrent: 1,
+        intensityTarget: 1,
+      }));
+
+      let frame = 0;
+
+      const measure = (immediate = false) => {
+        const revealLine = window.innerHeight * 0.88;
+        const minimumDistance = window.innerHeight * 0.46;
+
+        states.forEach(state => {
+          const cardRect = state.element.getBoundingClientRect();
+          const revealDistance = Math.max(cardRect.height, minimumDistance);
+          state.target = clamp((revealLine - cardRect.top) / revealDistance);
+          const intensityDistance = state.element.classList.contains(
+            'journey-reveal-card--duration'
+          )
+            ? Math.max(220, window.innerHeight * 0.42)
+            : revealDistance;
+          state.intensityTarget = clamp(
+            (revealLine - cardRect.top) / intensityDistance
+          );
+
+          if (immediate) {
+            state.current = state.target;
+            state.intensityCurrent = state.intensityTarget;
+            state.element.style.setProperty('--journey-reveal', state.current.toFixed(4));
+            state.element.style.setProperty(
+              '--journey-intensity',
+              state.intensityCurrent.toFixed(4)
+            );
+          }
+        });
+      };
+
+      const animate = () => {
+        let moving = false;
+
+        states.forEach(state => {
+          const revealDistance = state.target - state.current;
+          const intensityDistance = state.intensityTarget - state.intensityCurrent;
+
+          if (Math.abs(revealDistance) > 0.001) {
+            state.current += revealDistance * 0.16;
+            moving = true;
+          } else {
+            state.current = state.target;
+          }
+
+          if (Math.abs(intensityDistance) > 0.001) {
+            state.intensityCurrent += intensityDistance * 0.16;
+            moving = true;
+          } else {
+            state.intensityCurrent = state.intensityTarget;
+          }
+
+          state.element.style.setProperty('--journey-reveal', state.current.toFixed(4));
+          state.element.style.setProperty(
+            '--journey-intensity',
+            state.intensityCurrent.toFixed(4)
+          );
+        });
+
+        frame = moving ? window.requestAnimationFrame(animate) : 0;
+      };
+
+      const update = () => {
+        measure();
+        if (!frame) frame = window.requestAnimationFrame(animate);
+      };
+
+      refreshReveal = update;
+      measure(true);
+      window.addEventListener('scroll', update, { passive: true });
+    });
+  };
+
+  setupJourneyReveal();
+  document.addEventListener('astro:page-load', setupJourneyReveal);
+</script>
