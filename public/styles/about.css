@@ -383,9 +383,12 @@
 }
 
 .thought-lightbox {
+    position: fixed;
+    inset: 50% auto auto 50%;
     width: min(980px, calc(100vw - 2rem));
     max-width: none;
     max-height: calc(100dvh - 2rem);
+    margin: 0;
     padding: 0;
     overflow: auto;
     color: var(--about-cream);
@@ -393,6 +396,7 @@
     border: 2px solid var(--about-cream);
     border-radius: 7px;
     box-shadow: 10px 10px 0 var(--about-acid);
+    transform: translate(-50%, -50%);
 }
 
 .thought-lightbox::backdrop {
