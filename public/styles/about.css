@@ -1081,6 +1081,11 @@
         transform: rotate(2deg);
     }
 
+    .about-hero__note strong {
+        font-size: 0.9rem;
+        line-height: 1.45;
+    }
+
     .thoughts-section__heading {
         display: block;
     }
