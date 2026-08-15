@@ -78,15 +78,41 @@ const thoughts = await Promise.all(
       >
         {thoughts.length > 0 ? (
           thoughts.map(({ entry, Content, dateLabel, timeLabel }) => (
-            <article class="thought-entry">
+            <article class:list={['thought-entry', { 'thought-entry--with-image': entry.data.image }]}>
               <header>
                 <time datetime={entry.data.publishedAt.toISOString()}>
                   <span>{dateLabel}</span>
                   <b>{timeLabel}</b>
                 </time>
               </header>
-              <div class="thought-entry__body">
-                <Content />
+              <div class="thought-entry__content">
+                <div class="thought-entry__body">
+                  <Content />
+                </div>
+                {entry.data.image && (
+                  <figure class="thought-entry__media">
+                    <button
+                      class="thought-entry__image-button"
+                      type="button"
+                      data-thought-image-trigger
+                      data-src={entry.data.image.src}
+                      data-alt={entry.data.image.alt}
+                      data-caption={entry.data.image.caption}
+                      aria-label={`Open image: ${entry.data.image.alt}`}
+                    >
+                      <img
+                        src={entry.data.image.src}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <span aria-hidden="true">view full ↗</span>
+                    </button>
+                    {entry.data.image.caption && (
+                      <figcaption>{entry.data.image.caption}</figcaption>
+                    )}
+                  </figure>
+                )}
               </div>
             </article>
           ))
@@ -106,6 +132,19 @@ const thoughts = await Promise.all(
       </div>
     </div>
   </section>
+
+  <dialog class="thought-lightbox" data-thought-lightbox aria-label="Expanded thought image">
+    <div class="thought-lightbox__bar">
+      <span>image attachment</span>
+      <form method="dialog">
+        <button type="submit" aria-label="Close expanded image">close ×</button>
+      </form>
+    </div>
+    <div class="thought-lightbox__canvas">
+      <img data-thought-lightbox-image alt="" />
+    </div>
+    <p class="thought-lightbox__caption" data-thought-lightbox-caption hidden></p>
+  </dialog>
 
   <section class="about-gateways" aria-label="More personal pages">
     <a class="about-gateway about-gateway--writing" href="/en/about/writing/">
@@ -127,3 +166,31 @@ const thoughts = await Promise.all(
     </a>
   </section>
 </section>
+
+<script>
+  const lightbox = document.querySelector<HTMLDialogElement>('[data-thought-lightbox]');
+  const lightboxImage = lightbox?.querySelector<HTMLImageElement>('[data-thought-lightbox-image]');
+  const lightboxCaption = lightbox?.querySelector<HTMLElement>('[data-thought-lightbox-caption]');
+
+  document.querySelectorAll<HTMLButtonElement>('[data-thought-image-trigger]').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      if (!lightbox || !lightboxImage || !lightboxCaption) return;
+
+      lightboxImage.src = trigger.dataset.src ?? '';
+      lightboxImage.alt = trigger.dataset.alt ?? '';
+
+      const caption = trigger.dataset.caption ?? '';
+      lightboxCaption.textContent = caption;
+      lightboxCaption.hidden = caption.length === 0;
+      lightbox.showModal();
+    });
+  });
+
+  lightbox?.addEventListener('click', event => {
+    if (event.target === lightbox) lightbox.close();
+  });
+
+  lightbox?.addEventListener('close', () => {
+    if (lightboxImage) lightboxImage.removeAttribute('src');
+  });
+</script>

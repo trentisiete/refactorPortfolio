@@ -23,6 +23,11 @@ const thoughts = defineCollection({
     publishedAt: z.coerce.date(),
     lang: z.literal('en').default('en'),
     draft: z.boolean().optional().default(false),
+    image: z.object({
+      src: z.string(),
+      alt: z.string(),
+      caption: z.string().optional(),
+    }).optional(),
   }),
 });
 

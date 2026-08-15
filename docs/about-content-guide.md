@@ -61,6 +61,10 @@ Usa esta estructura:
 publishedAt: 2026-07-25T20:30:00+02:00
 lang: en
 draft: true
+image:
+  src: /assets/thoughts/learning-in-public.jpg
+  alt: Notes and coffee on my desk
+  caption: Optional context for the image.
 ---
 
 Today I realised that unfinished ideas are often more useful than polished
@@ -72,6 +76,13 @@ answers.
 - En horario de invierno usa `+01:00`.
 - `draft: true` mantiene el pensamiento oculto.
 - Cambia a `draft: false` cuando quieras publicarlo.
+- `image` es opcional. Si existe, se muestra como miniatura y se puede abrir a
+  tamaño grande haciendo clic.
+
+Para añadir una imagen, guárdala en `public/assets/thoughts/` y completa los
+tres campos del ejemplo. `src` y `alt` son obligatorios dentro de `image`;
+`caption` es opcional. Si el pensamiento no lleva foto, elimina todo el bloque
+`image`.
 
 Puedes usar Markdown en el texto:
 
