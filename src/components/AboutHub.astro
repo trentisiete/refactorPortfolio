@@ -5,6 +5,23 @@ const thoughtEntries = (await getCollection('thoughts'))
   .filter(thought => thought.data.lang === 'en' && !thought.data.draft)
   .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
 
+const THOUGHT_CAPTION_MAX_LENGTH = 96;
+
+const getCaptionPreview = (caption?: string) => {
+  const normalizedCaption = caption?.trim() ?? '';
+
+  if (normalizedCaption.length <= THOUGHT_CAPTION_MAX_LENGTH) {
+    return normalizedCaption;
+  }
+
+  const clippedCaption = normalizedCaption
+    .slice(0, THOUGHT_CAPTION_MAX_LENGTH - 1)
+    .replace(/\s+\S*$/, '')
+    .trimEnd();
+
+  return `${clippedCaption || normalizedCaption.slice(0, THOUGHT_CAPTION_MAX_LENGTH - 1)}…`;
+};
+
 const thoughts = await Promise.all(
   thoughtEntries.map(async entry => {
     const { Content } = await render(entry);
@@ -109,7 +126,12 @@ const thoughts = await Promise.all(
                       <span aria-hidden="true">view full ↗</span>
                     </button>
                     {entry.data.image.caption && (
-                      <figcaption>{entry.data.image.caption}</figcaption>
+                      <figcaption
+                        aria-label={entry.data.image.caption}
+                        title={entry.data.image.caption}
+                      >
+                        {getCaptionPreview(entry.data.image.caption)}
+                      </figcaption>
                     )}
                   </figure>
                 )}
