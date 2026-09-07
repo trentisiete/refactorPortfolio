@@ -1,18 +1,96 @@
 ---
 import ProfileEntry from './ProfileEntry.astro';
 import type { ProfileSection } from '../data/profile.es';
-interface Props { sections: ProfileSection[]; label: string }
-const { sections, label } = Astro.props;
+import type { Lang } from '../i18n/utils';
+
+interface Props { sections: ProfileSection[]; label: string; lang: Lang }
+const { sections, lang } = Astro.props;
+
+const labels = {
+  es: {
+    experience: 'Experiencia',
+    education: 'Educación',
+    awards: 'Premios',
+    experienceGroups: ['Experiencia técnica', 'Liderazgo y comunidad', 'Aprender a emprender', 'Primeros trabajos'],
+    educationGroups: ['Académica', 'Certificaciones', 'Microcredenciales'],
+    awardGroups: ['Premios académicos', 'Competiciones'],
+  },
+  en: {
+    experience: 'Experience',
+    education: 'Education',
+    awards: 'Awards',
+    experienceGroups: ['Technical experience', 'Leadership & community', 'Building a business', 'Early work'],
+    educationGroups: ['Academic', 'Certifications', 'Microcredentials'],
+    awardGroups: ['Academic awards', 'Competitions'],
+  },
+  de: {
+    experience: 'Berufserfahrung',
+    education: 'Ausbildung',
+    awards: 'Auszeichnungen',
+    experienceGroups: ['Technische Erfahrung', 'Leadership & Community', 'Unternehmerisch lernen', 'Erste Jobs'],
+    educationGroups: ['Akademisch', 'Zertifikate', 'Mikrocredentials'],
+    awardGroups: ['Akademische Auszeichnungen', 'Wettbewerbe'],
+  },
+}[lang];
+
+const findSection = (id: ProfileSection['id']) => sections.find(section => section.id === id);
+const experience = findSection('experience')?.entries ?? [];
+const education = findSection('education')?.entries ?? [];
+const awards = findSection('awards')?.entries ?? [];
+const byIndexes = (entries: typeof education, indexes: number[]) => indexes.flatMap(index => entries[index] ? [entries[index]] : []);
+
+const experienceGroups = [
+  { id: 'technical', indexes: [0, 1] },
+  { id: 'leadership', indexes: [2, 3] },
+  { id: 'entrepreneurship', indexes: [4] },
+  { id: 'early-work', indexes: [5] },
+].map((group, index) => ({ ...group, label: labels.experienceGroups[index], entries: byIndexes(experience, group.indexes) }));
+
+const educationGroups = [
+  { id: 'academic', indexes: [0, 1] },
+  { id: 'certifications', indexes: [2, 3, 5, 6, 8, 9] },
+  { id: 'microcredentials', indexes: [4, 7] },
+].map((group, index) => ({ ...group, label: labels.educationGroups[index], entries: byIndexes(education, group.indexes) }));
+
+const awardGroups = [
+  { id: 'academic-awards', indexes: [0, 1, 4] },
+  { id: 'competitions', indexes: [3, 2] },
+].map((group, index) => ({ ...group, label: labels.awardGroups[index], entries: byIndexes(awards, group.indexes) }));
 ---
-<div class="career-layout">
-  <nav class="career-nav" aria-label={label}>
-    {sections.map(section => <a href={`#${section.id}`}>{section.label}<span aria-hidden="true">↘</span></a>)}
-    <a class="career-cv" href="/CV_jose.pdf" target="_blank" rel="noopener noreferrer">CV <span aria-hidden="true">↗</span></a>
-  </nav>
-  <div class="career-sections">
-    {sections.map(section => <section class="career-section" id={section.id} aria-labelledby={`career-${section.id}`}>
-      <header class="section-heading"><h2 id={`career-${section.id}`}>{section.label}</h2><span>{String(section.entries.length).padStart(2, '0')}</span></header>
-      {section.entries.map(entry => <ProfileEntry entry={entry} />)}
-    </section>)}
-  </div>
+<div class="career-sections">
+  <section class="career-major career-major--experience" id="experience" aria-labelledby="career-experience-title">
+    <header class="career-major-heading">
+      <h2 id="career-experience-title">{labels.experience}</h2>
+    </header>
+    <div class="career-experience">
+      {experienceGroups.map(group => <section class="career-section career-section--experience-group" id={group.id} aria-labelledby={`career-${group.id}`}>
+        <header class="section-heading"><h3 id={`career-${group.id}`}>{group.label}</h3></header>
+        <div class="career-group-entries">{group.entries.map(entry => <ProfileEntry entry={entry} />)}</div>
+      </section>)}
+    </div>
+  </section>
+
+  <section class="career-major career-major--education" id="education" aria-labelledby="career-education-title">
+    <header class="career-major-heading">
+      <h2 id="career-education-title">{labels.education}</h2>
+    </header>
+    <div class="career-entry-grid career-entry-grid--education">
+      {educationGroups.map(group => <section class="career-section career-section--education-group" id={group.id} aria-labelledby={`career-${group.id}`}>
+        <header class="section-heading"><h3 id={`career-${group.id}`}>{group.label}</h3></header>
+        <div class="career-group-entries">{group.entries.map(entry => <ProfileEntry entry={entry} />)}</div>
+      </section>)}
+    </div>
+  </section>
+
+  <section class="career-major career-major--awards" id="awards" aria-labelledby="career-awards-title">
+    <header class="career-major-heading">
+      <h2 id="career-awards-title">{labels.awards}</h2>
+    </header>
+    <div class="career-entry-grid career-entry-grid--awards">
+      {awardGroups.map(group => <section class="career-section career-section--award-group" id={group.id} aria-labelledby={`career-${group.id}`}>
+        <header class="section-heading"><h3 id={`career-${group.id}`}>{group.label}</h3></header>
+        <div class="career-group-entries">{group.entries.map(entry => <ProfileEntry entry={entry} />)}</div>
+      </section>)}
+    </div>
+  </section>
 </div>

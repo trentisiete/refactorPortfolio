@@ -1,5 +1,5 @@
 // translated: true
-// sourceHash: de2335aa41712de3
+// sourceHash: 886a283673b2f50d
 import type { ProfileData, ProfileProject } from './profile.es';
 import { createProjectGallery } from './projectMedia';
 
@@ -13,36 +13,42 @@ export const profileDe: ProfileData = {
       label: 'Berufserfahrung',
       entries: [
         {
-          title: 'Data Scientist Intern',
+          id: 'naudit',
+          title: 'Data Science',
           organization: 'Naudit HPCN',
           period: '2026',
           logo: { initials: 'NH', src: '/logos/naudit.png', alt: 'Logo von Naudit HPCN' },
         },
         {
+          id: 'gdg',
           title: 'Präsident und Gründer',
           organization: 'Google Developer Group on Campus UAM',
           period: '2025 - heute',
           logo: { initials: 'GDG', src: '/logos/gdg.webp', alt: 'Logo der Google Developer Group' },
         },
         {
+          id: 'webmaster',
           title: 'Webmaster',
           organization: 'AUTOCENTER - VULCASAN SL',
           period: '2024 - 2025',
           logo: { initials: 'VS', src: '/logos/autocenter.png', alt: 'Logo von Driver Center' },
         },
         {
+          id: 'seif',
           title: 'Vorstandsmitglied',
           organization: 'Club für IT-Sicherheit (SEIF UAM)',
           period: '2023 - 2024',
           logo: { initials: 'SEIF', src: '/logos/seif.webp', alt: 'Logo von SEIF UAM' },
         },
         {
+          id: 'dripinlocker',
           title: 'Selbstständiger Unternehmer',
           organization: 'DripInLocker',
           period: '2021 - 2024',
           logo: { initials: 'DI', src: '/logos/dripinlocker.png', alt: 'Logo von DripInLocker' },
         },
         {
+          id: 'saona',
           title: 'Kellner',
           organization: 'Saona',
           period: '2022',
@@ -54,6 +60,11 @@ export const profileDe: ProfileData = {
       id: 'education',
       label: 'Ausbildung',
       entries: [
+        {
+          title: 'Schulbildung',
+          organization: 'Colegio San José de Begoña',
+          logo: { initials: 'CSJ', src: '/logos/colegio.png', alt: 'Wappen des Colegio San José de Begoña' },
+        },
         {
           title: 'Bachelorstudium in Data Science and Engineering',
           organization: 'Autonome Universität Madrid',
@@ -117,7 +128,13 @@ export const profileDe: ProfileData = {
         {
           title: 'Stipendium für akademische Exzellenz',
           organization: 'Comunidad de Madrid',
-          period: '2024 und 2025',
+          period: '2024',
+          logo: { initials: 'CM', src: '/logos/ccaa_mad.webp', alt: 'Logo der Comunidad de Madrid' },
+        },
+        {
+          title: 'Stipendium für akademische Exzellenz',
+          organization: 'Comunidad de Madrid',
+          period: '2025',
           logo: { initials: 'CM', src: '/logos/ccaa_mad.webp', alt: 'Logo der Comunidad de Madrid' },
         },
         {
@@ -133,7 +150,7 @@ export const profileDe: ProfileData = {
           logo: { initials: 'GC', src: '/logos/cloud.png', alt: 'Logo von Google Cloud' },
         },
         {
-          title: 'Akademische Anerkennung für herausragende Leistungen',
+          title: 'Schüler mit herausragenden akademischen Leistungen',
           organization: 'Colegio San José de Begoña',
           period: '2020 und 2021',
           logo: { initials: 'CSJ', src: '/logos/colegio.png', alt: 'Wappen des Colegio San José de Begoña' },

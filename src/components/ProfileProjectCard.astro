@@ -13,24 +13,44 @@ const t = useTranslations(lang);
 const dialogId = `project-preview-${project.id}`;
 const titleId = `${dialogId}-title`;
 const carouselTitleId = `${dialogId}-carousel-title`;
-const categories = { es: ['Optimización bayesiana', 'Visión por computador', 'Procesamiento del lenguaje', 'Modelos generativos'], en: ['Bayesian optimization', 'Computer vision', 'Natural language processing', 'Generative models'], de: ['Bayessche Optimierung', 'Computer Vision', 'Sprachverarbeitung', 'Generative Modelle'] }[lang];
-const projectIds = ['surrogate-models', 'roadguard', 'bgg-review-intelligence', 'diffusion-models'];
-const category = categories[projectIds.indexOf(project.id)];
-const cover = project.gallery?.find(image => image.src.includes('fig_gp_prior_posterior') || image.src.includes('example_5_') || image.src.includes('imputacion_cifar')) ?? project.gallery?.[0];
+const coverFiles: Record<string, string> = {
+  'surrogate-models': 'app_forrester_ei_decision_synthesis_step5.png',
+  roadguard: 'example_5_United_States.jpg',
+  'diffusion-models': 'imputacion_cifar_mnist_3etapas.png',
+};
+const boardGameAlt = {
+  es: 'Fichas claras y oscuras sobre un tablero de madera',
+  en: 'Light and dark playing pieces on a wooden board',
+  de: 'Helle und dunkle Spielsteine auf einem Holzbrett',
+}[lang];
+const cover = project.id === 'bgg-review-intelligence'
+  ? { src: '/assets/articles/bgg_review_intelligence/wooden-board-game.jpg', alt: boardGameAlt }
+  : project.gallery?.find(image => image.src.endsWith(coverFiles[project.id] ?? '')) ?? project.gallery?.[0];
 ---
 
 <article class="profile-project-card" data-project-card>
   {cover && <a class={`project-row__image project-row__image--${project.id}`} href={project.articleHref ?? project.github} aria-label={project.title}>
     <img src={cover.src} alt={cover.alt} width="840" height="460" loading="eager" decoding="async" />
-    <span class="project-row__image-label" aria-hidden="true">{category} <span>↗</span></span>
   </a>}
   <div class="project-row__copy">
-    <div class="project-row__meta"><span>{category}</span><span>{project.year}</span></div>
     <h3 class="profile-project-card__title"><a href={project.articleHref ?? project.github}>{project.title}</a></h3>
     {project.excerpt && <p class="profile-project-card__excerpt">{project.excerpt}</p>}
     <div class="project-row__links">
-      {project.articleHref && <a class="project-row__read" href={project.articleHref}>{t.profile.read_article} <span aria-hidden="true">→</span></a>}
-      <button type="button" aria-haspopup="dialog" aria-controls={dialogId} data-project-preview-open>{t.profile.gallery} <span class="project-row__count">{project.gallery?.length ?? 0}</span></button>
+      {project.articleHref && <a class="project-row__read" href={project.articleHref} aria-label={`${t.profile.read_article_action}: ${project.title}`}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 5.5C9 3.5 5.5 3.5 2.5 4.5v15c3-1 6.5-1 9.5 1 3-2 6.5-2 9.5-1v-15c-3-1-6.5-1-9.5 1Z M12 5.5v15" />
+          <path d="M6 8h2.5M6 11.5h2.5M15.5 8H18M15.5 11.5H18" />
+        </svg>
+        <span class="project-action__tooltip" aria-hidden="true">{t.profile.read_article_action}</span>
+      </a>}
+      <button type="button" aria-label={`${t.profile.view_gallery_action}: ${project.title}`} aria-haspopup="dialog" aria-controls={dialogId} data-project-preview-open>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="6" y="3" width="15" height="15" rx="2" />
+          <path d="M3 7v12a2 2 0 0 0 2 2h12M6 14l4-4 4 4 3-3 4 4" />
+          <circle cx="16.5" cy="7.5" r="1" />
+        </svg>
+        <span class="project-action__tooltip" aria-hidden="true">{t.profile.view_gallery_action}</span>
+      </button>
     </div>
   </div>
 
@@ -44,8 +64,7 @@ const cover = project.gallery?.find(image => image.src.includes('fig_gp_prior_po
       <div class="project-preview__content" data-project-preview-content>
         <header class="project-preview__topbar">
           <div class="project-preview__identity">
-            <strong id={titleId}>{project.title}</strong>
-            {project.year && <span>{project.year}</span>}
+            <h2 id={titleId}>{project.title}</h2>
           </div>
           <button
             class="project-preview__close"
@@ -61,10 +80,28 @@ const cover = project.gallery?.find(image => image.src.includes('fig_gp_prior_po
           </button>
         </header>
 
-        <div class="project-preview__layout">
+        <div class="project-preview__body">
+          <div class="project-preview__intro">
+            {project.excerpt && <p>{project.excerpt}</p>}
+            <div class="project-row__links project-preview__actions">
+              {project.articleHref && <a href={project.articleHref} aria-label={t.profile.read_article_action}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 5.5C9 3.5 5.5 3.5 2.5 4.5v15c3-1 6.5-1 9.5 1 3-2 6.5-2 9.5-1v-15c-3-1-6.5-1-9.5 1Z M12 5.5v15" />
+                  <path d="M6 8h2.5M6 11.5h2.5M15.5 8H18M15.5 11.5H18" />
+                </svg>
+                <span class="project-action__tooltip" aria-hidden="true">{t.profile.read_article_action}</span>
+              </a>}
+              {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer" aria-label={t.profile.view_code}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+                <span class="project-action__tooltip" aria-hidden="true">GitHub</span>
+              </a>}
+            </div>
+          </div>
           <section class="project-preview__gallery" aria-label={t.profile.gallery}>
             {project.gallery && project.gallery.length > 0 ? (
-              <div class="project-preview__collage">
+              <div class:list={["project-preview__collage", { "project-preview__collage--single": project.gallery.length === 1 }]}>
                 {project.gallery.map((image, index) => (
                   <button
                     class="project-collage__item"
@@ -73,66 +110,14 @@ const cover = project.gallery?.find(image => image.src.includes('fig_gp_prior_po
                     data-carousel-index={index}
                     data-carousel-caption={image.caption}
                   >
-                    <img
-                      src={image.src}
-                      alt={image.alt}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    {image.caption && <span class="project-collage__caption">{image.caption}</span>}
+                    <img src={image.src} alt={image.alt} loading={index < 6 ? "eager" : "lazy"} decoding="async" />
                   </button>
                 ))}
               </div>
             ) : (
-              <div class="project-preview__gallery-empty">
-                <p>{t.profile.gallery_empty}</p>
-              </div>
+              <p class="project-preview__gallery-empty">{t.profile.gallery_empty}</p>
             )}
           </section>
-
-          <aside class="project-preview__story">
-            <section class="project-preview__article" aria-label={t.profile.article_preview}>
-              {project.articleHref ? (
-                <div class="project-preview__article-summary">
-                  <h3>{t.profile.article_preview}</h3>
-                  <p>{project.excerpt}</p>
-                  <a class="project-preview__read" href={project.articleHref}>{t.profile.read_article} <span aria-hidden="true">→</span></a>
-                </div>
-              ) : (
-                <div class="project-preview__article-empty">
-                  <p>{t.profile.article_unavailable}</p>
-                </div>
-              )}
-            </section>
-
-            {project.notes && project.notes.length > 0 && (
-              <section class="project-preview__notes" aria-label={t.profile.notes}>
-                <h3 class="project-preview__eyebrow">{t.profile.notes}</h3>
-                <ul>
-                  {project.notes.map(note => (
-                    <li class={`project-comment project-comment--${note.tone ?? 'neutral'}`}>
-                      <span class="project-comment__avatar" aria-hidden="true">JA</span>
-                      <div class="project-comment__body">
-                        <span class="project-comment__author">José Arbeláez</span>
-                        <p>{note.text}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {project.github && (
-              <footer class="project-preview__footer">
-                <a href={project.github} target="_blank" rel="noopener noreferrer">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                  </svg>
-                  <span>{t.profile.view_code}</span>
-                </a>
-              </footer>
-            )}
-          </aside>
         </div>
       </div>
 

@@ -7,7 +7,7 @@ import { profileEn } from '../../data/profile.en';
 <BaseLayout
   lang="en"
   view="profile"
-  title={`Journey | José Arbelaez`}
+  title="Experience & education | José Arbelaez"
   description="Experience, projects, education and awards of José Arbelaez."
   extraStyles={["/styles/profile.css"]}
   showTrafficStats
@@ -17,6 +17,6 @@ import { profileEn } from '../../data/profile.en';
       <h1>Experience & education</h1>
     </header>
 
-    <ProfileTabs sections={profileEn.sections} label={profileEn.tabsLabel} />
+    <ProfileTabs sections={profileEn.sections} label={profileEn.tabsLabel} lang="en" />
   </section>
 </BaseLayout>

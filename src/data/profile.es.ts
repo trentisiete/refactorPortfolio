@@ -15,6 +15,7 @@ export interface ProfileLogo {
 }
 
 export interface ProfileEntry {
+  id?: string;
   title: string;
   organization: string;
   period?: string;
@@ -71,36 +72,42 @@ export const profileEs: ProfileData = {
       label: 'Experiencia',
       entries: [
         {
-          title: 'Data Scientist Intern',
+          id: 'naudit',
+          title: 'Data science',
           organization: 'Naudit HPCN',
           period: '2026',
           logo: { initials: 'NH', src: '/logos/naudit.png', alt: 'Logo de Naudit HPCN' },
         },
         {
+          id: 'gdg',
           title: 'Presidente y fundador',
           organization: 'Google Developer Group on Campus UAM',
           period: '2025 - actualidad',
           logo: { initials: 'GDG', src: '/logos/gdg.webp', alt: 'Logo de Google Developer Group' },
         },
         {
+          id: 'webmaster',
           title: 'Webmaster',
           organization: 'AUTOCENTER - VULCASAN SL',
           period: '2024 - 2025',
           logo: { initials: 'VS', src: '/logos/autocenter.png', alt: 'Logo de Driver Center' },
         },
         {
+          id: 'seif',
           title: 'Miembro de la junta directiva',
           organization: 'Club de Seguridad Informática (SEIF UAM)',
           period: '2023 - 2024',
           logo: { initials: 'SEIF', src: '/logos/seif.webp', alt: 'Logo de SEIF UAM' },
         },
         {
+          id: 'dripinlocker',
           title: 'Emprendedor independiente',
           organization: 'DripInLocker',
           period: '2021 - 2024',
           logo: { initials: 'DI', src: '/logos/dripinlocker.png', alt: 'Logo de DripInLocker' },
         },
         {
+          id: 'saona',
           title: 'Camarero',
           organization: 'Saona',
           period: '2022',
@@ -112,6 +119,11 @@ export const profileEs: ProfileData = {
       id: 'education',
       label: 'Educación',
       entries: [
+        {
+          title: 'Educación escolar',
+          organization: 'Colegio San José de Begoña',
+          logo: { initials: 'CSJ', src: '/logos/colegio.png', alt: 'Escudo del Colegio San José de Begoña' },
+        },
         {
           title: 'Grado en Ciencia e Ingeniería de Datos',
           organization: 'Universidad Autónoma de Madrid',
@@ -175,7 +187,13 @@ export const profileEs: ProfileData = {
         {
           title: 'Beca de Excelencia Académica',
           organization: 'Comunidad de Madrid',
-          period: '2024 y 2025',
+          period: '2024',
+          logo: { initials: 'CM', src: '/logos/ccaa_mad.webp', alt: 'Logo de la Comunidad de Madrid' },
+        },
+        {
+          title: 'Beca de Excelencia Académica',
+          organization: 'Comunidad de Madrid',
+          period: '2025',
           logo: { initials: 'CM', src: '/logos/ccaa_mad.webp', alt: 'Logo de la Comunidad de Madrid' },
         },
         {
@@ -191,7 +209,7 @@ export const profileEs: ProfileData = {
           logo: { initials: 'GC', src: '/logos/cloud.png', alt: 'Logo de Google Cloud' },
         },
         {
-          title: 'Reconocimiento académico por alto rendimiento',
+          title: 'Estudiante con alto rendimiento académico',
           organization: 'Colegio San José de Begoña',
           period: '2020 y 2021',
           logo: { initials: 'CSJ', src: '/logos/colegio.png', alt: 'Escudo del Colegio San José de Begoña' },
