@@ -1,0 +1,65 @@
+/* The closing mark, and what happens when someone presses it. */
+.site-traffic-summary:not([hidden]) + .site-end-mark { padding-top: var(--space-10); }
+.site-end-mark { display: flex; align-items: center; justify-content: center; padding-top: clamp(var(--space-16), 10vw, var(--space-24)); }
+.site-end-mark__button { display: block; padding: 0; background: none; border: 0; cursor: pointer; border-radius: 50%; }
+.site-end-mark__button:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 6px; }
+.site-end-mark__logo {
+    --jose-logo-stroke-width: 11;
+    width: clamp(104px, 15vw, 144px);
+    height: auto;
+    padding: 18px;
+    background: color-mix(in srgb, var(--color-surface) 78%, transparent);
+    border: 1.5px solid var(--site-outline);
+    border-radius: 50%;
+    box-shadow: 5px 5px 0 color-mix(in srgb, var(--color-accent) 72%, var(--site-outline));
+    transition: transform 400ms cubic-bezier(.22,1,.36,1), box-shadow 400ms ease;
+}
+.site-end-mark__button:is(:hover, :focus-visible) .site-end-mark__logo { transform: translate(2px, 2px) rotate(-6deg); box-shadow: 3px 3px 0 color-mix(in srgb, var(--color-accent) 72%, var(--site-outline)); }
+.site-end-mark__button[disabled] { cursor: default; }
+@media (max-width: 640px) { .site-end-mark__logo { width: 108px; padding: 14px; } }
+
+/* ---- The page while it is being taken apart ---- */
+html.lp-running { overflow: hidden; }
+html.lp-running main { position: relative; z-index: 5; }
+/* Words never break apart, so splitting the text into letters does not reflow the page. */
+.lp-word { white-space: nowrap; }
+.lp-char { display: inline-block; position: relative; z-index: 1; white-space: pre; text-align: center; will-change: transform, opacity; transition: transform var(--lp-dur, 700ms) var(--lp-ease, cubic-bezier(.22,1,.36,1)), opacity var(--lp-dur, 700ms) linear, color 450ms linear; }
+html.lp-instant .lp-char { transition: none; }
+
+.lp-overlay { position: fixed; inset: 0; z-index: 9998; pointer-events: none; opacity: 0; transition: opacity 700ms ease; }
+.lp-noise { width: 100%; height: 100%; image-rendering: pixelated; mix-blend-mode: overlay; }
+.lp-trail path { fill: none; stroke: var(--color-accent); stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.lp-trail circle { fill: var(--color-accent); }
+.lp-trail .lp-trail__head { r: 7; }
+.lp-trail .lp-trail__step { r: 2.5; opacity: .55; }
+
+/* A readout of the process state. It never names the method — that is the question. */
+.lp-hud { position: fixed; z-index: 9999; left: 50%; bottom: 2rem; display: flex; align-items: center; gap: .875rem; padding: .625rem 1.125rem; transform: translateX(-50%) translateY(14px); opacity: 0; background: color-mix(in srgb, var(--color-surface) 92%, transparent); backdrop-filter: blur(10px); border: 1px solid var(--color-border); border-radius: 999px; box-shadow: 0 8px 26px rgb(0 0 0 / .14); pointer-events: none; transition: opacity 500ms ease, transform 500ms cubic-bezier(.22,1,.36,1); }
+.lp-hud--in { opacity: 1; transform: translateX(-50%) translateY(0); }
+.lp-hud__key { font: 500 .8125rem/1 'Space Grotesk', var(--font-sans); color: var(--color-accent); }
+.lp-hud__value { min-width: 5.5ch; font: 400 .8125rem/1 'Space Grotesk', var(--font-sans); font-variant-numeric: tabular-nums; color: var(--color-text); }
+.lp-hud__track { width: 88px; height: 3px; border-radius: 999px; background: var(--color-border); overflow: hidden; }
+.lp-hud__track > span { display: block; width: 100%; height: 100%; background: var(--color-accent); transform: scaleX(0); transform-origin: left; }
+
+/* ---- The question afterwards ---- */
+.lp-quiz { width: min(440px, calc(100% - 2rem)); margin: auto; padding: 2rem; color: var(--color-text); background: var(--color-background); border: 1px solid var(--color-border); border-radius: 18px; box-shadow: 0 18px 50px rgb(0 0 0 / .18); }
+.lp-quiz::backdrop { background: rgb(10 20 15 / .5); backdrop-filter: blur(4px); }
+.lp-quiz__eyebrow { margin: 0 0 .5rem; font: 500 .75rem/1.5 'Space Grotesk', var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--color-accent); }
+.lp-quiz h2 { font: 500 1.5rem/1.25 var(--font-serif); letter-spacing: -.02em; margin: 0 0 1.5rem; }
+.lp-quiz__options { display: grid; gap: .5rem; }
+.lp-quiz__options button { display: block; width: 100%; padding: .875rem 1rem; text-align: left; font: 400 .9375rem/1.4 'Fira Sans', var(--font-sans); color: var(--color-text); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; cursor: pointer; transition: border-color 250ms ease, background-color 250ms ease; }
+.lp-quiz__options button:hover:not(:disabled) { border-color: var(--color-accent); background: var(--color-bg-alt); }
+.lp-quiz__options button:disabled { cursor: default; opacity: .55; }
+.lp-quiz__options button[data-state="right"] { opacity: 1; border-color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 14%, var(--color-surface)); }
+.lp-quiz__options button[data-state="wrong"] { opacity: 1; border-color: var(--site-terracotta); }
+.lp-quiz__verdict { margin: 1.25rem 0 0; font: 400 .9375rem/1.65 var(--font-serif); color: var(--color-text-secondary); }
+.lp-quiz__verdict strong { color: var(--color-text); font-weight: 600; }
+.lp-quiz__verdict[hidden] { display: none; }
+.lp-quiz__close { margin-top: 1.5rem; }
+.lp-quiz__close button { padding: .5rem .875rem; font: 400 .875rem 'Space Grotesk', var(--font-sans); color: var(--color-text-secondary); background: none; border: 0; border-radius: 6px; cursor: pointer; }
+.lp-quiz__close button:hover { color: var(--color-text); background: var(--color-bg-alt); }
+
+@media (prefers-reduced-motion: reduce) {
+    .site-end-mark__logo { transition: none; }
+    .site-end-mark__button:is(:hover, :focus-visible) .site-end-mark__logo { transform: none; }
+}

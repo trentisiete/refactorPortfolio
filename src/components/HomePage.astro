@@ -1,11 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProfileProjects from './ProfileProjects.astro';
-import type { ProfileProject } from '../data/profile.es';
+import LogoEndMark from './LogoEndMark.astro';
+import type { ProfileProject, LabProject } from '../data/profile.es';
 import type { Lang } from '../i18n/utils';
 
-interface Props { lang: Lang; projects: ProfileProject[] }
-const { lang, projects } = Astro.props;
+interface Props { lang: Lang; projects: ProfileProject[]; labProjects: LabProject[] }
+const { lang, projects, labProjects } = Astro.props;
 const homeLine = {
   es: 'Datos, modelos y sistemas que se pueden construir.',
   en: 'Data, models and systems worth building.',
@@ -13,12 +14,14 @@ const homeLine = {
 }[lang];
 ---
 
-<BaseLayout lang={lang} view="home" title="José Arbelaez" extraStyles={["/styles/profile.css"]} showTrafficStats>
+<BaseLayout lang={lang} view="home" title="José Arbelaez" extraStyles={["/styles/profile.css", "/styles/logo-play.css"]} showTrafficStats>
   <section class="home-page section">
     <header class="home-intro">
-      <h1>José Arbelaez<span>Data scientist & developer</span></h1>
-      <p>{homeLine}</p>
+      <h1>José Arbelaez</h1>
+      <p class="home-intro__role">Data scientist &amp; developer</p>
+      <p class="home-intro__line">{homeLine}</p>
     </header>
-    <ProfileProjects projects={projects} lang={lang} />
+    <ProfileProjects projects={projects} labProjects={labProjects} lang={lang} />
+    <LogoEndMark lang={lang} />
   </section>
 </BaseLayout>

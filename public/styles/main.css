@@ -48,11 +48,27 @@
     --color-accent-hover: #245b3a;
     --color-text: #252c2b;
     --color-text-secondary: #58635f;
-    --color-text-muted: #6d7871;
+    --color-text-muted: #66716a;
     --color-background: #f7f7f2;
     --color-surface: #ffffff;
     --color-border: #dce0d8;
     --color-bg-alt: #edf1eb;
+
+    /* The three career voices, and the footer slab. Both themes declared together
+       so a change to one is never made without looking at the other. */
+    --footer-surface: #17392f;
+    --career-exp-title: #315a42;
+    --career-exp-group: var(--site-forest);
+    --career-edu-title: #665a88;
+    --career-edu-group: #74699a;
+    --career-edu-entry: #4c4662;
+    --lab-forest: var(--site-forest);
+    --lab-lilac: #5f4cae;
+    --lab-apricot: #9c5628;
+    --lab-rose: #ab4269;
+    --career-awd-title: #a56b56;
+    --career-awd-group: #9c5f49;
+    --career-awd-entry: #704c42;
 
     /* Espaciado (escala 4px) */
     --space-1: 0.25rem;
@@ -131,6 +147,22 @@
     --color-primary-hover: var(--site-acid);
     --color-accent: #a3c6ad;
     --color-accent-hover: var(--site-acid);
+
+    /* Lifted, not just inverted: the same three hues carried up until they read on
+       a near-black page. The footer green is raised too, or the slab disappears. */
+    --footer-surface: #275944;
+    --career-exp-title: #7cb391;
+    --career-exp-group: #a3c6ad;
+    --career-edu-title: #a294d0;
+    --career-edu-group: #b9ade0;
+    --career-edu-entry: #cdc4ea;
+    --lab-forest: var(--color-accent);
+    --lab-lilac: #b9ade0;
+    --lab-apricot: #e0ab92;
+    --lab-rose: #f0a9c4;
+    --career-awd-title: #d69d82;
+    --career-awd-group: #e0ab92;
+    --career-awd-entry: #ecc0a8;
 }
 
 /* ----------------------------------------

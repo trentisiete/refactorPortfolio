@@ -1,9 +1,10 @@
 ---
 import ProfileProjectCard from './ProfileProjectCard.astro';
-import type { ProfileProject } from '../data/profile.es';
+import LabProjects from './LabProjects.astro';
+import type { ProfileProject, LabProject } from '../data/profile.es';
 import { useTranslations, type Lang } from '../i18n/utils';
-interface Props { projects: ProfileProject[]; lang: Lang }
-const { projects, lang } = Astro.props;
+interface Props { projects: ProfileProject[]; labProjects: LabProject[]; lang: Lang }
+const { projects, labProjects, lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 <section class="profile-projects" id="projects" aria-labelledby="profile-projects-title">
@@ -11,14 +12,5 @@ const t = useTranslations(lang);
   <div class="profile-projects__grid">
     {projects.map(project => <ProfileProjectCard project={project} lang={lang} />)}
   </div>
-  <section class="profile-more-projects" aria-labelledby="more-projects-title">
-    <header>
-      <h3 id="more-projects-title">{t.profile.more_projects_title}</h3>
-      <p>{t.profile.more_projects_intro}</p>
-      <a href="https://github.com/trentisiete" target="_blank" rel="noopener noreferrer">{t.profile.more_projects_cta} ↗</a>
-    </header>
-    <ol class="profile-more-projects__list">
-      {t.profile.more_projects_items.map(item => <li><div><h4>{item.title}</h4><p>{item.description}</p></div></li>)}
-    </ol>
-  </section>
+  <LabProjects projects={labProjects} lang={lang} />
 </section>

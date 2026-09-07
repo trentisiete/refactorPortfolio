@@ -1,0 +1,602 @@
+---
+import JoseLogo from './JoseLogo.astro';
+import type { Lang } from '../i18n/utils';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+
+const copy = {
+  es: {
+    play: 'Pulsa el logo',
+    eyebrow: 'pregunta rápida',
+    question: '¿Qué acabas de ver?',
+    options: {
+      diffusion: 'Un proceso de difusión',
+      gradient: 'Descenso de gradiente',
+      kmeans: 'k-means',
+    },
+    right: 'Correcto.',
+    wrong: 'No era eso.',
+    explain: {
+      diffusion: 'La página se degrada hasta ser ruido puro siguiendo un horario coseno y luego se reconstruye paso a paso. Los titulares aparecen antes que el cuerpo de texto porque la estructura sobrevive más tiempo al ruido que el detalle.',
+      gradient: 'Las letras dibujan las curvas de nivel de una función de pérdida mal condicionada. El punto zigzaguea entre ellas porque el paso es demasiado grande para el eje estrecho y demasiado pequeño para el ancho.',
+      kmeans: 'Las letras se dispersan y se reagrupan alrededor de tres centroides, que se recalculan en cada iteración a partir de la media de su grupo hasta converger.',
+    },
+    close: 'Cerrar',
+  },
+  en: {
+    play: 'Press the logo',
+    eyebrow: 'quick question',
+    question: 'What did you just see?',
+    options: {
+      diffusion: 'A diffusion process',
+      gradient: 'Gradient descent',
+      kmeans: 'k-means',
+    },
+    right: 'Correct.',
+    wrong: 'Not quite.',
+    explain: {
+      diffusion: 'The page decays into pure noise along a cosine schedule and is then rebuilt step by step. Headings come back before body text because structure survives the noise longer than detail does.',
+      gradient: 'The letters draw the contour lines of an ill-conditioned loss function. The point zig-zags between them because the step is too large for the narrow axis and too small for the wide one.',
+      kmeans: 'The letters scatter and regroup around three centroids, recomputed on every iteration from the mean of their group until they converge.',
+    },
+    close: 'Close',
+  },
+  de: {
+    play: 'Auf das Logo drücken',
+    eyebrow: 'kurze Frage',
+    question: 'Was hast du gerade gesehen?',
+    options: {
+      diffusion: 'Ein Diffusionsprozess',
+      gradient: 'Gradientenabstieg',
+      kmeans: 'k-Means',
+    },
+    right: 'Richtig.',
+    wrong: 'Nicht ganz.',
+    explain: {
+      diffusion: 'Die Seite zerfällt entlang eines Kosinus-Zeitplans zu reinem Rauschen und wird dann Schritt für Schritt rekonstruiert. Überschriften kehren vor dem Fließtext zurück, weil Struktur dem Rauschen länger standhält als Detail.',
+      gradient: 'Die Buchstaben zeichnen die Höhenlinien einer schlecht konditionierten Verlustfunktion. Der Punkt zickzackt, weil der Schritt für die schmale Achse zu groß und für die breite zu klein ist.',
+      kmeans: 'Die Buchstaben streuen und gruppieren sich um drei Zentroide, die in jeder Iteration aus dem Mittelwert ihrer Gruppe neu berechnet werden, bis sie konvergieren.',
+    },
+    close: 'Schließen',
+  },
+}[lang];
+---
+
+<div class="site-end-mark" data-logo-endmark>
+  <button class="site-end-mark__button" type="button" data-logo-play aria-label={copy.play} title={copy.play}>
+    <JoseLogo instance="page-end" class="site-end-mark__logo" animated={false} decorative />
+  </button>
+</div>
+
+<dialog class="lp-quiz" data-logo-quiz aria-labelledby="lp-quiz-title">
+  <p class="lp-quiz__eyebrow">{copy.eyebrow}</p>
+  <h2 id="lp-quiz-title">{copy.question}</h2>
+  <div class="lp-quiz__options">
+    <button type="button" data-answer="diffusion">{copy.options.diffusion}</button>
+    <button type="button" data-answer="gradient">{copy.options.gradient}</button>
+    <button type="button" data-answer="kmeans">{copy.options.kmeans}</button>
+  </div>
+  <p class="lp-quiz__verdict" data-verdict hidden></p>
+  <form method="dialog" class="lp-quiz__close"><button type="submit">{copy.close}</button></form>
+</dialog>
+
+<script is:inline define:vars={{ copy }}>
+  (function () {
+    const button = document.querySelector('[data-logo-play]');
+    const quiz = document.querySelector('[data-logo-quiz]');
+    if (!button || !quiz) return;
+
+    const SONG = 'https://www.youtube.com/watch?v=5tXh_MfrMe0';
+    const OUTCOMES = ['diffusion', 'gradient', 'kmeans', 'song'];
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+    const rand = (min, max) => min + Math.random() * (max - min);
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+    // ---------------------------------------------------------------- text
+
+    // Letters become spans inside unbreakable words, so the page does not reflow
+    // when it is taken apart. Every original text node is kept for the way back.
+    function shatter(root) {
+      const margin = 140;
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      const targets = [];
+      let node;
+      while ((node = walker.nextNode())) {
+        if (!node.nodeValue.trim()) continue;
+        const parent = node.parentElement;
+        if (!parent) continue;
+        if (parent.closest('svg, script, style, pre, code, iframe, canvas, dialog, [data-logo-endmark]')) continue;
+        const box = parent.getBoundingClientRect();
+        if (box.bottom < -margin || box.top > window.innerHeight + margin) continue;
+        targets.push(node);
+      }
+
+      const chars = [];
+      const undo = [];
+      const sizes = new Map();
+
+      for (const textNode of targets) {
+        const parent = textNode.parentElement;
+        if (!sizes.has(parent)) sizes.set(parent, parseFloat(getComputedStyle(parent).fontSize) || 16);
+        const fontSize = sizes.get(parent);
+
+        const frag = document.createDocumentFragment();
+        const inserted = [];
+        for (const piece of textNode.nodeValue.split(/(\s+)/)) {
+          if (!piece) continue;
+          if (!piece.trim()) {
+            const gap = document.createTextNode(piece);
+            frag.appendChild(gap);
+            inserted.push(gap);
+            continue;
+          }
+          const word = document.createElement('span');
+          word.className = 'lp-word';
+          for (const character of piece) {
+            const span = document.createElement('span');
+            span.className = 'lp-char';
+            span.textContent = character;
+            span.dataset.glyph = character;
+            word.appendChild(span);
+            chars.push({ span, fontSize });
+          }
+          frag.appendChild(word);
+          inserted.push(word);
+        }
+        const anchor = document.createComment('lp');
+        textNode.parentNode.replaceChild(anchor, textNode);
+        anchor.parentNode.insertBefore(frag, anchor);
+        undo.push({ anchor, textNode, inserted });
+      }
+
+      return {
+        chars,
+        spans: chars.map(entry => entry.span),
+        // Freezing the measured width keeps glyph swaps from moving anything.
+        freezeWidths() {
+          const widths = chars.map(entry => entry.span.getBoundingClientRect().width);
+          chars.forEach((entry, index) => { entry.span.style.width = `${widths[index]}px`; });
+        },
+        restore() {
+          for (const item of undo) {
+            item.inserted.forEach(element => element.remove());
+            item.anchor.parentNode.replaceChild(item.textNode, item.anchor);
+          }
+        },
+      };
+    }
+
+    const move = (span, x, y) => { span.style.transform = `translate(${x}px, ${y}px)`; };
+
+    // ---------------------------------------------------------------- chrome
+
+    function overlay(className) {
+      const element = document.createElement('div');
+      element.className = `lp-overlay ${className}`;
+      document.body.appendChild(element);
+      requestAnimationFrame(() => { element.style.opacity = '1'; });
+      return element;
+    }
+
+    // The readout shows the state of the process but never its name.
+    function readout(key) {
+      const element = document.createElement('div');
+      element.className = 'lp-hud';
+      const keyNode = document.createElement('span');
+      keyNode.className = 'lp-hud__key';
+      keyNode.textContent = key;
+      const valueNode = document.createElement('span');
+      valueNode.className = 'lp-hud__value';
+      const track = document.createElement('span');
+      track.className = 'lp-hud__track';
+      const fill = document.createElement('span');
+      track.appendChild(fill);
+      element.append(keyNode, valueNode, track);
+      document.body.appendChild(element);
+      requestAnimationFrame(() => element.classList.add('lp-hud--in'));
+      return {
+        set(value, progress) {
+          valueNode.textContent = value;
+          fill.style.transform = `scaleX(${clamp(progress, 0, 1)})`;
+        },
+        async remove() {
+          element.classList.remove('lp-hud--in');
+          await wait(450);
+          element.remove();
+        },
+      };
+    }
+
+    // Runs `onStep` over `steps` discrete states across `duration`, driven by rAF
+    // so the pacing survives whatever the browser does with timers.
+    function march(steps, duration, onStep) {
+      return new Promise(resolve => {
+        const start = performance.now();
+        let last = -1;
+        const frame = now => {
+          const progress = clamp((now - start) / duration, 0, 1);
+          const step = Math.min(steps - 1, Math.floor(progress * steps));
+          if (step !== last) { last = step; onStep(step, step / (steps - 1)); }
+          else onStep(step, step / (steps - 1), true);
+          if (progress < 1) requestAnimationFrame(frame);
+          else resolve();
+        };
+        requestAnimationFrame(frame);
+      });
+    }
+
+    // ---------------------------------------------------------------- diffusion
+
+    // Weighted towards block shades so a field of them reads as static.
+    const STATIC_GLYPHS = '░░░▒▒▒▓▓▓███▚▞▛▜▙▟▖▗▘▝◣◤◥◢#%&@$*+=~<>/\\|_';
+    const noiseGlyph = () => STATIC_GLYPHS[(Math.random() * STATIC_GLYPHS.length) | 0];
+
+    // Pixels do not travel in a diffusion model, they change value. Neither do the
+    // letters: each one is either signal or noise at time t, following a cosine
+    // schedule, and larger type survives longer because structure outlives detail.
+    async function diffusion(entries) {
+      const T = 1000;
+      const shift = 0.008;
+      const bell = u => Math.pow(Math.cos(((u + shift) / (1 + shift)) * Math.PI / 2), 2);
+      const base = bell(0);
+      const signalRate = t => Math.sqrt(bell(t / T) / base);
+
+      const largest = entries.reduce((top, entry) => Math.max(top, entry.fontSize), 1);
+      const smallest = entries.reduce((low, entry) => Math.min(low, entry.fontSize), largest);
+      const span = Math.max(1, largest - smallest);
+      const state = entries.map(entry => ({
+        span: entry.span,
+        // Big type gets a low threshold: it is the last to break and the first to return.
+        threshold: clamp(Math.random() * 0.62 + (1 - (entry.fontSize - smallest) / span) * 0.38, 0.02, 0.995),
+        noisy: false,
+      }));
+
+      const layer = overlay('');
+      layer.style.opacity = '0';
+      const canvas = document.createElement('canvas');
+      canvas.className = 'lp-noise';
+      canvas.width = 200;
+      canvas.height = 120;
+      layer.appendChild(canvas);
+      const context = canvas.getContext('2d');
+      const image = context.createImageData(canvas.width, canvas.height);
+      const paintStatic = () => {
+        for (let i = 0; i < image.data.length; i += 4) {
+          const value = Math.random() * 255;
+          image.data[i] = image.data[i + 1] = image.data[i + 2] = value;
+          image.data[i + 3] = 255;
+        }
+        context.putImageData(image, 0, 0);
+      };
+      paintStatic();
+
+      const hud = readout('t');
+      document.documentElement.classList.add('lp-instant');
+
+      const render = t => {
+        const rate = signalRate(t);
+        for (const item of state) {
+          const shouldBeNoise = item.threshold > rate;
+          if (shouldBeNoise) {
+            item.noisy = true;
+            item.span.textContent = noiseGlyph();
+            item.span.style.opacity = (0.3 + Math.random() * 0.55).toFixed(2);
+          } else if (item.noisy) {
+            item.noisy = false;
+            item.span.textContent = item.span.dataset.glyph;
+            item.span.style.opacity = '';
+          }
+        }
+        layer.style.opacity = ((1 - rate) * 0.5).toFixed(3);
+        hud.set(String(Math.round(t)).padStart(4, ' '), rate);
+      };
+
+      const forwardSteps = reduced ? 6 : 18;
+      const reverseSteps = reduced ? 8 : 30;
+
+      await march(forwardSteps, reduced ? 500 : 1100, (step, progress, repeat) => {
+        if (repeat) return;
+        paintStatic();
+        render(T * progress);
+      });
+
+      // Hold at pure noise for a moment, boiling.
+      await march(reduced ? 2 : 8, reduced ? 250 : 620, (step, progress, repeat) => {
+        if (repeat) return;
+        paintStatic();
+        render(T);
+      });
+
+      await march(reverseSteps, reduced ? 700 : 2600, (step, progress, repeat) => {
+        if (repeat) return;
+        paintStatic();
+        render(T * (1 - progress));
+      });
+
+      render(0);
+      layer.style.opacity = '0';
+      document.documentElement.classList.remove('lp-instant');
+      await Promise.all([hud.remove(), wait(500)]);
+      layer.remove();
+    }
+
+    // ---------------------------------------------------------------- gradient descent
+
+    // The text stops being text and becomes the contour map of a loss function.
+    // Then a point walks it with a step size that is wrong for the narrow axis,
+    // which is exactly why the classic picture zig-zags.
+    async function gradient(entries) {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const centreX = width / 2;
+      const centreY = height * 0.52;
+      const tilt = -0.38;
+      const cos = Math.cos(tilt);
+      const sin = Math.sin(tilt);
+      const wide = Math.min(width * 0.40, 520);
+      const narrow = Math.min(height * 0.17, 150);
+      const levels = 7;
+
+      const toLocal = (x, y) => {
+        const dx = x - centreX;
+        const dy = y - centreY;
+        return [dx * cos + dy * sin, -dx * sin + dy * cos];
+      };
+      const loss = (x, y) => {
+        const [u, v] = toLocal(x, y);
+        return Math.pow(u / wide, 2) + Math.pow(v / narrow, 2);
+      };
+
+      const spans = entries.map(entry => entry.span);
+      const rings = [];
+      for (let k = 0; k < levels; k += 1) {
+        const scale = (k + 1) / levels;
+        const a = wide * scale;
+        const b = narrow * scale;
+        rings.push({ a, b, level: k / (levels - 1), weight: Math.sqrt((a * a + b * b) / 2) });
+      }
+      const totalWeight = rings.reduce((total, ring) => total + ring.weight, 0);
+
+      const placed = [];
+      let cursor = 0;
+      rings.forEach((ring, index) => {
+        const remaining = spans.length - cursor;
+        const share = index === rings.length - 1
+          ? remaining
+          : Math.min(remaining, Math.round(spans.length * ring.weight / totalWeight));
+        for (let i = 0; i < share; i += 1) {
+          const angle = (i / share) * Math.PI * 2;
+          const u = ring.a * Math.cos(angle);
+          const v = ring.b * Math.sin(angle);
+          placed.push({
+            span: spans[cursor + i],
+            x: centreX + u * cos - v * sin,
+            y: centreY + u * sin + v * cos,
+            level: ring.level,
+          });
+        }
+        cursor += share;
+      });
+
+      // Low loss reads as the site green, high loss as the terracotta of the awards.
+      const ramp = level => {
+        const from = [47, 112, 72];
+        const to = [177, 116, 94];
+        return `rgb(${from.map((channel, i) => Math.round(channel + (to[i] - channel) * level)).join(',')})`;
+      };
+
+      if (!reduced) {
+        for (const point of placed) {
+          const box = point.span.getBoundingClientRect();
+          point.span.style.setProperty('--lp-dur', '1250ms');
+          point.span.style.setProperty('--lp-ease', 'cubic-bezier(.32,.9,.3,1)');
+          point.span.style.transitionDelay = `${point.level * 420 + Math.random() * 120}ms`;
+          point.span.style.color = ramp(point.level);
+          move(point.span, point.x - box.left - box.width / 2, point.y - box.top - box.height / 2);
+        }
+      } else {
+        placed.forEach(point => { point.span.style.color = ramp(point.level); });
+      }
+
+      const layer = overlay('lp-trail');
+      layer.style.opacity = '0';
+      const svg = document.createElementNS(SVG_NS, 'svg');
+      svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      svg.setAttribute('preserveAspectRatio', 'none');
+      svg.style.width = '100%';
+      svg.style.height = '100%';
+      const trail = document.createElementNS(SVG_NS, 'path');
+      const head = document.createElementNS(SVG_NS, 'circle');
+      head.setAttribute('class', 'lp-trail__head');
+      svg.append(trail, head);
+      layer.appendChild(svg);
+
+      const hud = readout('L');
+      await wait(reduced ? 300 : 1500);
+      layer.style.opacity = '1';
+
+      // Start high on the narrow axis, where the curvature is worst.
+      let [u, v] = [wide * 0.82, narrow * 0.86];
+      // Step chosen so the narrow axis overshoots and flips sign every iteration.
+      const rate = 1.72 / (2 / (narrow * narrow));
+      const first = Math.pow(u / wide, 2) + Math.pow(v / narrow, 2);
+      const world = () => [centreX + u * cos - v * sin, centreY + u * sin + v * cos];
+
+      let definition = '';
+      const steps = reduced ? 6 : 14;
+      for (let step = 0; step <= steps; step += 1) {
+        const [x, y] = world();
+        definition += `${definition ? ' L' : 'M'} ${x.toFixed(1)} ${y.toFixed(1)}`;
+        trail.setAttribute('d', definition);
+        head.setAttribute('cx', x.toFixed(1));
+        head.setAttribute('cy', y.toFixed(1));
+        const dot = document.createElementNS(SVG_NS, 'circle');
+        dot.setAttribute('class', 'lp-trail__step');
+        dot.setAttribute('cx', x.toFixed(1));
+        dot.setAttribute('cy', y.toFixed(1));
+        svg.insertBefore(dot, head);
+
+        const current = loss(x, y);
+        hud.set(current.toFixed(3), 1 - current / first);
+        await wait(reduced ? 110 : 195);
+
+        u -= rate * (2 * u / (wide * wide));
+        v -= rate * (2 * v / (narrow * narrow));
+      }
+      await wait(600);
+
+      layer.style.opacity = '0';
+      for (const point of placed) {
+        point.span.style.setProperty('--lp-dur', '1050ms');
+        point.span.style.setProperty('--lp-ease', 'cubic-bezier(.22,1,.36,1)');
+        point.span.style.transitionDelay = `${Math.random() * 320}ms`;
+        point.span.style.transform = '';
+        point.span.style.color = '';
+      }
+      await Promise.all([hud.remove(), wait(1450)]);
+      layer.remove();
+    }
+
+    // ---------------------------------------------------------------- k-means
+
+    async function kmeans(entries) {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const palette = ['#2f7048', '#a56b56', '#665a88'];
+      const centroids = [
+        { x: width * 0.27, y: height * 0.36 },
+        { x: width * 0.68, y: height * 0.31 },
+        { x: width * 0.47, y: height * 0.72 },
+      ];
+      const iterations = 3;
+
+      const points = entries.map(entry => {
+        const box = entry.span.getBoundingClientRect();
+        return {
+          span: entry.span,
+          originX: box.left + box.width / 2,
+          originY: box.top + box.height / 2,
+          x: rand(width * 0.08, width * 0.92),
+          y: rand(height * 0.12, height * 0.88),
+          cluster: 0,
+        };
+      });
+
+      const place = (point, duration, delay) => {
+        point.span.style.setProperty('--lp-dur', `${duration}ms`);
+        point.span.style.transitionDelay = `${delay}ms`;
+        move(point.span, point.x - point.originX, point.y - point.originY);
+      };
+
+      const hud = readout('iter');
+      hud.set(`0 / ${iterations}`, 0);
+      if (!reduced) points.forEach(point => place(point, 700, Math.random() * 220));
+      await wait(reduced ? 250 : 950);
+
+      for (let iteration = 0; iteration < iterations; iteration += 1) {
+        for (const point of points) {
+          let best = 0;
+          let bestDistance = Infinity;
+          centroids.forEach((centroid, index) => {
+            const distance = Math.hypot(point.x - centroid.x, point.y - centroid.y);
+            if (distance < bestDistance) { bestDistance = distance; best = index; }
+          });
+          point.cluster = best;
+          point.span.style.color = palette[best];
+        }
+        centroids.forEach((centroid, index) => {
+          const members = points.filter(point => point.cluster === index);
+          if (!members.length) return;
+          centroid.x = members.reduce((total, point) => total + point.x, 0) / members.length;
+          centroid.y = members.reduce((total, point) => total + point.y, 0) / members.length;
+        });
+        const pull = 0.45 + iteration * 0.2;
+        const spread = 150 - iteration * 45;
+        for (const point of points) {
+          const centroid = centroids[point.cluster];
+          point.x += (centroid.x + rand(-spread, spread) - point.x) * pull;
+          point.y += (centroid.y + rand(-spread, spread) - point.y) * pull;
+          if (!reduced) place(point, 650, Math.random() * 150);
+        }
+        hud.set(`${iteration + 1} / ${iterations}`, (iteration + 1) / iterations);
+        await wait(reduced ? 250 : 820);
+      }
+      await wait(420);
+
+      for (const point of points) {
+        point.span.style.setProperty('--lp-dur', '950ms');
+        point.span.style.transitionDelay = `${Math.random() * 300}ms`;
+        point.span.style.transform = '';
+        point.span.style.color = '';
+      }
+      await Promise.all([hud.remove(), wait(1300)]);
+    }
+
+    // ---------------------------------------------------------------- wiring
+
+    const effects = { diffusion, gradient, kmeans };
+
+    async function run(outcome) {
+      const root = document.querySelector('main');
+      if (!root) return;
+      const pieces = shatter(root);
+      if (outcome === 'diffusion') pieces.freezeWidths();
+      document.documentElement.classList.add('lp-running');
+      try {
+        await effects[outcome](pieces.chars);
+      } finally {
+        pieces.restore();
+        document.documentElement.classList.remove('lp-running', 'lp-instant');
+        document.querySelectorAll('.lp-overlay, .lp-hud').forEach(element => element.remove());
+      }
+    }
+
+    function ask(outcome) {
+      const options = [...quiz.querySelectorAll('[data-answer]')];
+      const verdict = quiz.querySelector('[data-verdict]');
+      options.forEach(option => {
+        option.disabled = false;
+        option.removeAttribute('data-state');
+      });
+      verdict.hidden = true;
+      verdict.textContent = '';
+
+      const answer = event => {
+        const chosen = event.currentTarget.dataset.answer;
+        options.forEach(option => {
+          option.disabled = true;
+          if (option.dataset.answer === outcome) option.dataset.state = 'right';
+          else if (option.dataset.answer === chosen) option.dataset.state = 'wrong';
+          option.removeEventListener('click', answer);
+        });
+        verdict.textContent = '';
+        const lead = document.createElement('strong');
+        lead.textContent = chosen === outcome ? copy.right : copy.wrong;
+        verdict.append(lead, ' ', copy.explain[outcome]);
+        verdict.hidden = false;
+      };
+      options.forEach(option => option.addEventListener('click', answer));
+      quiz.showModal();
+    }
+
+    button.addEventListener('click', async () => {
+      if (button.disabled) return;
+      const outcome = OUTCOMES[Math.floor(Math.random() * OUTCOMES.length)];
+      if (outcome === 'song') {
+        window.open(SONG, '_blank', 'noopener');
+        return;
+      }
+      button.disabled = true;
+      try {
+        await run(outcome);
+        ask(outcome);
+      } finally {
+        button.disabled = false;
+      }
+    });
+  })();
+</script>

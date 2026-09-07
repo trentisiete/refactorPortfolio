@@ -1,6 +1,6 @@
 // translated: true
-// sourceHash: 886a283673b2f50d
-import type { ProfileData, ProfileProject } from './profile.es';
+// sourceHash: 19389b2188a1de54
+import type { ProfileSectionId, ProfileLink, ProfileLogo, ProfileEntry, ProfileSection, ProfileProject, ProfileProjectImage, ProfileProjectNoteTone, ProfileProjectNote, LabAccent, LabLinkKind, LabLink, LabProject, ProfileData } from './profile.es';
 import { createProjectGallery } from './projectMedia';
 
 export const profileEn: ProfileData = {
@@ -249,5 +249,53 @@ export const profileProjectsEn: ProfileProject[] = [
       'mi_diagrama_gantt.jpeg': 'Project timeline planning: first phase of the Gantt chart.',
       'mi_diagrama_gantt2.jpeg': 'Project timeline planning: second phase of the Gantt chart.',
     }),
+  },
+];
+
+export const labProjectsEn: LabProject[] = [
+  {
+    id: 'noetik-recon',
+    title: 'Noetik Recon',
+    period: 'Feb 2026 - present',
+    excerpt: 'Extraction, validation and analysis agents on LangGraph and MCP that turn scattered financial filings into verified analysis with traceable citations. Deterministic checks sit between what the model generates and the final report.',
+    accent: 'lilac',
+    links: [
+      { kind: 'code', href: 'https://github.com/Noetik-Laboratories/Recon-Agent', label: 'Code' },
+      { kind: 'site', href: 'https://noetiklab.com', label: 'NoetikLab' },
+    ],
+  },
+  {
+    id: 'quantifolio',
+    title: 'Backtesting and portfolio analysis',
+    period: '2025',
+    excerpt: "The toolkit my team used to win the UAM Investors League: first among 240+ participants, with the competition's highest Sharpe ratio. Sharpe and Sortino, drawdown, VaR, efficient frontiers and Monte Carlo scenarios.",
+    accent: 'forest',
+    links: [
+      { kind: 'demo', href: 'https://diosfamiliafe.streamlit.app/', label: 'Demo' },
+      { kind: 'code', href: 'https://github.com/trentisiete/QuantiFolio', label: 'QuantiFolio' },
+      { kind: 'video', href: 'https://www.youtube.com/watch?v=vPfkUXtju50', label: 'Interview' },
+    ],
+  },
+  {
+    id: 'rl-lab',
+    title: 'Reinforcement Learning Lab',
+    period: 'Jan - Sep 2024',
+    excerpt: "From tabular Q-learning and SARSA on FrozenLake, with Lorena Mohanu, to DQN and PPO style components in PyTorch. The focus is stability, sample efficiency and what actually changes an agent's behaviour.",
+    accent: 'apricot',
+    links: [
+      { kind: 'code', href: 'https://github.com/trentisiete/Reinforcement-Learning-Exploration--The-Basics', label: 'Foundations' },
+      { kind: 'code', href: 'https://github.com/trentisiete/PolicyForge-RL-Lab', label: 'PolicyForge' },
+    ],
+  },
+  {
+    id: 'endy',
+    title: 'Endy and Multiplexor',
+    excerpt: 'Runs coding agents (Codex, Claude, Gemini, OpenCode) in managed tmux sessions, tracks parallel tasks and hands work over when one fails or hits its quota. Published on npm, peaking at 5,000 downloads. Multiplexor routes between local providers by priority and quota.',
+    accent: 'rose',
+    links: [
+      { kind: 'code', href: 'https://github.com/trentisiete/endy', label: 'Endy' },
+      { kind: 'package', href: 'https://www.npmjs.com/package/@noetiklab/endy', label: 'npm' },
+      { kind: 'code', href: 'https://github.com/trentisiete/multiplexor', label: 'Multiplexor' },
+    ],
   },
 ];

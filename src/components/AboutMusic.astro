@@ -23,6 +23,79 @@ const externalUrlFor = (item: AboutPlaylist) =>
   item.platform === 'youtube'
     ? `https://youtube.com/playlist?list=${item.id}`
     : `https://open.spotify.com/${item.kind}/${item.id}`;
+
+const seeded = (seed: number) => {
+  let state = seed;
+  return () => {
+    state = (state * 1103515245 + 12345) % 2147483648;
+    return state / 2147483648;
+  };
+};
+
+// The same cut-paper edge as the About gateways, but generated: the notches keep a
+// constant size whatever the card's height, which one hand-drawn path stretched to
+// fit could not do.
+const cutFrame = (width: number, height: number, seed: number) => {
+  const next = seeded(seed);
+  const inset = 13;
+  const points: string[] = [];
+  const edge = (x0: number, y0: number, x1: number, y1: number, nx: number, ny: number) => {
+    const length = Math.hypot(x1 - x0, y1 - y0);
+    const steps = Math.max(4, Math.round(length / 46));
+    for (let i = 0; i < steps; i += 1) {
+      const t = i / steps;
+      const jut = (i % 2 === 0 ? 1 : -1) * (5 + next() * 7.5);
+      points.push(
+        `${(x0 + (x1 - x0) * t + nx * jut).toFixed(1)} ${(y0 + (y1 - y0) * t + ny * jut).toFixed(1)}`
+      );
+    }
+  };
+  edge(inset, inset, width - inset, inset, 0, -1);
+  edge(width - inset, inset, width - inset, height - inset, 1, 0);
+  edge(width - inset, height - inset, inset, height - inset, 0, 1);
+  edge(inset, height - inset, inset, inset, -1, 0);
+  return `M ${points.join(' L ')} Z`;
+};
+
+// The player gets the same edge at a smaller scale. A clip can only take material
+// away, so the rhythm comes from alternating a shallow bite with a deep one.
+// Percentages let the one path fit whatever size the embed ends up being.
+const deckleEdge = (width: number, height: number, depth: number, seed: number) => {
+  const next = seeded(seed);
+  const fx = depth / width;
+  const fy = depth / height;
+  const points: string[] = [];
+  const edge = (x0: number, y0: number, x1: number, y1: number, nx: number, ny: number) => {
+    const steps = Math.max(6, Math.round(Math.hypot((x1 - x0) * width, (y1 - y0) * height) / 34));
+    for (let i = 0; i < steps; i += 1) {
+      const t = i / steps;
+      const bite = (i % 2 === 0 ? 0.15 : 1) * (0.6 + next() * 0.4);
+      points.push(
+        `${((x0 + (x1 - x0) * t + nx * fx * bite) * 100).toFixed(2)}% ${((y0 + (y1 - y0) * t + ny * fy * bite) * 100).toFixed(2)}%`
+      );
+    }
+  };
+  edge(0, 0, 1, 0, 0, 1);
+  edge(1, 0, 1, 1, -1, 0);
+  edge(1, 1, 0, 1, 0, -1);
+  edge(0, 1, 0, 0, 1, 0);
+  return `polygon(${points.join(', ')})`;
+};
+
+const cards = aboutPlaylists.map((item, index) => {
+  const width = 640;
+  const height = item.platform === 'youtube' ? 475 : 580;
+  const embedWidth = 440;
+  const embedHeight = item.platform === 'youtube' ? Math.round(embedWidth * 9 / 16) : 352;
+  return {
+    item,
+    width,
+    height,
+    frame: cutFrame(width, height, index * 977 + 13),
+    clip: deckleEdge(embedWidth, embedHeight, 7, index * 613 + 41),
+    tint: ['apricot', 'lilac', 'moss', 'rose'][index % 4],
+  };
+});
 ---
 
 <section class="about-world about-subpage about-music section">
@@ -36,25 +109,31 @@ const externalUrlFor = (item: AboutPlaylist) =>
         I will add music I like here: playlists, albums and whatever I want to keep close.
       </p>
     </div>
-
-
   </header>
 
   <section class="playlist-shelf" aria-label="Music shelf">
     <header>
       <span>music shelf</span>
-      <b>{aboutPlaylists.length.toString().padStart(2, '0')} selections</b>
     </header>
 
     <div class="playlist-grid">
-      {aboutPlaylists.map((item, index) => {
+      {cards.map(({ item, width, height, frame, clip, tint }) => {
         const platform = platformDetails[item.platform];
         const kindLabel = item.kind === 'album' ? 'album' : 'playlist';
 
         return (
-          <article class:list={['playlist-card', `playlist-card--${item.platform}`, `playlist-card--${item.kind}`]}>
+          <article class:list={['playlist-card', `playlist-card--${tint}`, `playlist-card--${item.platform}`]}>
+            <svg
+              class="playlist-card__frame"
+              viewBox={`0 0 ${width} ${height}`}
+              preserveAspectRatio="none"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d={frame} />
+            </svg>
+
             <header class="playlist-card__heading">
-              <span>{String(index + 1).padStart(3, '0')}</span>
               <strong>{platform.label} · {kindLabel}</strong>
             </header>
 
@@ -63,7 +142,10 @@ const externalUrlFor = (item: AboutPlaylist) =>
               <p>{item.description}</p>
             </div>
 
-            <div class:list={['playlist-embed', `playlist-embed--${item.platform}`]}>
+            <div
+              class:list={['playlist-embed', `playlist-embed--${item.platform}`]}
+              style={`clip-path: ${clip};`}
+            >
               <iframe
                 src={embedUrlFor(item)}
                 title={`${item.title} — ${platform.label} ${kindLabel} selected by José Arbelaez`}
@@ -80,7 +162,7 @@ const externalUrlFor = (item: AboutPlaylist) =>
               target="_blank"
               rel="noopener noreferrer"
             >
-              open {kindLabel} on {platform.label} <span aria-hidden="true">↗</span>
+              open {kindLabel} on {platform.label}
             </a>
           </article>
         );

@@ -55,6 +55,25 @@ export interface ProfileProjectNote {
   tone?: ProfileProjectNoteTone;
 }
 
+/* A second tier of projects: built and published, linked rather than written up. */
+export type LabAccent = 'forest' | 'lilac' | 'apricot' | 'rose';
+export type LabLinkKind = 'code' | 'site' | 'demo' | 'package' | 'video';
+
+export interface LabLink {
+  kind: LabLinkKind;
+  href: string;
+  label: string;
+}
+
+export interface LabProject {
+  id: string;
+  title: string;
+  period?: string;
+  excerpt: string;
+  accent: LabAccent;
+  links: LabLink[];
+}
+
 export interface ProfileData {
   title: string;
   intro: string;
@@ -308,5 +327,53 @@ export const profileProjectsEs: ProfileProject[] = [
       'mi_diagrama_gantt.jpeg': 'Planificación temporal del proyecto: primera fase del diagrama de Gantt.',
       'mi_diagrama_gantt2.jpeg': 'Planificación temporal del proyecto: segunda fase del diagrama de Gantt.',
     }),
+  },
+];
+
+export const labProjectsEs: LabProject[] = [
+  {
+    id: 'noetik-recon',
+    title: 'Noetik Recon',
+    period: 'feb. 2026 - actualidad',
+    excerpt: 'Agentes de extracción, validación y análisis sobre LangGraph y MCP que convierten informes financieros dispersos en análisis verificado con citas trazables. Entre lo que genera el modelo y el informe final hay comprobaciones deterministas.',
+    accent: 'lilac',
+    links: [
+      { kind: 'code', href: 'https://github.com/Noetik-Laboratories/Recon-Agent', label: 'Código' },
+      { kind: 'site', href: 'https://noetiklab.com', label: 'NoetikLab' },
+    ],
+  },
+  {
+    id: 'quantifolio',
+    title: 'Backtesting y análisis de carteras',
+    period: '2025',
+    excerpt: 'La herramienta con la que mi equipo ganó la Liga de Inversores UAM: primeros entre más de 240 participantes y con el mejor ratio de Sharpe del certamen. Sharpe y Sortino, drawdown, VaR, fronteras eficientes y escenarios de Monte Carlo.',
+    accent: 'forest',
+    links: [
+      { kind: 'demo', href: 'https://diosfamiliafe.streamlit.app/', label: 'Demo' },
+      { kind: 'code', href: 'https://github.com/trentisiete/QuantiFolio', label: 'QuantiFolio' },
+      { kind: 'video', href: 'https://www.youtube.com/watch?v=vPfkUXtju50', label: 'Entrevista' },
+    ],
+  },
+  {
+    id: 'rl-lab',
+    title: 'Reinforcement Learning Lab',
+    period: 'ene. - sept. 2024',
+    excerpt: 'De Q-learning y SARSA tabulares sobre FrozenLake, junto a Lorena Mohanu, a componentes tipo DQN y PPO en PyTorch. El foco está en la estabilidad, la eficiencia de muestras y en qué cambia de verdad el comportamiento de un agente.',
+    accent: 'apricot',
+    links: [
+      { kind: 'code', href: 'https://github.com/trentisiete/Reinforcement-Learning-Exploration--The-Basics', label: 'Fundamentos' },
+      { kind: 'code', href: 'https://github.com/trentisiete/PolicyForge-RL-Lab', label: 'PolicyForge' },
+    ],
+  },
+  {
+    id: 'endy',
+    title: 'Endy y Multiplexor',
+    excerpt: 'Coordina agentes de código (Codex, Claude, Gemini, OpenCode) en sesiones tmux, sigue tareas en paralelo y traspasa el trabajo cuando uno falla o agota su cuota. Publicado en npm, con un pico de 5000 descargas. Multiplexor enruta entre proveedores locales por prioridad y cuota.',
+    accent: 'rose',
+    links: [
+      { kind: 'code', href: 'https://github.com/trentisiete/endy', label: 'Endy' },
+      { kind: 'package', href: 'https://www.npmjs.com/package/@noetiklab/endy', label: 'npm' },
+      { kind: 'code', href: 'https://github.com/trentisiete/multiplexor', label: 'Multiplexor' },
+    ],
   },
 ];

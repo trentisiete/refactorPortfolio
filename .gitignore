@@ -23,3 +23,6 @@ Thumbs.db
 *.zip
 *.ai
 .commandcode/
+
+# Empaquetados de versiones del sitio
+site-version.tar.gz

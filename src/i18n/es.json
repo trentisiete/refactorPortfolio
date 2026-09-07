@@ -67,26 +67,7 @@
     "close_gallery": "Cerrar galería",
     "notes": "Comentarios",
     "view_code": "Ver código en GitHub",
-    "more_projects_title": "Más proyectos en GitHub",
-    "more_projects_intro": "Experimentos, trabajos en curso y exploraciones técnicas más pequeñas.",
-    "more_projects_cta": "Visitar GitHub",
-    "more_projects_items": [
-      {
-        "title": "Benchmarking de optimización de preferencias y RLHF",
-        "description": "DPO, PPO y otros métodos de alineamiento relacionados."
-      },
-      {
-        "title": "Sistemas agénticos agnósticos del modelo",
-        "description": "Flujos LangChain dinámicos y trazables, coordinación multiagente, creación dinámica de herramientas y agentes, A2A y Redis."
-      },
-      {
-        "title": "Exploración de métodos de clustering",
-        "description": "Una comparación práctica de estrategias, supuestos y comportamientos."
-      },
-      {
-        "title": "Cómo terminé primero entre 240 participantes",
-        "description": "Cinco meses de ciencia de datos y analítica en tiempo real sobre un gran data lake de fondos para seleccionar la mejor cartera."
-      }
-    ]
+    "lab_title": "Construido y publicado",
+    "lab_intro": "Herramientas y experimentos que están en marcha, con el código a la vista."
   }
 }

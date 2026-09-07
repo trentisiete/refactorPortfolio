@@ -1,0 +1,211 @@
+---
+// One drawn vignette per project, at 240x160. Small on the page, so the detail has
+// to be real rather than decorative: each one is the figure the project would draw
+// of itself, not an icon standing in for it.
+interface Props {
+  kind: string;
+  class?: string;
+}
+const { kind, class: className } = Astro.props;
+
+/* --- Gridworld with a learned policy, for the RL lab --- */
+const CELL = 22;
+const GRID_X = 14;
+const GRID_Y = 22;
+const rlCells = [];
+for (let r = 0; r < 5; r += 1) {
+  for (let c = 0; c < 5; c += 1) {
+    rlCells.push({ c, r, x: GRID_X + CELL * c, y: GRID_Y + CELL * r });
+  }
+}
+const rlHoles = new Set(['1,1', '3,1', '1,3', '4,2']);
+const rlPolicy: Record<string, string> = {
+  '0,0': 'D', '1,0': 'L', '2,0': 'D', '3,0': 'L', '4,0': 'L',
+  '0,1': 'D', '2,1': 'D', '4,1': 'L',
+  '0,2': 'R', '1,2': 'R', '2,2': 'D', '3,2': 'R',
+  '0,3': 'U', '2,3': 'R', '3,3': 'D', '4,3': 'D',
+  '0,4': 'R', '1,4': 'R', '2,4': 'R', '3,4': 'R',
+};
+const chevron = (cx: number, cy: number, dir: string) => {
+  const s = 3.1;
+  if (dir === 'R') return `M${cx - s} ${cy - s}L${cx + s} ${cy}L${cx - s} ${cy + s}`;
+  if (dir === 'L') return `M${cx + s} ${cy - s}L${cx - s} ${cy}L${cx + s} ${cy + s}`;
+  if (dir === 'D') return `M${cx - s} ${cy - s}L${cx} ${cy + s}L${cx + s} ${cy - s}`;
+  return `M${cx - s} ${cy + s}L${cx} ${cy - s}L${cx + s} ${cy + s}`;
+};
+const centre = (c: number, r: number) => [GRID_X + CELL * c + CELL / 2, GRID_Y + CELL * r + CELL / 2];
+const rlRoute = [[0, 0], [0, 1], [0, 2], [1, 2], [2, 2], [2, 3], [3, 3], [3, 4], [4, 4]]
+  .map(([c, r]) => centre(c, r).map(n => n.toFixed(0)).join(' '))
+  .join('L');
+// A noisy reward trace that settles, with its moving average over the top.
+const rlReward = [126, 122, 127, 118, 121, 108, 113, 96, 101, 84, 88, 72, 74, 66, 64]
+  .map((y, i) => `${142 + i * 6} ${y}`).join('L');
+const rlSmooth = [127, 120, 108, 94, 78, 68, 65].map((y, i) => `${142 + i * 14.3} ${y}`).join('L');
+
+/* --- Equity curve against its benchmark, for the backtester --- */
+const equity = [[34, 118], [48, 110], [62, 114], [76, 98], [90, 102], [104, 84], [118, 90],
+  [132, 60], [146, 76], [160, 94], [174, 84], [188, 70], [202, 58], [216, 44], [226, 36]]
+  .map(p => p.join(' ')).join('L');
+const benchmark = [[34, 124], [62, 120], [90, 115], [118, 107], [146, 112], [174, 103], [202, 95], [226, 88]]
+  .map(p => p.join(' ')).join('L');
+
+/* --- Agent lanes, for Endy --- */
+const lanes = [
+  { y: 40, filled: 5, state: 'run' },
+  { y: 80, filled: 8, state: 'done' },
+  { y: 120, filled: 3, state: 'hand' },
+];
+const SEGMENTS = 8;
+---
+
+<svg
+  class:list={['lab-cover', className]}
+  viewBox="0 0 240 160"
+  fill="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  {kind === 'noetik-recon' && (
+    <Fragment>
+      {/* A filing, one figure in its table highlighted, traced to the card that checked it. */}
+      <g stroke="currentColor" stroke-width="1" opacity=".22">
+        <rect x="8" y="22" width="88" height="126" rx="3" transform="rotate(-5 52 85)" />
+        <rect x="11" y="18" width="90" height="128" rx="3" transform="rotate(-2 56 82)" />
+      </g>
+      <rect x="14" y="14" width="92" height="132" rx="3" fill="var(--lab-paper)" stroke="currentColor" stroke-width="1.2" />
+      <g stroke="currentColor" stroke-linecap="round">
+        <path d="M24 30h40" stroke-width="3.4" opacity=".3" />
+        <g stroke-width="2.4" opacity=".16">
+          <path d="M24 42h64" /><path d="M24 50h56" /><path d="M24 58h66" />
+          <path d="M24 124h60" /><path d="M24 132h42" />
+        </g>
+      </g>
+      {/* the table */}
+      <g stroke="currentColor" opacity=".22" stroke-width=".75">
+        <path d="M24 70h72M24 83h72M24 96h72M24 109h72" />
+        <path d="M72 70v39" />
+      </g>
+      <rect x="24" y="83" width="72" height="13" fill="var(--lab-accent)" opacity=".16" />
+      <g stroke="currentColor" stroke-width="2.2" stroke-linecap="round" opacity=".2">
+        <path d="M29 76h30M77 76h14M29 102h34M77 102h12" />
+      </g>
+      <g stroke="var(--lab-accent)" stroke-width="2.2" stroke-linecap="round">
+        <path d="M29 89h26M77 89h15" />
+      </g>
+      <path d="M98 89c12 0 10-9 22-9" stroke="var(--lab-accent)" stroke-width="1" stroke-dasharray="2.5 3" />
+      {/* the verification card */}
+      <rect x="122" y="44" width="106" height="74" rx="5" fill="var(--lab-paper)" stroke="currentColor" stroke-width="1.2" opacity=".9" />
+      <circle cx="138" cy="60" r="8" stroke="var(--lab-accent)" stroke-width="1.3" />
+      <path d="m134.5 60 2.5 2.8 5-5.6" stroke="var(--lab-accent)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+      <g stroke="currentColor" stroke-linecap="round" opacity=".22">
+        <path d="M152 57h44" stroke-width="2.6" /><path d="M152 64h28" stroke-width="2.6" />
+      </g>
+      <path d="M130 76h90" stroke="currentColor" stroke-width=".75" opacity=".18" />
+      <g stroke-linecap="round">
+        <path d="M130 88h26" stroke="currentColor" stroke-width="2.4" opacity=".2" />
+        <path d="M186 88h34" stroke="var(--lab-accent)" stroke-width="2.4" opacity=".75" />
+        <path d="M130 102h30" stroke="currentColor" stroke-width="2.4" opacity=".2" />
+        <path d="M186 102h26" stroke="var(--lab-accent)" stroke-width="2.4" opacity=".75" />
+        <g stroke="currentColor" stroke-width="1" opacity=".35">
+          <path d="M168 86h10M168 90h10M168 100h10M168 104h10" />
+        </g>
+      </g>
+    </Fragment>
+  )}
+
+  {kind === 'quantifolio' && (
+    <Fragment>
+      {/* Equity against benchmark, with the drawdown measured between peak and trough. */}
+      <g stroke="currentColor" opacity=".12" stroke-width=".75">
+        <path d="M30 40h198M30 68h198M30 96h198M30 124h198" />
+      </g>
+      <path d="M30 18v114h198" stroke="currentColor" opacity=".3" stroke-width="1" />
+      <g stroke="currentColor" opacity=".3" stroke-width="1">
+        <path d="M26 40h4M26 68h4M26 96h4M26 124h4" />
+        <path d="M64 132v4M98 132v4M132 132v4M166 132v4M200 132v4" />
+      </g>
+      <path d={`M34 132L${equity}L226 132Z`} fill="var(--lab-accent)" opacity=".07" />
+      <path d={`M${benchmark}`} stroke="currentColor" stroke-width="1.1" opacity=".38" stroke-dasharray="4 4" stroke-linejoin="round" />
+      <path d={`M${equity}`} stroke="var(--lab-accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+      {/* the drawdown */}
+      <g stroke="var(--lab-accent)" opacity=".5" stroke-width=".9" stroke-dasharray="2.5 2.5">
+        <path d="M132 62v44M160 96v10" />
+      </g>
+      <g stroke="var(--lab-accent)" stroke-width="1" opacity=".8">
+        <path d="M132 106h28M132 103v6M160 103v6" />
+      </g>
+      <circle cx="226" cy="36" r="2.8" fill="var(--lab-accent)" />
+      <path d="M218 30h16" stroke="var(--lab-accent)" stroke-width=".9" opacity=".45" stroke-dasharray="3 3" />
+    </Fragment>
+  )}
+
+  {kind === 'rl-lab' && (
+    <Fragment>
+      {/* The policy the agent settled on, arrow by arrow, and the reward that got it there. */}
+      <g stroke="currentColor" stroke-width=".75" opacity=".28">
+        {rlCells.map(cell => <rect x={cell.x} y={cell.y} width={CELL} height={CELL} rx="2" />)}
+      </g>
+      {rlCells.filter(cell => rlHoles.has(`${cell.c},${cell.r}`)).map(cell => (
+        <Fragment>
+          <rect x={cell.x} y={cell.y} width={CELL} height={CELL} rx="2" fill="currentColor" opacity=".13" />
+          <circle cx={cell.x + CELL / 2} cy={cell.y + CELL / 2} r="3.2" fill="currentColor" opacity=".3" />
+        </Fragment>
+      ))}
+      <rect x={GRID_X + CELL * 4} y={GRID_Y + CELL * 4} width={CELL} height={CELL} rx="2" fill="var(--lab-accent)" opacity=".2" />
+      <g stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" opacity=".42">
+        {rlCells.filter(cell => rlPolicy[`${cell.c},${cell.r}`]).map(cell => (
+          <path d={chevron(cell.x + CELL / 2, cell.y + CELL / 2, rlPolicy[`${cell.c},${cell.r}`])} />
+        ))}
+      </g>
+      <path d={`M${rlRoute}`} stroke="var(--lab-accent)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+      <circle cx={GRID_X + CELL / 2} cy={GRID_Y + CELL / 2} r="2.6" fill="var(--lab-accent)" />
+      {/* the goal flag */}
+      <g stroke="var(--lab-accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M110 115v12" />
+        <path d="M110 115h7l-2 3 2 3h-7" fill="var(--lab-accent)" />
+      </g>
+      {/* reward per episode, with its moving average */}
+      <path d="M142 24v106h86" stroke="currentColor" opacity=".28" stroke-width="1" />
+      <path d={`M${rlReward}`} stroke="var(--lab-accent)" stroke-width=".9" opacity=".55" stroke-linejoin="round" />
+      <path d={`M${rlSmooth}`} stroke="var(--lab-accent)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+      <g stroke="currentColor" opacity=".28" stroke-width=".75">
+        <path d="M138 60h4M138 96h4M170 130v4M198 130v4" />
+      </g>
+    </Fragment>
+  )}
+
+  {kind === 'endy' && (
+    <Fragment>
+      {/* One terminal driving three sessions, each in a different state of its run. */}
+      <rect x="10" y="48" width="66" height="64" rx="5" fill="var(--lab-paper)" stroke="currentColor" stroke-width="1.2" />
+      <path d="M10 62h66" stroke="currentColor" stroke-width=".9" opacity=".4" />
+      <g fill="currentColor" opacity=".35">
+        <circle cx="20" cy="55" r="2" /><circle cx="27" cy="55" r="2" /><circle cx="34" cy="55" r="2" />
+      </g>
+      <path d="m20 73 4 3.5-4 3.5" stroke="var(--lab-accent)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+      <g stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".22">
+        <path d="M30 77h28M20 89h22M20 99h32" />
+      </g>
+      <rect x="46" y="85" width="5" height="8" fill="var(--lab-accent)" opacity=".7" />
+      <g stroke="var(--lab-accent)" stroke-width="1" opacity=".45">
+        <path d="M76 80c9 0 7-40 16-40M76 80h16M76 80c9 0 7 40 16 40" />
+      </g>
+      {lanes.map(lane => (
+        <Fragment>
+          <rect x="92" y={lane.y - 9} width="19" height="18" rx="4" stroke="currentColor" stroke-width="1" opacity=".4" />
+          <path d={`M97 ${lane.y - 3}h9M97 ${lane.y + 1}h6`} stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".4" />
+          {Array.from({ length: SEGMENTS }).map((_, i) => (
+            i < lane.filled
+              ? <rect x={119 + i * 12} y={lane.y - 3} width="10" height="6" rx="2" fill="var(--lab-accent)" opacity={lane.state === 'done' ? '.42' : '.85'} />
+              : <rect x={119 + i * 12} y={lane.y - 3} width="10" height="6" rx="2" stroke="currentColor" stroke-width=".8" opacity=".28" stroke-dasharray={lane.state === 'hand' ? '2 2' : undefined} />
+          ))}
+        </Fragment>
+      ))}
+      {/* running, finished, handed over */}
+      <path d="M225 34a6 6 0 1 1-5-6" stroke="var(--lab-accent)" stroke-width="1.4" stroke-linecap="round" />
+      <circle cx="220" cy="80" r="6" stroke="var(--lab-accent)" stroke-width="1.2" opacity=".6" />
+      <path d="m217 80 2 2.2 4-4.4" stroke="var(--lab-accent)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" opacity=".6" />
+      <path d="M214 120h11m-3.5-3.5 3.5 3.5-3.5 3.5" stroke="var(--lab-accent)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+    </Fragment>
+  )}
+</svg>
