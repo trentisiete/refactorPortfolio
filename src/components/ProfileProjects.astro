@@ -7,7 +7,7 @@ const { projects, lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 <section class="profile-projects" id="projects" aria-labelledby="profile-projects-title">
-  <header class="section-heading"><h2 id="profile-projects-title">{t.profile.projects_title}</h2><span>{String(projects.length).padStart(2, '0')}</span></header>
+  <header class="section-heading"><h2 id="profile-projects-title">{t.profile.projects_title}</h2></header>
   <div class="profile-projects__grid">
     {projects.map(project => <ProfileProjectCard project={project} lang={lang} />)}
   </div>
@@ -18,7 +18,7 @@ const t = useTranslations(lang);
       <a href="https://github.com/trentisiete" target="_blank" rel="noopener noreferrer">{t.profile.more_projects_cta} ↗</a>
     </header>
     <ol class="profile-more-projects__list">
-      {t.profile.more_projects_items.map((item, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><div><h4>{item.title}</h4><p>{item.description}</p></div></li>)}
+      {t.profile.more_projects_items.map(item => <li><div><h4>{item.title}</h4><p>{item.description}</p></div></li>)}
     </ol>
   </section>
 </section>
