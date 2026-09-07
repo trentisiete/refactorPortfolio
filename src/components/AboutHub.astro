@@ -80,13 +80,13 @@ const thoughts = await Promise.all(
         {thoughts.length > 0 ? (
           thoughts.map(({ entry, Content, dateLabel, timeLabel }) => (
             <article class:list={['thought-entry', { 'thought-entry--with-image': entry.data.image }]}>
+              <div class="thought-entry__content">
               <header>
                 <time datetime={entry.data.publishedAt.toISOString()}>
                   <span>{dateLabel}</span>
                   <b>{timeLabel}</b>
                 </time>
               </header>
-              <div class="thought-entry__content">
                 <div class="thought-entry__body">
                   <Content />
                 </div>
