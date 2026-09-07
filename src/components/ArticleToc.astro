@@ -1,0 +1,87 @@
+---
+import type { MarkdownHeading } from 'astro';
+import type { Lang } from '../i18n/utils';
+interface Props { headings: MarkdownHeading[]; lang: Lang }
+const { headings, lang } = Astro.props;
+const labels = { es: ['En este artículo', 'Volver arriba'], en: ['On this page', 'Back to top'], de: ['In diesem Artikel', 'Nach oben'] }[lang];
+const visible = headings.filter(h => h.depth >= 2 && h.depth <= 4);
+let section = '';
+const entries = visible.map(h => {
+  if (h.depth === 2 || !section) section = h.slug;
+  return { ...h, section };
+});
+---
+{entries.length > 1 && (
+  <aside class="article-toc" data-article-toc>
+    <details class="article-toc__disclosure" open>
+      <summary>{labels[0]}<span aria-hidden="true">⌄</span></summary>
+      <nav aria-label={labels[0]} class="article-toc__nav">
+        <ol>
+          {entries.map(h => <li data-level={h.depth} data-section={h.section}>
+            <a href={`#${h.slug}`} data-toc-link>{h.text}</a>
+          </li>)}
+        </ol>
+      </nav>
+    </details>
+    <a class="article-toc__top" href="#article-top">↑ {labels[1]}</a>
+    <div class="article-toc__progress" aria-hidden="true"><span data-reading-progress></span></div>
+  </aside>
+)}
+<script>
+  const toc = document.querySelector<HTMLElement>('[data-article-toc]');
+  if (toc) {
+    const links = [...toc.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
+    const entries = links.map(link => ({ link, heading: document.getElementById(decodeURIComponent(link.hash.slice(1))) })).filter(entry => entry.heading);
+    const progress = toc.querySelector<HTMLElement>('[data-reading-progress]');
+    const article = document.querySelector<HTMLElement>('.article');
+    const disclosure = toc.querySelector<HTMLDetailsElement>('details');
+    const mobile = window.matchMedia('(max-width: 1050px)');
+    const syncDisclosure = () => { if (disclosure) disclosure.open = !mobile.matches; };
+    syncDisclosure();
+    mobile.addEventListener('change', syncDisclosure);
+    let active: HTMLAnchorElement | undefined;
+    const update = () => {
+      const headerHeight = document.querySelector('.site-header')?.getBoundingClientRect().height ?? 88;
+      let current = entries[0];
+      for (const entry of entries) {
+        if (entry.heading!.getBoundingClientRect().top <= headerHeight + 65) current = entry;
+        else break;
+      }
+      if (current && active !== current.link) {
+        active?.removeAttribute('aria-current');
+        active = current.link;
+        active.setAttribute('aria-current', 'location');
+        const section = active.parentElement?.dataset.section;
+        toc.querySelectorAll<HTMLElement>('[data-section]').forEach(item => item.classList.toggle('toc-section-active', item.dataset.section === section));
+        if (!mobile.matches) {
+          const nav = toc.querySelector<HTMLElement>('nav');
+          if (nav) {
+            const top = active.getBoundingClientRect().top - nav.getBoundingClientRect().top;
+            if (top < 0 || top > nav.clientHeight - 60) nav.scrollTop += top - 60;
+          }
+        }
+      }
+      if (progress && article) {
+        const rect = article.getBoundingClientRect();
+        const amount = Math.max(0, Math.min(1, (headerHeight - rect.top) / Math.max(1, rect.height - window.innerHeight + headerHeight)));
+        progress.style.transform = `scaleX(${amount})`;
+      }
+    };
+    let queued = false;
+    const schedule = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => { update(); queued = false; });
+    };
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    links.forEach(link => link.addEventListener('click', () => {
+      if (mobile.matches && disclosure) disclosure.open = false;
+      // Move keyboard focus to the section as well as navigating to its anchor.
+      const heading = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+      heading?.setAttribute('tabindex', '-1');
+      heading?.focus({ preventScroll: true });
+    }));
+    update();
+  }
+</script>

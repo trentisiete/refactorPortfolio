@@ -1,3 +1,22 @@
 ---
-return Astro.redirect('/de/', 301);
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProfileTabs from '../../components/ProfileTabs.astro';
+import { profileDe } from '../../data/profile.de';
 ---
+
+<BaseLayout
+  lang="de"
+  view="profile"
+  title={`Werdegang | José Arbelaez`}
+  description="Berufserfahrung, Projekte, Ausbildung und Auszeichnungen von José Arbelaez."
+  extraStyles={["/styles/profile.css"]}
+  showTrafficStats
+>
+  <section class="profile-page section fade-in fade-in-1">
+    <header class="profile-intro">
+      <h1>Erfahrung & Ausbildung</h1>
+    </header>
+
+    <ProfileTabs sections={profileDe.sections} label={profileDe.tabsLabel} />
+  </section>
+</BaseLayout>

@@ -1,3 +1,22 @@
 ---
-return Astro.redirect('/en/', 301);
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProfileTabs from '../../components/ProfileTabs.astro';
+import { profileEn } from '../../data/profile.en';
 ---
+
+<BaseLayout
+  lang="en"
+  view="profile"
+  title={`Journey | José Arbelaez`}
+  description="Experience, projects, education and awards of José Arbelaez."
+  extraStyles={["/styles/profile.css"]}
+  showTrafficStats
+>
+  <section class="profile-page section fade-in fade-in-1">
+    <header class="profile-intro">
+      <h1>Experience & education</h1>
+    </header>
+
+    <ProfileTabs sections={profileEn.sections} label={profileEn.tabsLabel} />
+  </section>
+</BaseLayout>

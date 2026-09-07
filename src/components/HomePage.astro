@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProfileProjects from './ProfileProjects.astro';
+import type { ProfileProject } from '../data/profile.es';
+import type { Lang } from '../i18n/utils';
+
+interface Props { lang: Lang; projects: ProfileProject[] }
+const { lang, projects } = Astro.props;
+const homeLine = {
+  es: 'Datos, modelos y sistemas que se pueden construir.',
+  en: 'Data, models and systems worth building.',
+  de: 'Daten, Modelle und Systeme, die sich bauen lassen.',
+}[lang];
+---
+
+<BaseLayout lang={lang} view="home" title="José Arbelaez" extraStyles={["/styles/profile.css"]} showTrafficStats>
+  <section class="home-page section">
+    <header class="home-intro">
+      <h1>José Arbelaez<span>Data scientist & developer</span></h1>
+      <p>{homeLine}</p>
+    </header>
+    <ProfileProjects projects={projects} lang={lang} />
+  </section>
+</BaseLayout>

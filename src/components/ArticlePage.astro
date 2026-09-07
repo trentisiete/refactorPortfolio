@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContentPreview from './ContentPreview.astro';
+import ArticleToc from './ArticleToc.astro';
+import { useTranslations, type Lang } from '../i18n/utils';
+import { estimateReadingTime } from '../utils/readingTime';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+interface Props { article: CollectionEntry<'articles'>; lang: Lang }
+const { article, lang } = Astro.props;
+const t = useTranslations(lang);
+const { Content, headings } = await render(article);
+const baseSlug = article.slug.split('/').pop();
+const availableLangs = (await getCollection('articles'))
+  .filter(a => a.slug.split('/').pop() === baseSlug && !a.data.draft)
+  .map(a => a.data.lang) as Lang[];
+const dateStr = article.data.date.toLocaleDateString({ es: 'es-ES', en: 'en-GB', de: 'de-DE' }[lang], { year: 'numeric', month: 'short', day: 'numeric' });
+const readingTime = estimateReadingTime(article.body, lang);
+const backLabel = article.data.kind === 'blog' ? t.buttons.back_to_blog : t.buttons.back_to_articles;
+const backHref = article.data.kind === 'blog' ? '/en/about/writing/' : `/${lang}/#projects`;
+---
+<BaseLayout lang={lang} title={`${article.data.title} | ${t.meta.site_title}`} description={article.data.excerpt} extraStyles={["/styles/markdown.css", "/styles/article.css"]} availableLangs={availableLangs} wide readingPage>
+  <section class="section article-page" id="article-top">
+    <a href={backHref} class="back-link">{backLabel}</a>
+    <div class="article-layout">
+      <article class="article">
+        <header class="article__header">
+          {article.data.topic && <p class="article__topic">{article.data.topic}</p>}
+          <h1 class="article__title">{article.data.title}</h1>
+          {article.data.excerpt && <p class="article__subtitle">{article.data.excerpt}</p>}
+          <div class="article__meta">
+            <time datetime={article.data.date.toISOString()}>{dateStr}</time>
+            <span>· {readingTime} {t.articles_page.min_read}</span>
+          </div>
+          {article.data.tags?.length > 0 && <div class="article__tags">{article.data.tags.map(tag => <span class="tag">{tag}</span>)}</div>}
+        </header>
+        <div class="markdown-content"><Content /></div>
+      </article>
+      <ArticleToc headings={headings} lang={lang} />
+    </div>
+    <ContentPreview lang={lang} />
+  </section>
+</BaseLayout>

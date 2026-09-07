@@ -1,7 +1,6 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import JoseLogo from '../components/JoseLogo.astro';
 import SiteTraffic from '../components/SiteTraffic.astro';
 import TrafficStats from '../components/TrafficStats.astro';
 import type { Lang } from '../i18n/utils';
@@ -14,7 +13,7 @@ interface Props {
   extraStyles?: string[];
   wide?: boolean;
   availableLangs?: Lang[];
-  view?: 'reading' | 'profile' | 'about';
+  view?: 'reading' | 'profile' | 'about' | 'home';
   readingPage?: boolean;
   showTrafficStats?: boolean;
 }
@@ -35,6 +34,11 @@ const t = useTranslations(lang);
 const pageTitle = title || t.meta.site_title;
 const pageDescription = description || t.meta.site_description;
 const containerClass = wide ? 'container container--wide' : 'container';
+const skipLabels = {
+  es: 'Saltar al contenido',
+  en: 'Skip to content',
+  de: 'Zum Inhalt springen',
+} as const;
 
 // SEO multiidioma: canonical + alternates hreflang de las versiones que existen
 const path = Astro.url.pathname;
@@ -110,14 +114,12 @@ const alternatePath = (alternateLang: Lang) =>
 </head>
 
 <body class:list={['site-body', `page-view-${view}`, { 'reading-page': readingPage }]}>
+  <a class="skip-link" href="#main-content">{skipLabels[lang]}</a>
   <Header lang={lang} availableLangs={availableLangs} view={view} />
 
-  <main class={containerClass}>
+  <main class={containerClass} id="main-content">
     <slot />
     {showTrafficStats && <TrafficStats lang={lang} />}
-    <div class="site-end-mark" aria-hidden="true">
-      <JoseLogo instance="page-end" class="site-end-mark__logo" animated={false} decorative />
-    </div>
     {readingPage && <span class="reading-end-sentinel" data-reading-end-sentinel aria-hidden="true"></span>}
   </main>
 

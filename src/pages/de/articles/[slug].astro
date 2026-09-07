@@ -1,70 +1,9 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import ContentPreview from '../../../components/ContentPreview.astro';
-import { useTranslations } from '../../../i18n/utils';
-import type { Lang } from '../../../i18n/utils';
-import { estimateReadingTime } from '../../../utils/readingTime';
-import { getCollection, render } from 'astro:content';
-
-const lang: Lang = 'de';
-const t = useTranslations(lang);
-
+import ArticlePage from '../../../components/ArticlePage.astro';
+import { getCollection } from 'astro:content';
 export async function getStaticPaths() {
-  const articles = await getCollection('articles');
-  return articles
-    .filter(a => a.data.lang === 'de' && !a.data.draft)
-    .map(article => ({
-      params: { slug: article.slug.split('/').pop() },
-      props: { article },
-    }));
+  return (await getCollection('articles')).filter(a => a.data.lang === 'de' && !a.data.draft).map(article => ({ params: { slug: article.slug.split('/').pop() }, props: { article } }));
 }
-
 const { article } = Astro.props;
-const { Content } = await render(article);
-
-// Translations share the same filename across language folders
-const baseSlug = article.slug.split('/').pop();
-const allArticles = await getCollection('articles');
-const availableLangs = allArticles
-  .filter(a => a.slug.split('/').pop() === baseSlug && !a.data.draft)
-  .map(a => a.data.lang) as Lang[];
-
-const dateStr = article.data.date.toLocaleDateString('de-DE', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-});
-const readingTime = estimateReadingTime(article.body, lang);
-const backLabel = article.data.kind === 'blog' ? t.buttons.back_to_blog : t.buttons.back_to_articles;
-const backHref = article.data.kind === 'blog' ? '/de/' : '/de/#projects';
 ---
-
-<BaseLayout lang={lang} title={`${article.data.title} | ${t.meta.site_title}`} extraStyles={["/styles/markdown.css", "/styles/article.css"]} availableLangs={availableLangs} wide readingPage>
-  <section class="section fade-in fade-in-1 article-page">
-    <a href={backHref} class="back-link">{backLabel}</a>
-
-    <article class="article">
-      <header class="article__header">
-        {article.data.topic && <p class="article__topic">{article.data.topic}</p>}
-        <h1 class="article__title">{article.data.title}</h1>
-        {article.data.excerpt && (
-          <p class="article__subtitle">{article.data.excerpt}</p>
-        )}
-        <div class="article__meta">
-          <time>{dateStr}</time>
-          <span> · {readingTime} {t.articles_page.min_read}</span>
-        </div>
-        {article.data.tags && article.data.tags.length > 0 && (
-          <div class="article__tags">
-            {article.data.tags.map(tag => <span class="tag">{tag}</span>)}
-          </div>
-        )}
-      </header>
-
-      <div class="markdown-content">
-        <Content />
-      </div>
-    </article>
-    <ContentPreview lang={lang} />
-  </section>
-</BaseLayout>
+<ArticlePage article={article} lang="de" />

@@ -8,11 +8,11 @@
    ---------------------------------------- */
 :root {
     /* Identidad visual compartida */
-    --site-ink: #173b2b;
+    --site-ink: #273a32;
     --site-forest: #2f7048;
     --site-forest-deep: #173b2b;
-    --site-cream: #fff8df;
-    --site-paper: #f9f1ce;
+    --site-cream: #f7f7f2;
+    --site-paper: #edeee7;
     --site-mint: #d9efbd;
     --site-acid: #dcf477;
     --site-pink: #f4b8ce;
@@ -20,7 +20,7 @@
     --site-lilac: #c9bcff;
     --site-terracotta: #d88968;
     --site-outline: #31543a;
-    --site-panel: rgb(255 248 223 / 0.82);
+    --site-panel: var(--color-surface);
 
     /* Colores principales */
     --color-white: #ffffff;
@@ -46,13 +46,13 @@
     --color-primary-hover: var(--site-forest);
     --color-accent: var(--site-forest);
     --color-accent-hover: #245b3a;
-    --color-text: var(--site-ink);
-    --color-text-secondary: #365846;
-    --color-text-muted: #687767;
-    --color-background: var(--site-cream);
-    --color-surface: #fffbed;
-    --color-border: #bdc7ae;
-    --color-bg-alt: #e7edcf;
+    --color-text: #252c2b;
+    --color-text-secondary: #58635f;
+    --color-text-muted: #6d7871;
+    --color-background: #f7f7f2;
+    --color-surface: #ffffff;
+    --color-border: #dce0d8;
+    --color-bg-alt: #edf1eb;
 
     /* Espaciado (escala 4px) */
     --space-1: 0.25rem;
@@ -70,9 +70,9 @@
 
     /* Tipografía */
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-serif: 'Merriweather', Georgia, serif;
-    --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
-    --font-body: var(--font-serif);
+    --font-serif: 'Source Serif 4', Georgia, serif;
+    --font-mono: 'IBM Plex Mono', Consolas, monospace;
+    --font-body: var(--font-sans);
     --font-ui: var(--font-sans);
 
     /* Tamaños de fuente */
@@ -120,16 +120,16 @@
 [data-theme="dark"] {
     --site-outline: #9db494;
     --site-panel: rgb(24 48 35 / 0.86);
-    --color-text: var(--site-cream);
-    --color-text-secondary: #d3dec7;
-    --color-text-muted: #9dae9b;
-    --color-background: #14251c;
-    --color-surface: #1d3327;
-    --color-border: #49634f;
-    --color-bg-alt: #294735;
+    --color-text: #eceee8;
+    --color-text-secondary: #b4bdb8;
+    --color-text-muted: #94a29a;
+    --color-background: #171d1c;
+    --color-surface: #222a28;
+    --color-border: #39433f;
+    --color-bg-alt: #29342e;
     --color-primary: var(--site-cream);
     --color-primary-hover: var(--site-acid);
-    --color-accent: #b7d39b;
+    --color-accent: #a3c6ad;
     --color-accent-hover: var(--site-acid);
 }
 
@@ -145,7 +145,7 @@
 }
 
 html {
-    font-size: 17px;
+    font-size: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
@@ -158,25 +158,13 @@ body {
     line-height: var(--leading-normal);
     color: var(--color-text);
     background-color: var(--color-background);
-    background-image:
-        radial-gradient(circle at 92% 9%, rgb(220 244 119 / 0.48) 0 11rem, transparent 11.2rem),
-        radial-gradient(circle at 4% 68%, rgb(244 184 206 / 0.3) 0 13rem, transparent 13.2rem),
-        linear-gradient(128deg, var(--site-cream) 0 58%, #e7f0c8 58% 100%);
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-size: cover;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     transition: background-color var(--transition-slow), color var(--transition-slow);
 }
 
-[data-theme="dark"] body {
-    background-image:
-        radial-gradient(circle at 92% 9%, rgb(220 244 119 / 0.1) 0 11rem, transparent 11.2rem),
-        radial-gradient(circle at 4% 68%, rgb(244 184 206 / 0.075) 0 13rem, transparent 13.2rem),
-        linear-gradient(128deg, #122219 0 58%, #1b3224 58% 100%);
-}
+
 
 main {
     flex-grow: 1;
@@ -189,89 +177,7 @@ main {
     color: var(--site-ink);
 }
 
-/* ----------------------------------------
-   Branded page scrollbar
-   ---------------------------------------- */
-html {
-    scrollbar-color:
-        var(--site-forest)
-        color-mix(in srgb, var(--color-background) 72%, var(--site-mint));
-    scrollbar-width: auto;
-}
-
-[data-theme="dark"] {
-    scrollbar-color:
-        var(--site-acid)
-        color-mix(in srgb, var(--color-background) 82%, var(--site-forest));
-}
-
-html::-webkit-scrollbar {
-    width: 22px;
-}
-
-html::-webkit-scrollbar-track {
-    background:
-        radial-gradient(
-            circle,
-            color-mix(in srgb, var(--site-outline) 48%, transparent) 1.2px,
-            transparent 1.5px
-        )
-        center / 8px 8px,
-        color-mix(in srgb, var(--color-background) 72%, var(--site-mint));
-    border-left: 1px solid color-mix(in srgb, var(--site-outline) 58%, transparent);
-}
-
-[data-theme="dark"]::-webkit-scrollbar-track {
-    background:
-        radial-gradient(
-            circle,
-            color-mix(in srgb, var(--site-cream) 24%, transparent) 1.2px,
-            transparent 1.5px
-        )
-        center / 8px 8px,
-        color-mix(in srgb, var(--color-background) 82%, var(--site-forest));
-}
-
-html::-webkit-scrollbar-thumb {
-    min-height: 58px;
-    background:
-        url("/brand/jose-arbelaez-mark.svg") center / 22px 22px no-repeat,
-        linear-gradient(
-            180deg,
-            var(--site-acid) 0%,
-            var(--site-pink) 52%,
-            var(--site-orange) 100%
-        );
-    background-clip: padding-box;
-    border: 4px solid transparent;
-    border-radius: 999px;
-    box-shadow:
-        inset 0 0 0 1.5px var(--site-ink),
-        inset 0 0 0 4px rgb(255 248 223 / 0.18);
-}
-
-html::-webkit-scrollbar-thumb:hover {
-    background:
-        url("/brand/jose-arbelaez-mark.svg") center / 24px 24px no-repeat,
-        linear-gradient(
-            180deg,
-            var(--site-orange) 0%,
-            var(--site-acid) 50%,
-            var(--site-pink) 100%
-        );
-    background-clip: padding-box;
-}
-
-html::-webkit-scrollbar-thumb:active {
-    background:
-        url("/brand/jose-arbelaez-mark.svg") center / 23px 23px no-repeat,
-        var(--site-acid);
-    background-clip: padding-box;
-}
-
-html::-webkit-scrollbar-corner {
-    background: var(--color-background);
-}
+html { scrollbar-color: var(--color-border) var(--color-background); scrollbar-width: thin; }
 
 img,
 picture,
@@ -311,20 +217,20 @@ ol {
 .container {
     width: 100%;
     /* Mismo ancho que la vista de articulo (container--wide) en todo el sitio */
-    max-width: 1024px;
+    max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
-    padding-left: var(--space-6);
-    padding-right: var(--space-6);
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
 }
 
 .container--wide {
-    max-width: 1024px;
+    max-width: 1200px;
 }
 
 .page-view-about > main.container,
 .page-view-profile > main.container {
-    max-width: 1240px;
+    max-width: 1200px;
 }
 
 .section {
@@ -498,3 +404,10 @@ ol {
     white-space: nowrap;
     border: 0;
 }
+
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; }
+[id] { scroll-margin-top: 6rem; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+:root { --color-note: #f1e9d9; --color-note-ink: #775732; --color-link: #356a88; }
+[data-theme="dark"] { --color-note: #302d25; --color-note-ink: #d8b887; --color-link: #9cbfda; }

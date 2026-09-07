@@ -26,9 +26,8 @@ const thoughts = await Promise.all(
   thoughtEntries.map(async entry => {
     const { Content } = await render(entry);
     const dateLabel = new Intl.DateTimeFormat('en-GB', {
-      weekday: 'long',
       day: 'numeric',
-      month: 'long',
+      month: 'short',
       year: 'numeric',
       timeZone: 'Europe/Madrid',
     }).format(entry.data.publishedAt);
@@ -45,15 +44,10 @@ const thoughts = await Promise.all(
 ---
 
 <section class="about-world about-home section">
-  <div class="about-world__wash" aria-hidden="true">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
 
   <header class="about-hero">
     <div class="about-hero__copy">
-      <p class="about-kicker">in case you'd like to know me better</p>
+
       <h1>
         about me,
         <em>off the clock.</em>
@@ -74,26 +68,21 @@ const thoughts = await Promise.all(
     </aside>
   </header>
 
+  <div class="about-content-layout">
   <section class="thoughts-section" id="thoughts" aria-labelledby="thoughts-title">
     <div class="thoughts-section__heading">
       <div>
-        <p class="about-section-label">small things, timestamped</p>
+
         <h2 id="thoughts-title">current thoughts</h2>
       </div>
-      <p>Short things that do not need to become a whole post.</p>
+      <p>{thoughts.length} entries</p>
     </div>
 
     <div class="thought-window">
-      <header class="thought-window__bar">
-        <span class="thought-window__status">
-          current thoughts
-        </span>
-        <span>{thoughts.length.toString().padStart(2, '0')} entries</span>
-      </header>
+
 
       <div
         class="thought-window__feed"
-        tabindex={thoughts.length > 2 ? 0 : undefined}
         aria-label="Thoughts ordered from newest to oldest"
       >
         {thoughts.length > 0 ? (
@@ -190,6 +179,7 @@ const thoughts = await Promise.all(
       <strong>go to music <i aria-hidden="true">↗</i></strong>
     </a>
   </section>
+  </div>
 </section>
 
 <script>

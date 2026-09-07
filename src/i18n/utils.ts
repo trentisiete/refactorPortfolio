@@ -33,7 +33,7 @@ export function getLocalizedPath(path: string, lang: Lang): string {
 }
 
 export function getProfilePath(lang: Lang): string {
-    return `/${lang}/`;
+    return `/${lang}/trayectoria/`;
 }
 
 export function getAboutPath(): string {

@@ -34,7 +34,7 @@ const projectMedia = {
     'risk_coverage_curve.png',
     'stress_robustness.png',
   ],
-  'bgg-review-intelligence': [],
+  'bgg-review-intelligence': ['classical_models.svg'],
   'diffusion-models': [
     'bpd.jpeg',
     'classifier_architecture_image.png',

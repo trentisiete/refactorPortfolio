@@ -8,7 +8,7 @@ import JoseLogo from './JoseLogo.astro';
 interface Props {
   lang: Lang;
   availableLangs?: Lang[];
-  view?: 'reading' | 'profile' | 'about';
+  view?: 'reading' | 'profile' | 'about' | 'home';
 }
 
 const { lang, availableLangs, view = 'reading' } = Astro.props;
@@ -24,6 +24,11 @@ const languagePaths = view === 'profile'
     ? pathsFor(() => getAboutPath())
     : undefined;
 const aboutPath = getAboutPath();
+const labels = {
+  es: { projects: 'Proyectos', work: 'Trayectoria', about: 'Sobre mí' },
+  en: { projects: 'Projects', work: 'Experience', about: 'About me' },
+  de: { projects: 'Projekte', work: 'Werdegang', about: 'Über mich' },
+}[lang];
 const navigationLabels: Record<Lang, string> = {
   es: 'Navegación principal',
   en: 'Main navigation',
@@ -35,24 +40,27 @@ const navigationLabels: Record<Lang, string> = {
   <div class="container site-header__container">
     <div class="site-header__inner">
       <a href={`${basePath}/`} class="site-header__brand" aria-label="José Arbelaez">
-        <JoseLogo instance="header" class="site-header__logo" decorative />
+        <JoseLogo instance="header" class="site-header__logo" animated={false} decorative />
         <span class="site-header__name">José Arbelaez</span>
       </a>
 
       <nav class="site-header__nav" aria-label={navigationLabels[lang]}>
+        <a href={`${basePath}/`} class:list={["site-header__nav-link", { "site-header__nav-link--active": view === 'home' }]} aria-current={view === 'home' ? 'page' : undefined}>
+          <span>{labels.projects}</span>
+        </a>
         <a
           href={getProfilePath(lang)}
           class:list={["site-header__nav-link", { "site-header__nav-link--active": view === 'profile' }]}
           aria-current={view === 'profile' ? 'page' : undefined}
         >
-          <span>Journey</span>
+          <span>{labels.work}</span>
         </a>
         <a
           href={aboutPath}
           class:list={["site-header__nav-link", { "site-header__nav-link--active": view === 'about' }]}
           aria-current={view === 'about' ? 'page' : undefined}
         >
-          <span>About me</span>
+          <span>{labels.about}</span>
         </a>
       </nav>
 

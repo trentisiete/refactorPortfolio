@@ -13,29 +13,25 @@ const t = useTranslations(lang);
 const dialogId = `project-preview-${project.id}`;
 const titleId = `${dialogId}-title`;
 const carouselTitleId = `${dialogId}-carousel-title`;
+const categories = { es: ['Optimización bayesiana', 'Visión por computador', 'Procesamiento del lenguaje', 'Modelos generativos'], en: ['Bayesian optimization', 'Computer vision', 'Natural language processing', 'Generative models'], de: ['Bayessche Optimierung', 'Computer Vision', 'Sprachverarbeitung', 'Generative Modelle'] }[lang];
+const projectIds = ['surrogate-models', 'roadguard', 'bgg-review-intelligence', 'diffusion-models'];
+const category = categories[projectIds.indexOf(project.id)];
+const cover = project.gallery?.find(image => image.src.includes('fig_gp_prior_posterior') || image.src.includes('example_5_') || image.src.includes('imputacion_cifar')) ?? project.gallery?.[0];
 ---
 
 <article class="profile-project-card" data-project-card>
-  <button
-    class="profile-project-card__main"
-    type="button"
-    aria-haspopup="dialog"
-    aria-controls={dialogId}
-    aria-label={`${t.profile.open_project}: ${project.title}`}
-    data-project-preview-open
-  ></button>
-
-  {project.year && <span class="profile-project-card__year">{project.year}</span>}
-
-  <h3 class="profile-project-card__title">{project.title}</h3>
-  {project.excerpt && <p class="profile-project-card__excerpt">{project.excerpt}</p>}
-
-  <div class="profile-project-card__links" aria-hidden="true">
-    <span>{t.profile.open_project}</span>
-    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M6 14 14 6"></path>
-      <path d="M7 6h7v7"></path>
-    </svg>
+  {cover && <a class={`project-row__image project-row__image--${project.id}`} href={project.articleHref ?? project.github} aria-label={project.title}>
+    <img src={cover.src} alt={cover.alt} width="840" height="460" loading="eager" decoding="async" />
+    <span class="project-row__image-label" aria-hidden="true">{category} <span>↗</span></span>
+  </a>}
+  <div class="project-row__copy">
+    <div class="project-row__meta"><span>{category}</span><span>{project.year}</span></div>
+    <h3 class="profile-project-card__title"><a href={project.articleHref ?? project.github}>{project.title}</a></h3>
+    {project.excerpt && <p class="profile-project-card__excerpt">{project.excerpt}</p>}
+    <div class="project-row__links">
+      {project.articleHref && <a class="project-row__read" href={project.articleHref}>{t.profile.read_article} <span aria-hidden="true">→</span></a>}
+      <button type="button" aria-haspopup="dialog" aria-controls={dialogId} data-project-preview-open>{t.profile.gallery} <span class="project-row__count">{project.gallery?.length ?? 0}</span></button>
+    </div>
   </div>
 
   <dialog
@@ -80,7 +76,7 @@ const carouselTitleId = `${dialogId}-carousel-title`;
                     <img
                       src={image.src}
                       alt={image.alt}
-                      loading={index < 6 ? 'eager' : 'lazy'}
+                      loading="lazy"
                       decoding="async"
                     />
                     {image.caption && <span class="project-collage__caption">{image.caption}</span>}
@@ -97,21 +93,10 @@ const carouselTitleId = `${dialogId}-carousel-title`;
           <aside class="project-preview__story">
             <section class="project-preview__article" aria-label={t.profile.article_preview}>
               {project.articleHref ? (
-                <div class="project-preview__article-frame">
-                  <iframe
-                    src={project.articleHref}
-                    title={`${t.profile.article_preview}: ${project.title}`}
-                    loading="lazy"
-                    tabindex="-1"
-                    aria-hidden="true"
-                  ></iframe>
-                  <a href={project.articleHref} aria-label={`${t.profile.read_article}: ${project.title}`}>
-                    <span>{t.profile.read_article}</span>
-                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <path d="M6 14 14 6"></path>
-                      <path d="M7 6h7v7"></path>
-                    </svg>
-                  </a>
+                <div class="project-preview__article-summary">
+                  <h3>{t.profile.article_preview}</h3>
+                  <p>{project.excerpt}</p>
+                  <a class="project-preview__read" href={project.articleHref}>{t.profile.read_article} <span aria-hidden="true">→</span></a>
                 </div>
               ) : (
                 <div class="project-preview__article-empty">
@@ -122,7 +107,7 @@ const carouselTitleId = `${dialogId}-carousel-title`;
 
             {project.notes && project.notes.length > 0 && (
               <section class="project-preview__notes" aria-label={t.profile.notes}>
-                <p class="project-preview__eyebrow">{t.profile.notes}</p>
+                <h3 class="project-preview__eyebrow">{t.profile.notes}</h3>
                 <ul>
                   {project.notes.map(note => (
                     <li class={`project-comment project-comment--${note.tone ?? 'neutral'}`}>
