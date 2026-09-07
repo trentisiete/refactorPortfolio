@@ -9,6 +9,7 @@ interface Props {
 
 const { lang, reader = false } = Astro.props;
 const t = useTranslations(lang);
+const linkLabels = { es: 'Encuéntrame', en: 'Find me', de: 'Links' };
 ---
 
 <footer class:list={["footer", "footer--hidden", { "footer--reader": reader }]} data-site-footer data-reader-footer={reader ? 'true' : undefined}>
@@ -79,18 +80,24 @@ const t = useTranslations(lang);
     )}
 
     <div class="footer__standard-panel" data-standard-footer>
-      <div class="footer__links">
-        <a href="https://www.linkedin.com/in/jose-arbelaez-dev/" target="_blank" rel="noopener noreferrer" class="footer__link">
-          LinkedIn
-        </a>
-        <a href="/CV_jose.pdf" target="_blank" rel="noopener noreferrer" class="anthropic-btn">
-          CV
-        </a>
+      <div class="footer__identity">
+        <a class="footer__name" href={`/${lang}/`}>José <strong>Arbelaez</strong></a>
+        <p class="footer__text">{t.footer.copyright}</p>
+      </div>
+      <nav class="footer__links" aria-label={linkLabels[lang]}>
         <a href="https://github.com/trentisiete" target="_blank" rel="noopener noreferrer" class="footer__link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.3-4.3-2.5-6-3m12 6v-3.9a3.4 3.4 0 0 0-1-2.7c3.3-.4 6.7-1.6 6.7-7.3a5.7 5.7 0 0 0-1.5-4 5.3 5.3 0 0 0-.1-4S17.9-.3 15 1.6a13.4 13.4 0 0 0-7 0C5.1-.3 3.9.1 3.9.1a5.3 5.3 0 0 0-.1 4 5.7 5.7 0 0 0-1.5 4c0 5.7 3.4 6.9 6.7 7.3a3.4 3.4 0 0 0-1 2.7V22" transform="translate(2 2) scale(.83)" /></svg>
           GitHub
         </a>
-      </div>
-      <p class="footer__text">{t.footer.copyright}</p>
+        <a href="https://www.linkedin.com/in/jose-arbelaez-dev/" target="_blank" rel="noopener noreferrer" class="footer__link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 10v7m4 0v-7m0 3a3 3 0 0 1 6 0v4"/><circle cx="7" cy="7" r=".5"/></svg>
+          LinkedIn
+        </a>
+        <a href="/CV_jose.pdf" target="_blank" rel="noopener noreferrer" class="footer__link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>
+          CV
+        </a>
+      </nav>
     </div>
   </div>
 </footer>
